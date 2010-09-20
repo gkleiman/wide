@@ -12,6 +12,10 @@ gem 'devise'
 
 # Use HAML
 gem 'haml'
+
+# jQuery
+gem 'jquery-rails'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
