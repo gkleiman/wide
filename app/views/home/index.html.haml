@@ -1,1 +1,8 @@
-%h1 HOOOOLA!
+- content_for :javascripts do
+  = javascript_include_tag 'jquery.cookie.js', 'jquery.hotkeys.js', 'jquery.jstree.js', 'edit_area/edit_area_full.js'
+
+#tree
+#file_content
+  = form_tag update_path, :id => :file_edit, :remote => true do
+    = hidden_field_tag :path
+    = text_area_tag :content

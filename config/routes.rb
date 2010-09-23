@@ -3,6 +3,10 @@ Wide::Application.routes.draw do
 
   root :to => "home#index"
 
+  match 'children/' => 'tree#children'
+  match 'edit/' => 'tree#edit'
+  match 'update/' => 'tree#update', :method => :post
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
