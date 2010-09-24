@@ -1,5 +1,9 @@
-html, body {
+html {
   height: 100%;
+}
+
+body {
+  height: 95%;
   background: #FFFFEE;
 }
 
@@ -8,14 +12,14 @@ html, body {
   overflow: auto;
   float: left;
   width: 20%;
-  height: 95%;
+  height: 100%;
 }
 
 #file_content {
   display: block;
   float: left;
   width: 80%;
-  height: 90%;
+  height: 100%;
 }
 
 #file_content form, #content {

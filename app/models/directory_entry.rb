@@ -22,7 +22,6 @@ class DirectoryEntry
   def as_json(options = {})
       entry = {
         :attr => {
-          "data-path" => path,
           "data-filename" => file_name,
           :rel => type
         },
@@ -30,7 +29,6 @@ class DirectoryEntry
         :type => type,
         :state => directory? ? 'closed' : ''
       }
-      entry[:attr].merge!(:href => path) unless directory?
 
       entry
   end

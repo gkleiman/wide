@@ -9,6 +9,8 @@ function save_function(id, content) {
 }
 
 $(function() {
+  var base_path = '/projects/' + $('#project_id').val();
+
   $.jstree._themes = '/javascripts/themes/';
   $('#tree')
   .jstree({
@@ -21,12 +23,15 @@ $(function() {
 
     json_data: {
       ajax: {
-        url: '/children',
+        url: base_path + '/list_dir',
         data: function (n) {
           // the result is fed to the AJAX request `data` option
-          return {
-            path: n.attr ? n.attr('data-path') : '/'
-          };
+          var path = '/';
+
+          if(n != "-1")
+            path += $('#tree').jstree('get_path', n).join('/');
+
+          return { path: path };
         }
       }
     },
@@ -58,14 +63,14 @@ $(function() {
   })
   .bind('select_node.jstree',
     function (e, data) {
-      node = data.rslt.obj;
+      var node = data.rslt.obj;
+      var path = '/' + $('#tree').jstree('get_path', node).join('/');
 
       if(node.attr('rel') == 'folder') {
         $('#tree').jstree('toggle_node', node);
       } else {
-        $.get('/edit', { path: node.attr('data-path') },
+        $.get(base_path + '/read_file', { path: path },
           function(data) {
-            var path = node.attr('data-path');
             var file_name = node.attr('data-filename');
             editAreaLoader.openFile('content', { id: path, title: file_name, text: data });
           });

@@ -9,7 +9,6 @@ class DeviseCreateUsers < ActiveRecord::Migration
       # t.lockable :lock_strategy => :failed_attempts, :unlock_strategy => :both
       # t.token_authenticatable
 
-
       t.timestamps
     end
 
@@ -20,6 +19,9 @@ class DeviseCreateUsers < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :users
+    remove_index :users, :column => :reset_password_token
+    remove_index :users, :column => :email
+
+    drop_table(:users)
   end
 end

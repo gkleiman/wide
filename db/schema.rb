@@ -10,7 +10,28 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100917203459) do
+ActiveRecord::Schema.define(:version => 20100923223634) do
+
+  create_table "projects", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "projects", ["name"], :name => "index_projects_on_name"
+  add_index "projects", ["user_id"], :name => "index_projects_on_user_id"
+
+  create_table "repositories", :force => true do |t|
+    t.integer  "project_id", :null => false
+    t.string   "path",       :null => false
+    t.string   "url"
+    t.string   "scm",        :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "repositories", ["project_id"], :name => "index_repositories_on_project_id", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "", :null => false

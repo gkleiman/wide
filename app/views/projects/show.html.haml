@@ -3,6 +3,7 @@
 
 #tree
 #file_content
-  = form_tag update_path, :id => :file_edit, :remote => true do
+  = form_tag save_file_project_path(@project), :id => :file_edit, :remote => true do
+    = hidden_field_tag :project_id, @project.to_param
     = hidden_field_tag :path
     = text_area_tag :content
