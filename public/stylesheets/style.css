@@ -2,23 +2,27 @@ html {
   height: 100%;
 }
 
-body {
-  height: 95%;
+body, #container {
+  height: 94%;
   background: #FFFFEE;
+}
+
+#navbar {
+  float: right;
 }
 
 #tree {
   display: block;
   overflow: auto;
   float: left;
-  width: 20%;
+  width: 24%;
   height: 100%;
 }
 
 #file_content {
   display: block;
   float: left;
-  width: 80%;
+  width: 74%;
   height: 100%;
 }
 
