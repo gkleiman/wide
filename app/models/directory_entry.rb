@@ -23,11 +23,12 @@ class DirectoryEntry
       entry = {
         :attr => {
           "data-filename" => file_name,
-          :rel => type
+          :rel => type,
+          :id => file_name.parameterize + Digest::SHA1.hexdigest(path)
         },
         :data => file_name,
         :type => type,
-        :state => directory? ? 'closed' : ''
+        :state => directory? ? 'closed' : '',
       }
 
       entry

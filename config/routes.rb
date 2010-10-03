@@ -11,6 +11,8 @@ Wide::Application.routes.draw do
       post 'remove_file'
       post 'save_file'
       post 'copy_file'
+      post 'create_file'
+      post 'create_folder'
     end
   end
 end

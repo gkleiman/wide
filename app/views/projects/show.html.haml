@@ -4,6 +4,12 @@
 
 %h1= raw("wIDE | #{link_to(h(current_user.email), root_path)} | #{h(@project.name)}")
 
+#toolbar
+  = link_to 'Add File', '#', :id => 'add_file_button'
+  = link_to 'Add Folder', '#', :id => 'add_folder_button'
+  = link_to 'Rename', '#', :id => 'rename_button'
+  = link_to 'Remove', '#', :id => 'remove_button'
+
 #tree
 #file_content
   = form_tag save_file_project_path(@project), :id => :file_edit, :remote => true do
