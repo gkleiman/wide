@@ -203,6 +203,7 @@ $(function() {
 
   $('#add_file_button').click(function () {
     $('#tree').jstree('create', null, 'last', { 'attr' : { 'rel' : 'file'} });
+    return false;
   });
   $('#add_folder_button').click(function () {
     $('#tree').jstree('create', null, 'last', { 'attr' : { 'rel' : 'folder'} });
@@ -210,9 +211,11 @@ $(function() {
 
   $('#remove_button').click(function () {
     $('#tree').jstree('remove');
+    return false;
   });
 
   $('#rename_button').click(function () {
     $('#tree').jstree('rename');
+    return false;
   });
 });
