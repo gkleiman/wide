@@ -1,56 +1,91 @@
 class Repository < ActiveRecord::Base
+  include ActiveModel::Validations
+
   belongs_to :project
 
+  class ScmAdapterInstalledValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      unless Wide::Scm::Scm.all_adapters.include?(value)
+        record.errors.add(attribute, :inclusion, options.merge(:value => value))
+      end
+    end
+  end
   validates :path, :presence => true, :uniqueness => true
-  validates :scm, :presence => true
+  validates :scm, :presence => true, :scm_adapter_installed => true
+
+  attr_protected :path
 
   def directory_entries(rel_path)
-    Directory.new(real_path(rel_path)).entries
+    Directory.new(full_path(rel_path)).entries
   end
 
   def file_contents(rel_path)
-    DirectoryEntry.new(real_path(rel_path)).get_content
+    DirectoryEntry.new(full_path(rel_path)).get_content
   end
 
   def save_file(rel_path, content)
-    DirectoryEntry.new(real_path(rel_path)).update_content(content)
+    DirectoryEntry.new(full_path(rel_path)).update_content(content)
   end
 
   def move_file(src_path, dest_path)
-    src_path = real_path src_path
-    dest_path = real_path dest_path
+    src_entry = DirectoryEntry.new(full_path(src_path))
+    dest_path = full_path(dest_path)
 
-    FileUtils.move(src_path, dest_path)
+    if scm_engine.respond_to?(:move)
+      # TODO si el SCM soporta mover, y el archivo esta versionado, moverlo.
+      scm_engine.move!(src_entry, dest_path)
+    else
+      src_entry.move!(dest_path)
+    end
   end
 
   def make_dir(rel_path)
-    path = real_path rel_path
-    raise "#{path} already exists." if File.exist?(path)
-
-    FileUtils.mkdir path
+    DirectoryEntry.create(full_path(rel_path), :directory)
   end
 
   def create_file(rel_path)
-    path = real_path rel_path
-    raise "#{path} already exists." if File.exist?(path)
-
-    FileUtils.touch path
+    DirectoryEntry.create(full_path(rel_path), :file)
   end
 
   def remove_file(rel_path)
-    path = real_path rel_path
+    entry = DirectoryEntry.new(full_path(rel_path))
 
-    FileUtils.rm_r path, :secure => true
+    if scm_engine.respond_to?(:remove)
+      # TODO si el SCM soporta borrar, y el archivo esta versionado, borrarlo.
+      scm_engine.remove!(entry)
+    else
+      entry.remove!
+    end
   end
 
   private
-  def real_path(rel_path)
-    base_path = File.expand_path(self.path)
-    joined_path = File.expand_path(File.join([base_path, rel_path]))
+  def scm_engine
+    @scm_engine ||= Wide::Scm::Scm.get_adapter(scm).new(path)
+  end
 
-    # Raise an exception if the expanded path is not in the repository
-    raise ActiveRecord::RecordNotFound unless joined_path.index(base_path) == 0 || joined_path == base_path
+  def method_missing_with_supports_action?(method_called, *args, &block)
+    supported_actions = %w(commit history forget)
 
-    joined_path
+    match = method_called.to_s.match(/^supports_(\w+)\?$/)
+    if match && supported_actions.include?(match[1]) && scm_engine
+      if scm_engine.respond_to?(match[1])
+        return true
+      else
+        return false
+      end
+    else
+      return method_missing_without_supports_action?(method_called, *args, &block)
+    end
+  end
+  alias_method_chain :method_missing, :supports_action?
+
+  def update_entries_status
+#    TODO
+#    @added_files, @unversioned_files, @removed_files, @modified_files
+      @entries_status = scm_engine.get_entries_status(full_path)
+  end
+
+  def full_path(rel_path = '')
+    Wide::PathUtils.secure_path_join(path, rel_path)
   end
 end

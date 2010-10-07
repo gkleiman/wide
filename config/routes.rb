@@ -12,7 +12,7 @@ Wide::Application.routes.draw do
       post 'save_file'
       post 'copy_file'
       post 'create_file'
-      post 'create_folder'
+      post 'create_directory'
     end
   end
 end

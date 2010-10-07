@@ -73,7 +73,7 @@ $(function() {
 
       types: {
         root: {
-          valid_children: [ 'folder', 'file' ],
+          valid_children: [ 'directory', 'file' ],
           start_drag: false,
           move_node: false,
           delete_node: false,
@@ -85,8 +85,8 @@ $(function() {
             image: '/images/file.png'
           }
         },
-        folder: {
-          valid_children: [ 'file', 'folder' ],
+        directory: {
+          valid_children: [ 'file', 'directory' ],
           icon: {
             image: '/images/folder.png'
           }
@@ -103,20 +103,23 @@ $(function() {
       select_limit: 1
     }
   })
-  .bind('select_node.jstree',
-    function (e, data) {
-      var node = data.rslt.obj;
-      var path = get_path(node);
+  .bind('dblclick.jstree',
+    function (e) {
+      var node = $('#tree').jstree('get_selected');
 
-      if(node.attr('rel') == 'folder') {
-        $('#tree').jstree('toggle_node', node);
-      } else if(node.attr('rel') == 'file') {
-        $.get(base_path + '/read_file',
-          { path: path },
-          function(data) {
-            var file_name = node.attr('data-filename');
-            editAreaLoader.openFile('content', { id: path, title: file_name, text: data });
-          });
+      if(node !== undefined) {
+        var path = get_path(node);
+
+        if(node.attr('rel') == 'directory') {
+          $('#tree').jstree('toggle_node', node);
+        } else if(node.attr('rel') == 'file') {
+          $.get(base_path + '/read_file',
+            { path: path },
+            function(data) {
+              var file_name = node.attr('data-filename');
+              editAreaLoader.openFile('content', { id: path, title: file_name, text: data });
+            });
+        }
       }
   })
   .bind('create.jstree',
@@ -205,8 +208,9 @@ $(function() {
     $('#tree').jstree('create', null, 'last', { 'attr' : { 'rel' : 'file'} });
     return false;
   });
-  $('#add_folder_button').click(function () {
-    $('#tree').jstree('create', null, 'last', { 'attr' : { 'rel' : 'folder'} });
+  $('#add_directory_button').click(function () {
+    $('#tree').jstree('create', null, 'last', { 'attr' : { 'rel' : 'directory'} });
+    return false;
   });
 
   $('#remove_button').click(function () {

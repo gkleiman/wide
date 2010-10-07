@@ -1,14 +1,9 @@
 class Directory
+  attr_accessor :path, :entries
+
   def initialize(path)
-    @path = File.expand_path(path)
-  end
-
-  def path
-    @path
-  end
-
-  def entries
-    @entries ||= populate_entries
+    self.path = path
+    self.entries = populate_entries
   end
 
   def as_json(options = {})
@@ -20,19 +15,22 @@ class Directory
     entries = []
 
     Dir.foreach(path) do |entry_name|
-      next if entry_name =~ /^.{1,2}$/
+      next if entry_name =~ /\A.{1,2}\z/
 
-      entry_path = File.join([path, entry_name])
-      entry = DirectoryEntry.new(entry_path)
+      entry = DirectoryEntry.new(Wide::PathUtils.secure_path_join(path,
+                                                                  entry_name))
+
+      next unless %w{file directory}.include?(entry.type)
 
       entries << entry
     end
 
-    entries.sort_by! do |entry|
-      [
-        entry.type == 'folder' ? '0' : '1',
-        entry.file_name
-      ]
+    entries.sort do |x, y|
+      if x.type == y.type
+        x.file_name.to_s <=> y.file_name.to_s
+      else
+        x.type.to_s <=> y.type.to_s
+      end
     end
   end
 end

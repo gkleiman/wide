@@ -5,7 +5,10 @@ class ProjectsController < ApplicationController
   before_filter :load_project, :except => :new
   before_filter lambda { @path = extract_path_from_param(:path) },
     :only => [ :list_dir, :read_file, :save_file, :create_file,
-      :create_folder, :remove_file ]
+      :create_directory, :remove_file ]
+
+  around_filter :json_failable_action, :only => [ :save_file, :create_file,
+    :create_directory, :remove_file, :move_file ]
 
   def list_dir
     entries = @project.repository.directory_entries(@path)
@@ -23,56 +26,36 @@ class ProjectsController < ApplicationController
   end
 
   def save_file
-    begin
-      @project.repository.save_file(@path, params[:content])
+    @project.repository.save_file(@path, params[:content])
 
-      render :json => { :success => 1 }
-    rescue Exception => exception
-      fail_and_log_exception exception
-    end
+    render :json => { :success => 1 }
   end
 
   def create_file
-    begin
-      @project.repository.create_file(@path)
+    @project.repository.create_file(@path)
 
-      render :json => { :success => 1 }
-    rescue Exception => exception
-      fail_and_log_exception exception
-    end
+    render :json => { :success => 1 }
   end
 
-  def create_folder
-    begin
-      @project.repository.make_dir(@path)
+  def create_directory
+    @project.repository.make_dir(@path)
 
-      render :json => { :success => 1 }
-    rescue Exception => exception
-      fail_and_log_exception exception
-    end
+    render :json => { :success => 1 }
   end
 
   def remove_file
-    begin
-      @project.repository.remove_file(@path)
+    @project.repository.remove_file(@path)
 
-      render :json => { :success => 1 }
-    rescue Exception => exception
-      fail_and_log_exception exception
-    end
+    render :json => { :success => 1 }
   end
 
   def move_file
-    begin
-      src_path = extract_path_from_param :src_path
-      dest_path = extract_path_from_param :dest_path
+    src_path = extract_path_from_param :src_path
+    dest_path = extract_path_from_param :dest_path
 
-      @project.repository.move_file src_path, dest_path
+    @project.repository.move_file src_path, dest_path
 
-      render :json => { :success => 1 }
-    rescue Exception => exception
-      fail_and_log_exception exception
-    end
+    render :json => { :success => 1 }
   end
 
   private
@@ -92,12 +75,6 @@ class ProjectsController < ApplicationController
     path
   end
 
-  def fail_and_log_exception(exception)
-    logger.error(exception.inspect)
-
-    render :json => { :success => 0 }
-  end
-
   def wrap_in_fake_root(entries)
     {
       :attr => {
@@ -108,5 +85,14 @@ class ProjectsController < ApplicationController
       :state => 'open',
       :children => entries
     }
+  end
+
+  def json_failable_action
+    begin
+      yield
+    rescue Exception => exception
+      logger.error(exception.inspect)
+      render :json => { :success => 0 }
+    end
   end
 end

@@ -1,10 +1,21 @@
 class DirectoryEntry
-  def initialize(path)
-    @path = File.expand_path(path)
+  attr_accessor :path, :file_name
+
+  def self.create(path, type)
+    raise StandardError.new("#{path} already exists.") if File.exist?(path)
+
+    if type == :file
+      FileUtils.touch path
+    elsif type == :directory
+      FileUtils.mkdir path
+    end
+
+    return DirectoryEntry.new(path)
   end
 
-  def path
-    @path
+  def initialize(path)
+    self.path = path
+    self.file_name = File.basename(path)
   end
 
   def directory?
@@ -12,11 +23,7 @@ class DirectoryEntry
   end
 
   def type
-    @type ||= directory? ? 'folder' : 'file'
-  end
-
-  def file_name
-    @file_name ||= File.basename(path)
+    @type ||= File.ftype(path)
   end
 
   def as_json(options = {})
@@ -42,5 +49,15 @@ class DirectoryEntry
     file = File.new(path, 'w')
     file.write(content)
     file.close
+  end
+
+  def move!(dest_path)
+    dest_path = dest_path
+
+    FileUtils.move(path, dest_path)
+  end
+
+  def remove!
+    FileUtils.rm_r path, :secure => true
   end
 end
