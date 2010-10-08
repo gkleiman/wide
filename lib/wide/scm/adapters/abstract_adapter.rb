@@ -9,6 +9,8 @@ module Wide
         def self.extended(base)
           base.send(:include, InstanceMethods)
           base.send(:attr_accessor, :base_path)
+          base.send(:cattr_accessor, :skip_paths)
+          base.skip_paths = []
         end
 
         def adapter_name
@@ -23,7 +25,7 @@ module Wide
           logger.debug "Shelling out: #{cmd}" if logger && logger.debug?
           if Rails.env == 'development'
             # Capture stderr when running in dev environment
-            cmd = "#{cmd} 2>>#{RAILS_ROOT}/log/scm.stderr.log"
+            cmd = "#{cmd} 2>>#{::Rails.root.to_s}/log/scm.stderr.log"
           end
 
           begin
@@ -44,12 +46,13 @@ module Wide
             self.base_path = base_path
           end
 
-          def entries_status
+          def status
             {
               :unversioned_files => [],
               :added_files => [],
               :removed_files => [],
-              :modified_files => []
+              :modified_files => [],
+              :files_with_conflicts => []
             }
           end
 
@@ -61,7 +64,7 @@ module Wide
             self.class.logger
           end
 
-          def shellout
+          def shellout(cmd, &block)
             self.class.shellout(cmd, &block)
           end
         end

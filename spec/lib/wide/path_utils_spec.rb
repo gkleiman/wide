@@ -65,4 +65,27 @@ describe Wide::PathUtils do
       Wide::PathUtils.without_trailing_slash('foo/bar').should == 'foo/bar'
     end
   end
+
+  context 'relative_to_base' do
+    it 'should return a relative path given a base path' do
+      Wide::PathUtils.relative_to_base('/foo/bar/', '/foo/bar/test/path').should == 'test/path'
+
+      Wide::PathUtils.relative_to_base('/', '/foo/bar/test/path/').should == 'foo/bar/test/path'
+    end
+
+    it 'should remove trailing spaces when returning the relative path' do
+      Wide::PathUtils.relative_to_base('/foo/bar/', '/foo/bar/test/path/').should == 'test/path'
+    end
+
+    it 'should return an empty string if the base path matches the full path' do
+      Wide::PathUtils.relative_to_base('/', '/').should == ''
+      Wide::PathUtils.relative_to_base('/foo/bar/', '/foo/bar').should == ''
+      Wide::PathUtils.relative_to_base('/foo/bar/', '/foo/bar').should == ''
+      Wide::PathUtils.relative_to_base('/foo/bar', '/foo/bar/').should == ''
+    end
+
+    it 'should raise an exception if path is not inside base' do
+      lambda { Wide::PathUtils.relative_to_base('/foo/bar/', '/a//foo/bar') }.should raise_exception
+    end
+  end
 end

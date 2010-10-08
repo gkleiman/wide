@@ -10,6 +10,10 @@ class ProjectsController < ApplicationController
   around_filter :json_failable_action, :only => [ :save_file, :create_file,
     :create_directory, :remove_file, :move_file ]
 
+  def show
+    raise ActiveRecord::RecordNotFound unless @project
+  end
+
   def list_dir
     entries = @project.repository.directory_entries(@path)
 

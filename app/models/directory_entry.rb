@@ -1,5 +1,5 @@
 class DirectoryEntry
-  attr_accessor :path, :file_name
+  attr_accessor :path, :file_name, :css_class
 
   def self.create(path, type)
     raise StandardError.new("#{path} already exists.") if File.exist?(path)
@@ -35,8 +35,11 @@ class DirectoryEntry
         },
         :data => file_name,
         :type => type,
-        :state => directory? ? 'closed' : '',
+        :state => directory? ? 'closed' : ''
       }
+
+      entry[:attr][:class] = css_class unless css_class.blank?
+      entry[:class] = css_class unless css_class.blank?
 
       entry
   end

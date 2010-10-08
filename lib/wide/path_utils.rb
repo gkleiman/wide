@@ -41,6 +41,18 @@ module Wide
         joined_path
       end
 
+      def relative_to_base(base, path)
+        path = without_trailing_slash(path)
+
+        return '' if without_trailing_slash(base) == path
+
+        base = with_trailing_slash(base)
+
+        raise BaseDirectoryTraversalError.new("#{base} is not a base path of #{path}") unless path.index(base) == 0
+
+        path[base.length..-1]
+      end
+
       private
       def logger
         ::Rails::logger

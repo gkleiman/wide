@@ -16,7 +16,16 @@ class Repository < ActiveRecord::Base
   attr_protected :path
 
   def directory_entries(rel_path)
-    Directory.new(full_path(rel_path)).entries
+    entries = Directory.new(full_path(rel_path)).entries
+
+    if scm_engine.skip_paths
+      entries.reject! do |entry|
+        scm_engine.skip_paths.include?(entry.file_name)
+      end
+    end
+
+    update_entries_status
+    entries = mark_entries(entries)
   end
 
   def file_contents(rel_path)
@@ -29,13 +38,13 @@ class Repository < ActiveRecord::Base
 
   def move_file(src_path, dest_path)
     src_entry = DirectoryEntry.new(full_path(src_path))
-    dest_path = full_path(dest_path)
+    full_dest_path = full_path(dest_path)
 
     if scm_engine.respond_to?(:move)
       # TODO si el SCM soporta mover, y el archivo esta versionado, moverlo.
       scm_engine.move!(src_entry, dest_path)
     else
-      src_entry.move!(dest_path)
+      src_entry.move!(full_dest_path)
     end
   end
 
@@ -82,10 +91,20 @@ class Repository < ActiveRecord::Base
   def update_entries_status
 #    TODO
 #    @added_files, @unversioned_files, @removed_files, @modified_files
-      @entries_status = scm_engine.get_entries_status(full_path)
+      @entries_status = scm_engine.status
   end
 
   def full_path(rel_path = '')
     Wide::PathUtils.secure_path_join(path, rel_path)
+  end
+
+  def mark_entries(entries)
+    entries.each do |entry|
+      @entries_status.each_key do |file_type|
+        if @entries_status[file_type].include?(entry.path)
+          entry.css_class = file_type.to_s.sub('_files', '')
+        end
+      end
+    end
   end
 end

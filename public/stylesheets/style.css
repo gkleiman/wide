@@ -42,3 +42,15 @@ body, #container {
   float: left;
   display: block;
 }
+
+li.added a {
+  color: green;
+}
+
+li.unversioned a {
+  color: red;
+}
+
+li.modified a {
+  color: blue;
+}
