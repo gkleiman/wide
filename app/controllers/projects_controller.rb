@@ -82,7 +82,8 @@ class ProjectsController < ApplicationController
   def wrap_in_fake_root(entries)
     {
       :attr => {
-        :rel => 'root'
+        :rel => 'root',
+        :class => 'root'
       },
       :data => '/',
       :type => 'root',

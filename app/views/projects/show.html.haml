@@ -1,5 +1,5 @@
 - content_for :javascripts do
-  = javascript_include_tag 'jquery.cookie.js', 'jquery.hotkeys.js', 'jquery.jstree.js', 'edit_area/edit_area_full.js'
+  = javascript_include_tag 'jquery.cookie.js', 'jquery.hotkeys.js', 'jquery.jstree.js', 'jquery.jstree.overlays.js', 'edit_area/edit_area_full.js'
 - title "wIDE | #{current_user.email} | #{@project.name}", false
 
 %h1= raw("wIDE | #{link_to(h(current_user.email), root_path)} | #{h(@project.name)}")

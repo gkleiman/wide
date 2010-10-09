@@ -48,7 +48,7 @@ $(function() {
 
     $('#tree')
     .jstree({
-      plugins: [ 'themes', 'json_data', 'ui', 'types', 'hotkeys', 'cookies', 'crrm', 'dnd' ],
+      plugins: [ 'themes', 'json_data', 'ui', 'types', 'hotkeys', 'cookies', 'crrm', 'dnd', 'overlays' ],
 
       // Plugin configuration
       core: {

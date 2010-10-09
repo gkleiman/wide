@@ -16,14 +16,14 @@ body, #container {
   overflow: auto;
   float: left;
   width: 24%;
-  height: 100%;
+  height: 94%;
 }
 
 #file_content {
   display: block;
   float: left;
-  width: 74%;
-  height: 100%;
+  width: 76%;
+  height: 94%;
 }
 
 #file_content form, #content {
@@ -43,14 +43,27 @@ body, #container {
   display: block;
 }
 
-li.added a {
-  color: green;
+li.root a ins ins.jstree-overlay {
+  background-image: none;
 }
-
-li.unversioned a {
-  color: red;
+li.root li a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/normal.gif');
 }
-
-li.modified a {
-  color: blue;
+li.root li.modified a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/modified.gif');
+}
+li.root li.added a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/added.gif');
+}
+li.root li.unversioned a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/unversioned.gif');
+}
+li.root li.ignored a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/ignored.gif');
+}
+li.root li.readonly a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/readonly.gif');
+}
+li.root li.conflict a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/conflict.gif');
 }
