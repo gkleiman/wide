@@ -37,14 +37,13 @@ class Repository < ActiveRecord::Base
   end
 
   def move_file(src_path, dest_path)
-    src_entry = DirectoryEntry.new(full_path(src_path))
+    entry = DirectoryEntry.new(full_path(src_path))
     full_dest_path = full_path(dest_path)
 
-    if scm_engine.respond_to?(:move)
-      # TODO si el SCM soporta mover, y el archivo esta versionado, moverlo.
-      scm_engine.move!(src_entry, dest_path)
+    if scm_engine.respond_to?(:move!) && scm_engine.versioned?(entry)
+      scm_engine.move!(entry, full_dest_path)
     else
-      src_entry.move!(full_dest_path)
+      entry.move!(full_dest_path)
     end
   end
 
@@ -59,8 +58,7 @@ class Repository < ActiveRecord::Base
   def remove_file(rel_path)
     entry = DirectoryEntry.new(full_path(rel_path))
 
-    if scm_engine.respond_to?(:remove)
-      # TODO si el SCM soporta borrar, y el archivo esta versionado, borrarlo.
+    if scm_engine.respond_to?(:remove!) && scm_engine.versioned?(entry)
       scm_engine.remove!(entry)
     else
       entry.remove!
@@ -89,9 +87,7 @@ class Repository < ActiveRecord::Base
   alias_method_chain :method_missing, :supports_action?
 
   def update_entries_status
-#    TODO
-#    @added_files, @unversioned_files, @removed_files, @modified_files
-      @entries_status = scm_engine.status
+    @entries_status = scm_engine.status
   end
 
   def full_path(rel_path = '')

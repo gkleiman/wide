@@ -151,17 +151,21 @@ $(function() {
         var src_path = path_before_operation(moved_node, data.rlbk);
         var dest_path = get_path(moved_node);
 
-        $.post(
-          base_path + '/move_file',
-          { src_path: src_path, dest_path: dest_path },
-          function (r) {
-            if(!r.success) {
-              $.jstree.rollback(data.rlbk);
-            } else {
-              data.inst.refresh(data.rslt.np);
+        if(src_path !== dest_path) {
+          $.post(
+            base_path + '/move_file',
+            { src_path: src_path, dest_path: dest_path },
+            function (r) {
+              if(!r.success) {
+                $.jstree.rollback(data.rlbk);
+              } else {
+                data.inst.refresh();
+              }
             }
-          }
-        );
+          );
+        } else {
+          $.jstree.rollback(data.rlbk);
+        }
     })
     .bind('remove.jstree', function (e, data) {
         var path = path_before_operation(data.rslt.obj[0], data.rlbk);

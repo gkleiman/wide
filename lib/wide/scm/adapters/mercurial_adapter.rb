@@ -46,9 +46,39 @@ module Wide
           raise CommandFailed.new("Failed to initialize Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
         end
 
-        def move(entry, dest_path)
+        # dest_path must be a full expanded path
+        def move!(entry, dest_path)
           src_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
           dest_path = Wide::PathUtils.relative_to_base(base_path, dest_path)
+
+          cmd = cmd_prefix.push('mv', src_path, dest_path)
+          shellout(Escape.shell_command(cmd))
+
+          raise CommandFailed.new("Failed to move file #{src_path} to #{dest_path} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
+        end
+
+        # dest_path must be a full expanded path
+        def remove!(entry)
+          rel_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
+
+          cmd = cmd_prefix.push('rm', '-f', "path:#{rel_path}")
+          shellout(Escape.shell_command(cmd))
+
+          raise CommandFailed.new("Failed to remove file #{src_path} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
+        end
+
+        def versioned?(entry)
+          rel_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
+
+          versioned = false
+          cmd = cmd_prefix.push('locate', "path:#{rel_path}")
+          shellout(Escape.shell_command(cmd)) do |io|
+            io.each_line do |line|
+              versioned = true if line.chomp! == rel_path
+            end
+          end
+
+          return versioned
         end
 
         private
