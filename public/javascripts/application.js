@@ -27,6 +27,8 @@ $(function() {
     path = $('#tree').jstree('get_path', node)
     if(path.length > 0)
       path.shift();
+    else
+      path = [''];
     path = path.join('/');
 
     return path;

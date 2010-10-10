@@ -2,8 +2,6 @@
 (function ($) {
 	$.jstree.plugin("overlays", {
 		__init : function () {
-			this.select_node = this.deselect_node = this.deselect_all = this.get_selected = $.noop;
-
 			this.get_container()
 				.bind("open_node.jstree create_node.jstree clean_node.jstree", $.proxy(function (e, data) { 
 						this._prepare_overlays(data.rslt.obj);

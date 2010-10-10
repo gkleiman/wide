@@ -46,9 +46,6 @@ body, #container {
 li.root a ins ins.jstree-overlay {
   background-image: none;
 }
-li.root li a ins ins.jstree-overlay {
-  background-image: url('../images/overlays/normal.gif');
-}
 li.root li.modified a ins ins.jstree-overlay {
   background-image: url('../images/overlays/modified.gif');
 }
