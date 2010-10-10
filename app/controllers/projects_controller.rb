@@ -96,7 +96,7 @@ class ProjectsController < ApplicationController
     begin
       yield
     rescue Exception => exception
-      logger.error(exception.inspect)
+      logger.error(exception.inspect + "\n" + exception.backtrace[0..5].join("\n"))
       render :json => { :success => 0 }
     end
   end
