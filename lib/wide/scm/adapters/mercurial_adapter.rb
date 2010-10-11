@@ -10,7 +10,7 @@ module Wide
         self.skip_paths = %w(.hg)
 
         def status
-          status_hash = super
+          status_hash = {}
 
           cmd = cmd_prefix.push('status')
           shellout(Escape.shell_command(cmd)) do |io|
@@ -21,15 +21,16 @@ module Wide
 
               status, entry_path = line.match(/\A(.) (.+)\z/).captures
               entry_path = Wide::PathUtils.secure_path_join(base_path, entry_path)
+              status_hash[entry_path] ||= []
               case status
               when '?'
-                status_hash[:unversioned_files] << entry_path
+                status_hash[entry_path] << :unversioned
               when 'A'
-                status_hash[:added_files] << entry_path
+                status_hash[entry_path] << :added
               when 'R'
-                status_hash[:removed_files] << entry_path
+                status_hash[entry_path] << :removed
               when 'M'
-                status_hash[:modified_files] << entry_path
+                status_hash[entry_path] << :modified
               end
             end
           end

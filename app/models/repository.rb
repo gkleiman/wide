@@ -96,10 +96,8 @@ class Repository < ActiveRecord::Base
 
   def mark_entries(entries)
     entries.each do |entry|
-      @entries_status.each_key do |file_type|
-        if @entries_status[file_type].include?(entry.path)
-          entry.css_class = file_type.to_s.sub('_files', '')
-        end
+      if @entries_status[entry.path]
+        entry.css_class = @entries_status[entry.path].map(&:to_s).join(' ')
       end
     end
   end

@@ -47,13 +47,7 @@ module Wide
           end
 
           def status
-            {
-              :unversioned_files => [],
-              :added_files => [],
-              :removed_files => [],
-              :modified_files => [],
-              :files_with_conflicts => []
-            }
+            {}
           end
 
           def adapter_name
