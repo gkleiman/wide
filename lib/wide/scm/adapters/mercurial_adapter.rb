@@ -68,6 +68,31 @@ module Wide
           raise CommandFailed.new("Failed to remove file #{src_path} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
         end
 
+        def add(entry)
+          rel_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
+
+          cmd = cmd_prefix.push('add', "path:#{rel_path}")
+          shellout(Escape.shell_command(cmd))
+
+          raise CommandFailed.new("Failed to add file #{src_path} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
+        end
+
+        def forget(entry)
+          rel_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
+
+          cmd = cmd_prefix.push('forget', "path:#{rel_path}")
+          shellout(Escape.shell_command(cmd))
+
+          raise CommandFailed.new("Failed to forget file #{src_path} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
+        end
+
+        def commit(user, message)
+          cmd = cmd_prefix.push('commit', '-u', user.to_s, '-m', message.to_s)
+          shellout(Escape.shell_command(cmd))
+
+          raise CommandFailed.new("Failed to commit the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
+        end
+
         def versioned?(entry)
           rel_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
 
