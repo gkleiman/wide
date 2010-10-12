@@ -65,7 +65,7 @@ module Wide
 
       end
 
-      def Status << Hash
+      class Status < Hash
 
         def to_s
           returning '' do |message|
