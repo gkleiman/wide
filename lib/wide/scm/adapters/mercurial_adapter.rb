@@ -71,15 +71,10 @@ module Wide
         def versioned?(entry)
           rel_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
 
-          versioned = false
           cmd = cmd_prefix.push('locate', "path:#{rel_path}")
-          shellout(Escape.shell_command(cmd)) do |io|
-            io.each_line do |line|
-              versioned = true if line.chomp! == rel_path
-            end
-          end
+          shellout(Escape.shell_command(cmd))
 
-          return versioned
+          return ($? && $?.exitstatus == 0)
         end
 
         private
