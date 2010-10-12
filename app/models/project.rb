@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
   belongs_to :user
-  has_one :repository
+
+  has_one :repository, :dependent => :destroy
 
   validates :name, :presence => true, :format => { :with => /[\w\-]+/ }
 
