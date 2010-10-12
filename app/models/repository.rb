@@ -65,6 +65,17 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def respond_to?(symbol, include_private = false)
+    supported_actions = %w(commit history forget)
+
+    match = symbol.to_s.match(/^supports_(\w+)\?$/)
+    if match && supported_actions.include?(match[1])
+      return true
+    else
+      return super
+    end
+  end
+
   private
   def scm_engine
     @scm_engine ||= Wide::Scm::Scm.get_adapter(scm).new(path)
