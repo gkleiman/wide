@@ -64,3 +64,23 @@ li.root li.readonly a ins ins.jstree-overlay {
 li.root li.conflict a ins ins.jstree-overlay {
   background-image: url('../images/overlays/conflict.gif');
 }
+
+.simple_form label {
+  float: left;
+  width: 100px;
+  text-align: right;
+  margin: 2px 10px;
+}
+
+.simple_form div.input {
+  margin-bottom: 10px;
+}
+
+.simple_form div.boolean, .simple_form input[type='submit'] {
+  margin-left: 120px;
+}
+
+.simple_form div.boolean label {
+ float: none;
+ margin: 0;
+}
