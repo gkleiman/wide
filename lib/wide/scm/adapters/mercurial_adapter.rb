@@ -10,7 +10,7 @@ module Wide
         self.skip_paths = %w(.hg)
 
         def status
-          status_hash = {}
+          status_hash = super
 
           cmd = cmd_prefix.push('status')
           shellout(Escape.shell_command(cmd)) do |io|

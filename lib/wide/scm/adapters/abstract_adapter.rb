@@ -47,7 +47,7 @@ module Wide
           end
 
           def status
-            {}
+            Status.new()
           end
 
           def adapter_name
@@ -60,6 +60,18 @@ module Wide
 
           def shellout(cmd, &block)
             self.class.shellout(cmd, &block)
+          end
+        end
+
+      end
+
+      def Status << Hash
+
+        def to_s
+          returning '' do |message|
+            self.each_pair do |path, status|
+              message += "#{path} #{status.to_s}\n"
+            end
           end
         end
 
