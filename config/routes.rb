@@ -3,8 +3,8 @@ Wide::Application.routes.draw do
 
   root :to => "projects#index"
 
-  resources :projects, :except => [ :index ] do
-    member do
+  resources :projects do
+    resource :repository, :except => [ :index, :show, :edit, :update, :new, :destroy, :create, :destroy ] do
       get 'list_dir'
       get 'read_file'
       post 'move_file'

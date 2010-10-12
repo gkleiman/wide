@@ -1,5 +1,5 @@
 function save_function(id, content) {
-  var base_path = '/projects/' + $('#project_id').val();
+  var base_path = '/projects/' + $('#project_id').val() + '/repository';
   var path = editAreaLoader.getCurrentFile(id).id;
   $('#path').val(path);
   $('#content').val(content);
@@ -21,7 +21,7 @@ function save_function(id, content) {
 }
 
 $(function() {
-  var base_path = '/projects/' + $('#project_id').val();
+  var base_path = '/projects/' + $('#project_id').val() + '/repository';
 
   function get_path(node) {
     path = $('#tree').jstree('get_path', node)

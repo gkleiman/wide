@@ -12,7 +12,7 @@
 
 #tree
 #file_content
-  = form_tag save_file_project_path(@project), :id => :file_edit do
+  = form_tag save_file_project_repository_path(@project), :id => :file_edit do
     = hidden_field_tag :project_id, @project.to_param
     = hidden_field_tag :path
     = text_area_tag :content
