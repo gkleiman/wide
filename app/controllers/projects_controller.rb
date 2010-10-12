@@ -83,10 +83,10 @@ class ProjectsController < ApplicationController
     {
       :attr => {
         :rel => 'root',
+        :id => 'root_node',
         :class => 'root'
       },
       :data => '/',
-      :type => 'root',
       :state => 'open',
       :children => entries
     }

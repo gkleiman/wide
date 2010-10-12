@@ -106,6 +106,7 @@ $(function() {
 
       ui: {
         select_prev_on_delete: false,
+        initially_select: [ 'root_node' ],
         select_limit: 1
       }
     })
