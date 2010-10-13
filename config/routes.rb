@@ -5,7 +5,7 @@ Wide::Application.routes.draw do
 
   resources :projects do
     resource :repository, :except => [ :index, :show, :edit, :update, :new, :destroy, :create, :destroy ] do
-      get 'list_dir'
+      get 'ls'
       get 'read_file'
       post 'move_file'
       post 'remove_file'

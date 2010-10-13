@@ -34,6 +34,10 @@ $(function() {
     return path;
   }
 
+  function get_parent(node) {
+      return $('#tree').jstree('_get_parent', node);
+  }
+
   // Some operations (like remove, move, and rename) change the tree. This function is a hack to get the path of a node before having performed an operation
   function path_before_operation(node, op_rlbk) {
       var rlbk = $('#tree').jstree('get_rollback');
@@ -59,9 +63,8 @@ $(function() {
 
       json_data: {
         ajax: {
-          url: base_path + '/list_dir',
+          url: base_path + '/ls',
           data: function (n) {
-            // the result is fed to the AJAX request `data` option
             var path = '-1';
 
             if(n != '-1') {
@@ -141,7 +144,7 @@ $(function() {
               if(!r.success) {
                 $.jstree.rollback(data.rlbk);
               } else {
-                data.inst.refresh();
+                data.inst.refresh(get_parent(data.rslt.obj));
               }
             }
         );
@@ -160,7 +163,7 @@ $(function() {
               if(!r.success) {
                 $.jstree.rollback(data.rlbk);
               } else {
-                data.inst.refresh();
+                data.inst.refresh(data.np);
               }
             }
           );
@@ -180,7 +183,7 @@ $(function() {
           },
           success : function (r) {
             if(!r.success) {
-              data.inst.refresh();
+              data.inst.refresh(get_parent(data.rslt.obj[0]));
             }
           }
         });
@@ -197,6 +200,8 @@ $(function() {
           function (r) {
             if(!r.success) {
               $.jstree.rollback(data.rlbk);
+            } else {
+              data.inst.refresh(get_parent(data.rslt.obj[0]));
             }
           }
         );

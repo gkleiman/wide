@@ -4,13 +4,13 @@ class RepositoriesController < ApplicationController
   before_filter :authenticate_user!
   before_filter :load_repository
   before_filter lambda { @path = extract_path_from_param(:path) },
-    :only => [ :list_dir, :read_file, :save_file, :create_file,
+    :only => [ :ls, :read_file, :save_file, :create_file,
       :create_directory, :remove_file ]
 
   around_filter :json_failable_action, :only => [ :save_file, :create_file,
-    :create_directory, :remove_file, :move_file ]
+    :create_directory, :remove_file, :move_file, :clean, :commit ]
 
-  def list_dir
+  def ls
     entries = @repository.directory_entries(@path)
 
     if @path == '/'
