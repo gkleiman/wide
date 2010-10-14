@@ -1,5 +1,9 @@
 function update_commit_button() {
   var base_path = '/projects/' + $('#project_id').val() + '/repository';
+
+  if($('#commit_button').length == 0)
+    return false;
+
   $('#commit_button').attr('disabled', 'disabled');
   $.getJSON(base_path + '/is_clean', function(response) {
     if(response.clean == true) {
@@ -8,6 +12,8 @@ function update_commit_button() {
       $('#commit_button').attr('disabled', false);
     }
   });
+
+  return true;
 }
 
 
@@ -41,9 +47,18 @@ $(function() {
     return false;
   });
 
+  $('#commit_dialog').bind('ajax:before', function() {
+    var value = $('#commit_dialog textarea').val();
+    if(value === 'Type your commit message here.' || value == '')
+      return false;
+    return true;
+  });
+
+
   $('#commit_dialog').bind('ajax:success', function() {
     $('#tree').jstree('refresh');
   });
+
 
   update_commit_button();
 });
