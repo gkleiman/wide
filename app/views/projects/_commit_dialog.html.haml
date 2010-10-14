@@ -1,0 +1,6 @@
+#commit_dialog
+  = form_tag commit_project_repository_path(@project), :remote => true do
+    %pre.description
+    .message
+      = label_tag :message, 'Commit message:'
+      = text_area_tag :message, nil, :rows => 5

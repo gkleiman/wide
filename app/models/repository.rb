@@ -13,7 +13,9 @@ class Repository < ActiveRecord::Base
   validates :path, :presence => true, :uniqueness => true
   validates :scm, :presence => true, :scm_adapter_installed => true
 
-  attr_protected :path
+  attr_accessor :entries_status
+
+  attr_protected :path, :scm
 
   def directory_entries(rel_path)
     entries = Directory.new(full_path(rel_path)).entries
@@ -65,6 +67,18 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def add(entry)
+    scm_engine.add(entry)
+  end
+
+  def commit(user, message)
+    scm_engine.commit(user, message)
+  end
+
+  def clean?
+    scm_engine ? scm_engine.clean? : true
+  end
+
   def respond_to?(symbol, include_private = false)
     supported_actions = %w(commit history forget)
 
@@ -76,29 +90,28 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def update_entries_status
+    self.entries_status = scm_engine.status
+  end
+
   private
   def scm_engine
     @scm_engine ||= Wide::Scm::Scm.get_adapter(scm).new(path)
   end
 
-  def method_missing_with_supports_action?(method_called, *args, &block)
+  def method_missing(method_called, *args, &block)
     supported_actions = %w(commit history forget)
 
     match = method_called.to_s.match(/^supports_(\w+)\?$/)
     if match && supported_actions.include?(match[1]) && scm_engine
       if scm_engine.respond_to?(match[1])
-        return true
+        true
       else
-        return false
+        false
       end
     else
-      return method_missing_without_supports_action?(method_called, *args, &block)
+      super
     end
-  end
-  alias_method_chain :method_missing, :supports_action?
-
-  def update_entries_status
-    @entries_status = scm_engine.status
   end
 
   def full_path(rel_path = '')
@@ -107,8 +120,8 @@ class Repository < ActiveRecord::Base
 
   def mark_entries(entries)
     entries.each do |entry|
-      if @entries_status[entry.path]
-        entry.css_class = @entries_status[entry.path].map(&:to_s).join(' ')
+      if self.entries_status[entry.path]
+        entry.css_class = self.entries_status[entry.path].map(&:to_s).join(' ')
       end
     end
   end

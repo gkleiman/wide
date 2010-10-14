@@ -102,6 +102,18 @@ module Wide
           return ($? && $?.exitstatus == 0)
         end
 
+        def clean?()
+          cmd = cmd_prefix.push('summary')
+
+          shellout(Escape.shell_command(cmd)) do |io|
+            io.each_line do |line|
+              return true if line.chomp! =~ /\Acommit:.*\(clean\)\z/
+            end
+          end
+
+          return false
+        end
+
         private
         def cmd_prefix
           cmd = [HG_BIN, '-R', base_path, '--cwd', base_path ]

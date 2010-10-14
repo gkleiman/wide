@@ -47,7 +47,7 @@ module Wide
           end
 
           def status
-            Status.new()
+            Status.new(base_path)
           end
 
           def adapter_name
@@ -66,11 +66,20 @@ module Wide
       end
 
       class Status < Hash
+        attr_accessor :base_path
+
+        def initialize(base_path)
+          self.base_path = base_path
+          super()
+        end
 
         def to_s
-          returning '' do |message|
+          String.new().tap do |message|
             self.each_pair do |path, status|
-              message += "#{path} #{status.to_s}\n"
+              path = Wide::PathUtils.relative_to_base(base_path, path)
+              status = status.map(&:to_s).map(&:capitalize).join(' ')
+
+              message << "#{status}: #{path}\n" unless status == 'Unversioned'
             end
           end
         end

@@ -8,7 +8,7 @@ class RepositoriesController < ApplicationController
       :create_directory, :remove_file ]
 
   around_filter :json_failable_action, :only => [ :save_file, :create_file,
-    :create_directory, :remove_file, :move_file, :clean, :commit ]
+    :create_directory, :remove_file, :move_file, :is_clean, :commit ]
 
   def ls
     entries = @repository.directory_entries(@path)
@@ -56,6 +56,23 @@ class RepositoriesController < ApplicationController
     @repository.move_file src_path, dest_path
 
     render :json => { :success => 1 }
+  end
+
+  def is_clean
+    render :json  => { :success => 1, :clean => @repository.clean? }
+  end
+
+  def commit
+    @repository.commit(current_user.email, params[:message])
+
+    render :json => { :success => 1 }
+  end
+
+  def status
+    @repository.update_entries_status
+
+    message = "<pre>#{@repository.entries_status.to_s}</pre>"
+    render :text => message
   end
 
   private

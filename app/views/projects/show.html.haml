@@ -1,5 +1,12 @@
 - content_for :javascripts do
-  = javascript_include_tag 'jquery.cookie.js', 'jquery.hotkeys.js', 'jquery.jstree.js', 'jquery.jstree.overlays.js', 'edit_area/edit_area_full.js'
+  = javascript_include_tag 'jquery.cookie.js', 'jquery.hotkeys.js',
+    'jquery.jstree.js', 'jquery.jstree.overlays.js',
+    'edit_area/edit_area_full.js', 'jquery-ui-1.8.5.min.js', 'tree.js',
+    'editor.js', 'commit_dialog.js'
+
+- content_for :stylesheets do
+  = stylesheet_link_tag 'ui-lightness/jquery-ui-1.8.5.css'
+
 - title "wIDE | #{current_user.email} | #{@project.name}", false
 
 %h1= raw("wIDE | #{link_to(h(current_user.email), root_path)} | #{h(@project.name)}")
@@ -9,6 +16,8 @@
   = button_to 'Add Folder', '#', :id => 'add_directory_button'
   = button_to 'Rename', '#', :id => 'rename_button'
   = button_to 'Remove', '#', :id => 'remove_button'
+  - if @project.repository.supports_commit?
+    = button_to 'Commit', '#', :id => 'commit_button'
 
 #tree
 #file_content
@@ -16,3 +25,5 @@
     = hidden_field_tag :project_id, @project.to_param
     = hidden_field_tag :path
     = text_area_tag :content
+
+= render :partial => 'commit_dialog', :project => @project

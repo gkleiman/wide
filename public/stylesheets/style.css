@@ -65,6 +65,11 @@ li.root li.conflict a ins ins.jstree-overlay {
   background-image: url('../images/overlays/conflict.gif');
 }
 
+#commit_dialog .message textarea {
+  width: 100%;
+  height: 100%;
+}
+
 .simple_form label {
   float: left;
   width: 100px;
@@ -80,7 +85,33 @@ li.root li.conflict a ins ins.jstree-overlay {
   margin-left: 120px;
 }
 
-.simple_form div.boolean label {
- float: none;
- margin: 0;
+.simple_form div.boolean label, .simple_form label.collection_radio {
+  float: none;
+  margin: 0;
+}
+
+.simple_form label.collection_radio {
+  margin-right: 10px;
+  margin-left: 2px;
+}
+
+.simple_form .error {
+  clear: left;
+  margin-left: 120px;
+  font-size: 12px;
+  color: #D00;
+  display: block;
+}
+
+.simple_form .hint {
+  clear: left;
+  margin-left: 120px;
+  font-size: 12px;
+  color: #555;
+  display: block;
+  font-style: italic;
+}
+
+#commit_dialog {
+  display: none;
 }
