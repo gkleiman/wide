@@ -189,21 +189,21 @@ $(function() {
         );
     });
 
-    $('#add_file_button').click(function () {
+    $('#add_file_button').button().click(function () {
       $('#tree').jstree('create', null, 'last', { 'attr' : { 'rel' : 'file'} });
       return false;
     });
-    $('#add_directory_button').click(function () {
+    $('#add_directory_button').button().click(function () {
       $('#tree').jstree('create', null, 'last', { 'attr' : { 'rel' : 'directory'} });
       return false;
     });
 
-    $('#remove_button').click(function () {
+    $('#remove_button').button().click(function () {
       $('#tree').jstree('remove');
       return false;
     });
 
-    $('#rename_button').click(function () {
+    $('#rename_button').button().click(function () {
       $('#tree').jstree('rename');
       return false;
     });

@@ -4,12 +4,12 @@ function update_commit_button() {
   if($('#commit_button').length == 0)
     return false;
 
-  $('#commit_button').attr('disabled', 'disabled');
+  $('#commit_button').button().button('option', 'disabled', true)
   $.getJSON(base_path + '/is_clean', function(response) {
     if(response.clean == true) {
-      $('#commit_button').attr('disabled', 'disabled');
+      $('#commit_button').button('option', 'disabled', true)
     } else {
-      $('#commit_button').attr('disabled', false);
+      $('#commit_button').button('option', 'disabled', false)
     }
   });
 

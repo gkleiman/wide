@@ -1,46 +1,47 @@
-html {
+html, body, .layout, #container, #central_pane {
   height: 100%;
+  overflow: hidden;
 }
 
 body, #container {
-  height: 94%;
   background: #FFFFEE;
 }
 
 #navbar {
   float: right;
+  margin-right: 5px;
 }
 
+#title h1 {
+  padding-left: 5px;
+}
+
+#tree_pane {
+  width: 16%;
+  height: 78%;
+  float: left;
+}
 #tree {
-  display: block;
-  overflow: auto;
-  float: left;
-  width: 24%;
-  height: 94%;
-}
-
-#file_content {
-  display: block;
-  float: left;
-  width: 76%;
-  height: 94%;
-}
-
-#file_content form, #content {
-  width: 100%;
   height: 100%;
+  overflow: auto;
+}
+
+#central_pane {
+  float: left;
+  height: 78%;
+  width: 84%;
+}
+#central_pane form {
+  height: 100%;
+  width: 100%;
+}
+#central_pane form textarea {
+  width: 98%;
+  height: 99%;
 }
 
 #toolbar {
-  width: 100%;
-  float: left;
-  clear: both;
-  margin-bottom: 5px;
-}
-
-#toolbar input {
-  float: left;
-  display: block;
+  margin-bottom: 1em;
 }
 
 li.root a ins ins.jstree-overlay {

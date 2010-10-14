@@ -9,21 +9,24 @@
 
 - title "wIDE | #{current_user.email} | #{@project.name}", false
 
-%h1= raw("wIDE | #{link_to(h(current_user.email), root_path)} | #{h(@project.name)}")
+#title
+  %h1.ui-widget-header= raw("wIDE | #{link_to(h(current_user.email), root_path)} | #{h(@project.name)}")
 
-#toolbar
-  = button_to 'Add File', '#', :id => 'add_file_button'
-  = button_to 'Add Folder', '#', :id => 'add_directory_button'
-  = button_to 'Rename', '#', :id => 'rename_button'
-  = button_to 'Remove', '#', :id => 'remove_button'
-  - if @project.repository.supports_commit?
-    = button_to 'Commit', '#', :id => 'commit_button'
+.layout
+  #toolbar.north
+    %button#add_file_button Add File
+    %button#add_directory_button Add Folder
+    %button#rename_button Rename
+    %button#remove_button Remove
+    - if @project.repository.supports_commit?
+      %button#commit_button Commit
 
-#tree
-#file_content
-  = form_tag save_file_project_repository_path(@project), :id => :file_edit do
-    = hidden_field_tag :project_id, @project.to_param
-    = hidden_field_tag :path
-    = text_area_tag :content
+  #tree_pane.west
+    #tree
+  #central_pane.center
+    = form_tag save_file_project_repository_path(@project), :id => :file_edit do
+      = hidden_field_tag :project_id, @project.to_param
+      = hidden_field_tag :path
+      = text_area_tag :content
 
 = render :partial => 'commit_dialog', :project => @project
