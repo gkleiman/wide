@@ -1,10 +1,29 @@
-html, body, .layout, #container, #central_pane {
+html, body, #container {
   height: 100%;
   overflow: hidden;
 }
 
 body, #container {
-  background: #FFFFEE;
+}
+
+.layout {
+  height: 89%;
+  font-size: 1em !important;
+}
+.center, .east, .west, .south {
+  display: inline-block;
+}
+.ui-resizable-handle {
+  background-color: rgb(220, 220, 220);
+}
+.ui-resizable-w {
+  left: -8px;
+  width: 6px;
+  border-left: 1px solid rgb(210, 210, 210);
+  border-right: 1px solid rgb(210, 210, 210);
+}
+.ui-resizable-helper-west {
+  border-right: 6px solid rgb(220, 220, 220);
 }
 
 #navbar {
@@ -14,6 +33,9 @@ body, #container {
 
 #title h1 {
   padding-left: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  font-size: 1.5em;
 }
 
 #tree_pane {
@@ -24,12 +46,13 @@ body, #container {
 #tree {
   height: 100%;
   overflow: auto;
+  font-size: 0.8em;
 }
 
 #central_pane {
   float: left;
   height: 78%;
-  width: 84%;
+  width: 70%;
 }
 #central_pane form {
   height: 100%;
@@ -41,7 +64,8 @@ body, #container {
 }
 
 #toolbar {
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
+  font-size: 0.8em;
 }
 
 li.root a ins ins.jstree-overlay {
