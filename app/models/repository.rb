@@ -13,9 +13,12 @@ class Repository < ActiveRecord::Base
   validates :path, :presence => true, :uniqueness => true
   validates :scm, :presence => true, :scm_adapter_installed => true
 
+  cattr_accessor :supported_actions
   attr_accessor :entries_status
 
   attr_protected :path, :scm
+
+  self.supported_actions = %w(add commit history forget)
 
   def directory_entries(rel_path)
     entries = Directory.new(full_path(rel_path)).entries
@@ -67,8 +70,19 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  def add(entry)
+  def add(rel_path)
+    entry = DirectoryEntry.new(full_path(rel_path))
     scm_engine.add(entry)
+  end
+
+  def forget(rel_path)
+    entry = DirectoryEntry.new(full_path(rel_path))
+    scm_engine.forget(entry)
+  end
+
+  def revert!(rel_path)
+    entry = DirectoryEntry.new(full_path(rel_path))
+    scm_engine.revert!(entry)
   end
 
   def commit(user, message)
@@ -80,10 +94,8 @@ class Repository < ActiveRecord::Base
   end
 
   def respond_to?(symbol, include_private = false)
-    supported_actions = %w(commit history forget)
-
     match = symbol.to_s.match(/^supports_(\w+)\?$/)
-    if match && supported_actions.include?(match[1])
+    if match && self.supported_actions.include?(match[1])
       return true
     else
       return super
@@ -100,10 +112,8 @@ class Repository < ActiveRecord::Base
   end
 
   def method_missing(method_called, *args, &block)
-    supported_actions = %w(commit history forget)
-
     match = method_called.to_s.match(/^supports_(\w+)\?$/)
-    if match && supported_actions.include?(match[1]) && scm_engine
+    if match && self.supported_actions.include?(match[1]) && scm_engine
       if scm_engine.respond_to?(match[1])
         true
       else
