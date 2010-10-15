@@ -5,9 +5,6 @@
     'editor.js', 'commit_dialog.js', 'jlayout.border.min.js',
     'jquery.jlayout.min.js', 'jquery.sizes.min.js', 'layout.js'
 
-- content_for :stylesheets do
-  = stylesheet_link_tag 'ui-lightness/jquery-ui-1.8.5.css'
-
 - title "wIDE | #{current_user.email} | #{@project.name}", false
 
 #title
@@ -25,7 +22,7 @@
   #tree_pane.west
     #tree
   #central_pane.center
-    = form_tag save_file_project_repository_path(@project), :id => :file_edit do
+    = form_tag save_file_project_repository_path(@project), :remote => true, :id => :file_edit do
       = hidden_field_tag :project_id, @project.to_param
       = hidden_field_tag :path
       = text_area_tag :content

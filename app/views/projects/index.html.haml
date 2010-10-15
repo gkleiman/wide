@@ -1,5 +1,7 @@
 - title "wIDE | #{current_user.email}"
 
-%ul
-  - current_user.projects.each do |project|
-    %li= link_to project.name, project
+#projects
+  %h1 Projects
+  %ul
+    - current_user.projects.each do |project|
+      %li= link_to project.name, project

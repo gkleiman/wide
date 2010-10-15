@@ -5,6 +5,7 @@
       = h(yield(:title) || "wIDE")
     %meta{"http-equiv"=>"Content-Type", :content=>"text/html; charset=utf-8"}/
     = stylesheet_link_tag :all
+    = stylesheet_link_tag 'ui-lightness/jquery-ui-1.8.5.css'
     = yield :stylesheets
 
     = javascript_include_tag :defaults

@@ -7,7 +7,7 @@ body, #container {
 }
 
 .layout {
-  height: 89%;
+  height: 93%;
   font-size: 1em !important;
 }
 .center, .east, .west, .south {
@@ -39,9 +39,8 @@ body, #container {
 }
 
 #tree_pane {
+  height: 100%;
   width: 16%;
-  height: 78%;
-  float: left;
 }
 #tree {
   height: 100%;
@@ -50,16 +49,17 @@ body, #container {
 }
 
 #central_pane {
-  float: left;
-  height: 78%;
-  width: 70%;
+  height: 100%;
+  width: 74%;
+  padding-right: 1%;
+  padding-left: 1%;
 }
 #central_pane form {
   height: 100%;
   width: 100%;
 }
 #central_pane form textarea {
-  width: 98%;
+  width: 100%;
   height: 99%;
 }
 
