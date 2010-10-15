@@ -4,12 +4,12 @@ function update_commit_button() {
   if($('#commit_button').length == 0)
     return false;
 
-  $('#commit_button').button().button('option', 'disabled', true)
+  $('#commit_button').button().button('option', 'disabled', true).mouseout().blur();
   $.getJSON(base_path + '/is_clean', function(response) {
     if(response.clean == true) {
-      $('#commit_button').button('option', 'disabled', true)
+      $('#commit_button').button('option', 'disabled', true);
     } else {
-      $('#commit_button').button('option', 'disabled', false)
+      $('#commit_button').button('option', 'disabled', false);
     }
   });
 
@@ -52,6 +52,8 @@ $(function() {
     if(value === 'Type your commit message here.' || value == '')
       return false;
     return true;
+  }).bind('dialogclose', function(event, ui) {
+    $('#commit_button').mouseout().blur();
   });
 
 
