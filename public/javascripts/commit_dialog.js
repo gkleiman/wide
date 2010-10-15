@@ -41,7 +41,7 @@ $(function() {
           $('#commit_dialog').dialog('open');
         }
 
-        $('#commit_button').attr('disabled', false);
+        $('#commit_button').button('option', 'disabled', false);
     });
 
     return false;

@@ -157,7 +157,7 @@ $(function() {
               { path: path },
               function(data) {
                 var file_name = node.attr('data-filename');
-                editAreaLoader.openFile('content', { id: path, title: file_name, text: data });
+                open_file_in_editor({path: path, file_name: file_name, data: data});
               });
           }
         }

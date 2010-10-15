@@ -3,6 +3,7 @@ $(function() {
 
   function layout() {
     container.layout({resize: false, type: 'border', vgap: 8, hgap: 8});
+    editor_dimensions_changed();
   }
 
   $('.west').resizable({
@@ -11,5 +12,6 @@ $(function() {
     stop: layout
   });
   $(window).resize(layout);
+
   layout();
 });
