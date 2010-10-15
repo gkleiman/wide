@@ -16,7 +16,11 @@ $(function() {
       return $('#tree').jstree('_get_parent', node);
   }
 
-  // Some operations (like remove, move, and rename) change the tree. This function is a hack to get the path of a node before having performed an operation
+  /*
+  * Some operations (like remove, move, and rename) change the tree. This
+  * function is a hack to get the path of a node before having performed an
+  * operation
+  */
   function path_before_operation(node, op_rlbk) {
       var rlbk = $('#tree').jstree('get_rollback');
       $.jstree.rollback(op_rlbk);
@@ -27,12 +31,56 @@ $(function() {
       return path;
   }
 
+  function perform_scm_action(options) {
+    var parent_node = get_parent(options.node);
+    var path = get_path(options.node);
+    var action = options.action;
+
+    if(options.method === 'get')
+      var method = $.get;
+    else if(options.method === 'post')
+      var method = $.post;
+
+    method(
+        base_path + '/' + action,
+        { path: path },
+        function (r) {
+          if(r.success) {
+            $.jstree._reference("#tree").refresh();
+            update_commit_button();
+          }
+        }
+    );
+  }
+  function scm_add(node) {
+    perform_scm_action({node: node, method: 'post', action: 'add'});
+  }
+  function scm_forget(node) {
+    perform_scm_action({node: node, method: 'post', action: 'forget'});
+  }
+  function scm_revert(node) {
+    perform_scm_action({node: node, method: 'post', action: 'revert'});
+  }
+  function context_menu_options(node) {
+    if(node.hasClass('modified')) {
+      return { revert: { 'label': 'Revert changes', 'action': function(node) {
+      scm_revert(node); } } };
+    } else if(node.hasClass('added')) {
+      return { forget: { 'label': 'Forget', 'action': function(node) {
+      scm_forget(node); } }, };
+    } else if(node.hasClass('unversioned') || node.hasClass('removed')) {
+      return { add: { 'label': 'Add', 'action': function(node) {
+      scm_add(node); } }, };
+    }
+  }
+
   if($.jstree !== undefined) {
     $.jstree._themes = '/javascripts/themes/';
 
     $('#tree')
     .jstree({
-      plugins: [ 'themes', 'json_data', 'ui', 'types', 'hotkeys', 'cookies', 'crrm', 'dnd', 'overlays' ],
+      plugins: [ 'themes', 'json_data', 'ui', 'types', 'hotkeys', 'cookies',
+        'crrm', 'dnd', 'overlays', 'contextmenu' ],
 
       // Plugin configuration
       core: {
@@ -89,7 +137,11 @@ $(function() {
         select_prev_on_delete: false,
         initially_select: [ 'root_node' ],
         select_limit: 1
-      }
+      },
+
+      contextmenu: {
+        items: context_menu_options
+       }
     })
     .bind('dblclick.jstree',
       function (e) {
@@ -101,7 +153,7 @@ $(function() {
           if(node.attr('rel') == 'directory') {
             $('#tree').jstree('toggle_node', node);
           } else if(node.attr('rel') == 'file') {
-            $.get(base_path + '/read_file',
+            $.get(base_path + '/cat',
               { path: path },
               function(data) {
                 var file_name = node.attr('data-filename');
@@ -136,7 +188,7 @@ $(function() {
 
         if(src_path !== dest_path) {
           $.post(
-            base_path + '/move_file',
+            base_path + '/mv',
             { src_path: src_path, dest_path: dest_path },
             function (r) {
               if(!r.success) {
@@ -157,7 +209,7 @@ $(function() {
         $.ajax({
           async : false,
           type: 'POST',
-          url: base_path + '/remove_file',
+          url: base_path + '/rm',
           data : {
             path: path
           },
@@ -176,7 +228,7 @@ $(function() {
         var dest_path = get_path(renamed_node);
 
         $.post(
-          base_path + '/move_file',
+          base_path + '/mv',
           { src_path: src_path, dest_path: dest_path },
           function (r) {
             if(!r.success) {
@@ -189,21 +241,21 @@ $(function() {
         );
     });
 
-    $('#add_file_button').click(function () {
+    $('#add_file_button').button().click(function () {
       $('#tree').jstree('create', null, 'last', { 'attr' : { 'rel' : 'file'} });
       return false;
     });
-    $('#add_directory_button').click(function () {
+    $('#add_directory_button').button().click(function () {
       $('#tree').jstree('create', null, 'last', { 'attr' : { 'rel' : 'directory'} });
       return false;
     });
 
-    $('#remove_button').click(function () {
+    $('#remove_button').button().click(function () {
       $('#tree').jstree('remove');
       return false;
     });
 
-    $('#rename_button').click(function () {
+    $('#rename_button').button().click(function () {
       $('#tree').jstree('rename');
       return false;
     });

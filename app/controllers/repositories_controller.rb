@@ -4,11 +4,11 @@ class RepositoriesController < ApplicationController
   before_filter :authenticate_user!
   before_filter :load_repository
   before_filter lambda { @path = extract_path_from_param(:path) },
-    :only => [ :ls, :read_file, :save_file, :create_file,
-      :create_directory, :remove_file ]
+    :only => [ :ls, :cat, :save_file, :create_file,
+      :create_directory, :rm, :add, :forget, :revert ]
 
   around_filter :json_failable_action, :only => [ :save_file, :create_file,
-    :create_directory, :remove_file, :move_file, :is_clean, :commit ]
+    :create_directory, :rm, :mv, :is_clean, :commit, :add, :forget, :revert ]
 
   def ls
     entries = @repository.directory_entries(@path)
@@ -21,7 +21,7 @@ class RepositoriesController < ApplicationController
     render :json => entries
   end
 
-  def read_file
+  def cat
     render :text => @repository.file_contents(@path)
   end
 
@@ -43,13 +43,31 @@ class RepositoriesController < ApplicationController
     render :json => { :success => 1 }
   end
 
-  def remove_file
+  def rm
     @repository.remove_file(@path)
 
     render :json => { :success => 1 }
   end
 
-  def move_file
+  def add
+    @repository.add(@path)
+
+    render :json => { :success => 1 }
+  end
+
+  def forget
+    @repository.forget(@path)
+
+    render :json => { :success => 1 }
+  end
+
+  def revert
+    @repository.revert!(@path)
+
+    render :json => { :success => 1 }
+  end
+
+  def mv
     src_path = extract_path_from_param :src_path
     dest_path = extract_path_from_param :dest_path
 
