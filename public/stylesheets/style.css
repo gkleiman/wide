@@ -90,6 +90,9 @@ li.root li.readonly a ins ins.jstree-overlay {
 li.root li.conflict a ins ins.jstree-overlay {
   background-image: url('../images/overlays/conflict.gif');
 }
+li.root li.removed a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/deleted.gif');
+}
 
 #commit_dialog .message textarea {
   width: 100%;

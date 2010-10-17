@@ -71,6 +71,9 @@ $(function() {
     } else if(node.hasClass('unversioned') || node.hasClass('removed') || node.attr('rel') == 'directory') {
       return { add: { 'label': 'Add', 'action': function(node) {
       scm_add(node); } }, };
+    } else {
+      return { forget: { 'label': 'Forget', 'action': function(node) {
+      scm_forget(node); } }, };
     }
   }
 
