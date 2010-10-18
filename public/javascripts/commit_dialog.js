@@ -28,7 +28,7 @@ $(function() {
     modal: true,
     width: 500,
     autoOpen: false,
-    buttons: { 'Commit': function() { $('#commit_dialog form').submit(); $('#commit_dialog').dialog('close'); } }
+    buttons: { 'Commit': function() { $('#commit_dialog form').submit(); $('#commit_dialog').dialog('close'); update_commit_button(); } }
   });
 
   $('#commit_button').click(function() {
