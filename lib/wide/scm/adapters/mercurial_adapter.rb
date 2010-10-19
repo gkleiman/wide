@@ -123,6 +123,10 @@ module Wide
           return false
         end
 
+        def self.valid_url?(url)
+          (url =~ %r{\A(http://|https://|ssh://)}) != nil
+        end
+
         private
         def cmd_prefix
           cmd = [HG_BIN, '-R', base_path, '--cwd', base_path ]

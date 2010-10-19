@@ -10,8 +10,19 @@ class Repository < ActiveRecord::Base
       end
     end
   end
+
+  class ScmValidUrlValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      scm_engine = Wide::Scm::Scm.get_adapter(record.scm)
+      unless scm_engine && !value.blank? && scm_engine.valid_url?(value)
+        record.errors.add(attribute, 'Invalid path', options.merge(:value => value))
+      end
+    end
+  end
+
   validates :path, :presence => true, :uniqueness => true
   validates :scm, :presence => true, :scm_adapter_installed => true
+  validates :url, :scm_valid_url => true
 
   cattr_accessor :supported_actions
   attr_accessor :entries_status

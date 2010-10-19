@@ -23,4 +23,13 @@ describe Wide::Scm::Adapters::MercurialAdapter do
 
   it "should be able to init an empty repository" do
   end
+
+  it "should only allow remote repositories urls" do
+    Wide::Scm::Adapters::MercurialAdapter.valid_url?('lalala').should == false
+    Wide::Scm::Adapters::MercurialAdapter.valid_url?('file://root/').should == false
+    Wide::Scm::Adapters::MercurialAdapter.valid_url?('/root/').should == false
+    Wide::Scm::Adapters::MercurialAdapter.valid_url?('http://localhost:8080/lala#12').should == true
+    Wide::Scm::Adapters::MercurialAdapter.valid_url?('https://localhost:8080/lala#12').should == true
+    Wide::Scm::Adapters::MercurialAdapter.valid_url?('ssh://user:pass@localhost:8080/lala#12').should == true
+  end
 end

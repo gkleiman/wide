@@ -1,8 +1,5 @@
 module Wide
   module Scm
-    class ScmAdapterNotFound < StandardError
-    end
-
     class Scm
       def self.all_adapters
         scm_adapters
@@ -13,7 +10,7 @@ module Wide
       end
 
       def self.get_adapter(scm_name)
-        raise ScmAdapterNotFound.new(scm_name) unless scm_adapters.include? scm_name
+        return nil unless scm_adapters.include?(scm_name)
 
         "Wide::Scm::Adapters::#{scm_name}_adapter".classify.constantize
       end
