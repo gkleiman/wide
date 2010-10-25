@@ -39,14 +39,6 @@ module Wide
           status_hash
         end
 
-        def init
-          cmd = cmd_prefix.push('init')
-
-          shellout(Escape.shell_command(cmd))
-
-          raise CommandFailed.new("Failed to initialize Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
-        end
-
         # dest_path must be a full expanded path
         def move!(entry, dest_path)
           src_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
@@ -111,7 +103,7 @@ module Wide
           return ($? && $?.exitstatus == 0)
         end
 
-        def clean?()
+        def clean?
           cmd = cmd_prefix.push('summary')
 
           shellout(Escape.shell_command(cmd)) do |io|
@@ -120,7 +112,27 @@ module Wide
             end
           end
 
-          return false
+          false
+        end
+
+        def init
+          cmd = cmd_prefix.push('init')
+
+          shellout(Escape.shell_command(cmd))
+
+          raise CommandFailed.new("Failed to initialize Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
+
+          true
+        end
+
+        def clone(url)
+          cmd = cmd_prefix.push('clone', url, base_path)
+
+          shellout(Escape.shell_command(cmd))
+
+          raise CommandFailed.new("Failed to clone repository #{url} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
+
+          true
         end
 
         def self.valid_url?(url)

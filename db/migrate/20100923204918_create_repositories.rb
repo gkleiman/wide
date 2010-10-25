@@ -9,7 +9,7 @@ class CreateRepositories < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :repositories, :project_id, :unique => :false
+    add_index :repositories, :project_id, :unique => :true
   end
 
   def self.down

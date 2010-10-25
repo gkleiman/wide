@@ -18,6 +18,7 @@ gem 'jquery-rails'
 
 gem 'simple_form'
 gem 'delayed_job', ">= 2.1.0.pre"
+gem 'settingslogic'
 
 # Use unicorn as the web server
 # gem 'unicorn'

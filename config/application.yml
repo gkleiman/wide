@@ -1,0 +1,12 @@
+defaults: &defaults
+  repositories_base: <%= Rails.root.join('public', 'repositories') %>
+  compilation_base: <%= Rails.root.join('public', 'bin') %>
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

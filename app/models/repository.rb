@@ -1,6 +1,12 @@
 class Repository < ActiveRecord::Base
   include ActiveModel::Validations
 
+  cattr_accessor :supported_actions
+  attr_accessor :entries_status
+
+  self.supported_actions = %w(add commit history forget)
+
+  attr_protected :path, :scm
   belongs_to :project
 
   class ScmAdapterInstalledValidator < ActiveModel::EachValidator
@@ -24,12 +30,7 @@ class Repository < ActiveRecord::Base
   validates :scm, :presence => true, :scm_adapter_installed => true
   validates :url, :scm_valid_url => true
 
-  cattr_accessor :supported_actions
-  attr_accessor :entries_status
-
-  attr_protected :path, :scm
-
-  self.supported_actions = %w(add commit history forget)
+  before_save :init_or_clone_scm
 
   def directory_entries(rel_path)
     entries = Directory.new(full_path(rel_path)).entries
@@ -145,5 +146,18 @@ class Repository < ActiveRecord::Base
         entry.css_class = self.entries_status[entry.path].map(&:to_s).join(' ')
       end
     end
+  end
+
+  def init_or_clone_scm
+    # Create the directory tree
+    FileUtils.mkdir_p(path)
+
+    if url.blank?
+      scm_engine.init
+    else
+      scm_engine.clone(url)
+    end
+
+    true
   end
 end
