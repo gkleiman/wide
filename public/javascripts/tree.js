@@ -1,14 +1,14 @@
 "use strict";
 
-WIDE.tree = (function() {
+WIDE.tree = (function () {
   return {
-    refresh: function() {
+    refresh: function () {
       $.jstree._reference('#tree').refresh();
     }
   };
 }());
 
-$(function() {
+$(function () {
   function get_path(node) {
     path = $('#tree').jstree('get_path', node)
     if(path.length > 0)
@@ -71,16 +71,16 @@ $(function() {
   }
   function context_menu_options(node) {
     if(node.hasClass('modified')) {
-      return { revert: { 'label': 'Revert changes', 'action': function(node) {
+      return { revert: { 'label': 'Revert changes', 'action': function (node) {
       scm_revert(node); } } };
     } else if(node.hasClass('added')) {
-      return { forget: { 'label': 'Forget', 'action': function(node) {
+      return { forget: { 'label': 'Forget', 'action': function (node) {
       scm_forget(node); } }, };
     } else if(node.hasClass('unversioned') || node.hasClass('removed') || node.attr('rel') == 'directory') {
-      return { add: { 'label': 'Add', 'action': function(node) {
+      return { add: { 'label': 'Add', 'action': function (node) {
       scm_add(node); } }, };
     } else {
-      return { forget: { 'label': 'Forget', 'action': function(node) {
+      return { forget: { 'label': 'Forget', 'action': function (node) {
       scm_forget(node); } }, };
     }
   }
@@ -166,7 +166,7 @@ $(function() {
           } else if(node.attr('rel') == 'file') {
             $.get(WIDE.repository_path() + '/cat',
               { path: path },
-              function(data) {
+              function (data) {
                 var file_name = node.attr('data-filename');
                 WIDE.editor.open_file({path: path, file_name: file_name, data: data});
               });

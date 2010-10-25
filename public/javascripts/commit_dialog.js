@@ -1,13 +1,13 @@
 "use strict";
 
-WIDE.commit = (function() {
+WIDE.commit = (function () {
   return {
-    update_commit_button: function() {
+    update_commit_button: function () {
       if($('#commit_button').length == 0)
         return false;
 
       $('#commit_button').button().button('option', 'disabled', true).mouseout().blur();
-      $.getJSON(WIDE.repository_path() + '/is_clean', function(response) {
+      $.getJSON(WIDE.repository_path() + '/is_clean', function (response) {
         if(response.clean == true) {
           $('#commit_button').button('option', 'disabled', true);
         } else {
@@ -20,7 +20,7 @@ WIDE.commit = (function() {
   };
 }());
 
-$(function() {
+$(function () {
   // Commit dialog
   $('#commit_dialog').dialog({
     title: 'Commit changes',
@@ -29,14 +29,14 @@ $(function() {
     modal: true,
     width: 500,
     autoOpen: false,
-    buttons: { 'Commit': function() { $('#commit_dialog form').submit(); $('#commit_dialog').dialog('close'); update_commit_button(); } }
+    buttons: { 'Commit': function () { $('#commit_dialog form').submit(); $('#commit_dialog').dialog('close'); update_commit_button(); } }
   });
 
-  $('#commit_button').click(function() {
+  $('#commit_button').click(function () {
     $('#commit_button').attr('disabled', 'disabled');
     $('#commit_dialog pre.description').load(
       WIDE.repository_path() + '/status',
-      function(response, status, xhr) {
+      function (response, status, xhr) {
         if(status !== 'error') {
           $('#commit_dialog textarea').placeholder('Type your commit message here.');
 
@@ -49,17 +49,17 @@ $(function() {
     return false;
   });
 
-  $('#commit_dialog').bind('ajax:before', function() {
+  $('#commit_dialog').bind('ajax:before', function () {
     var value = $('#commit_dialog textarea').val();
     if(value === 'Type your commit message here.' || value == '')
       return false;
     return true;
-  }).bind('dialogclose', function(event, ui) {
+  }).bind('dialogclose', function (event, ui) {
     $('#commit_button').mouseout().blur();
   });
 
 
-  $('#commit_dialog').bind('ajax:success', function() {
+  $('#commit_dialog').bind('ajax:success', function () {
     WIDE.tree.refresh();
   });
 

@@ -1,7 +1,7 @@
-$(function() {
+$(function () {
   var container = $('.layout');
 
-  function layout() {
+  var layout = function () {
     container.layout({resize: false, type: 'border', vgap: 8, hgap: 8});
     WIDE.editor.dimensions_changed();
   }

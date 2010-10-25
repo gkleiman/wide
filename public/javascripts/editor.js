@@ -1,20 +1,20 @@
 "use strict";
 
-WIDE.editor = (function() {
-  var initialize_editor = function(after_init) {
+WIDE.editor = (function () {
+  var initialize_editor = function (after_init) {
     var firstWindowOnBespinLoad;
 
     function init() {
         bespin.useBespin('content', {
             stealFocus: true,
             syntax: 'c_cpp'
-        }).then(function(env) {
+        }).then(function (env) {
           // Get the editor.
           $('#content').get(0).bespin = env;
           if(after_init !== undefined) {
             after_init.call();
           }
-        }, function(error) {
+        }, function (error) {
             throw new Error("Launch failed: " + error);
         });
     }
@@ -27,32 +27,32 @@ WIDE.editor = (function() {
     // If the `window.onBespinLoad` function is undefined, we can set the init
     // function so that it is called when Bespin is loaded.
     else if (typeof window.onBespinLoad == 'undefined') {
-        window.onBespinLoad = function() { init(after_init) };
+        window.onBespinLoad = function () { init(after_init) };
     }
     // If there is already a function listening to the `window.onBespinLoad`
     // function, then create a new function that calls the old
     // `window.onBespinLoad` function first and the `init` function later.
     else {
         firstWindowOnBespinLoad = window.onBespinLoad;
-        window.onBespinLoad = function() {
+        window.onBespinLoad = function () {
             firstWindowOnBespinLoad();
             init(after_init);
         }
     }
   }
 
-  var editor_env = function() {
+  var editor_env = function () {
     return $('#content').get(0).bespin;
   }
 
   return {
-    dimensions_changed: function() {
+    dimensions_changed: function () {
       env = editor_env();
       if(env !== undefined) {
         env.dimensionsChanged();
       }
     },
-    editor: function() {
+    editor: function () {
       var env = editor_env();
       if(env === undefined) {
         return undefined;
@@ -60,7 +60,7 @@ WIDE.editor = (function() {
       return env.editor;
     },
     open_file: function (options) {
-      var after_init = function() {
+      var after_init = function () {
         $('#path').val(options.path);
         $('#save_button').button('option', 'disabled', false).button('option', 'label', 'Save: ' + options.file_name).show();
         $('#editor_form').show();
@@ -110,7 +110,7 @@ WIDE.editor = (function() {
   };
 }());
 
-$(function() {
+$(function () {
   $('#editor_form').hide();
   $('#save_button').button().click(function () {
     WIDE.editor.save_file($('#save_button').parent());
