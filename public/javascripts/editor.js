@@ -78,31 +78,42 @@ WIDE.editor = (function() {
         after_init.call();
       }
     },
-    save_file: function () {
-      // FIXME fugly function
-      var path = $('#path').val();
-      var content = $('#content').val();
+    save_file: function (form) {
+      var fail_func = function (data, result, xhr) {
+        alert('Error saving: ' + form.find('input[name=path]').val());
+        $('#save_button').button('option', 'disabled', false).mouseout();
 
-      $('#save_button').button('option', 'disabled', true);
-      $.post(
-        WIDE.repository_path() + '/save_file',
-        { path: path,
-          content: content },
-        function (r) {
-          $('#save_button').button('option', 'disabled', false).mouseout();
-          if(!r.success) {
-            alert('Error saving file');
-          } else {
+        return false;
+      };
+
+      form = $(form);
+
+      form.one('ajax:failure', function () { fail_func(); });
+
+      form.one('ajax:success', function (data, result, xhr) {
+        result = $.parseJSON(result);
+
+        if(result.success) {
             WIDE.tree.refresh();
             WIDE.commit.update_commit_button();
-          }
+        } else {
+          fail_func(data, result, xhr);
         }
-      );
+        $('#save_button').button('option', 'disabled', false).mouseout();
+
+        return false;
+      });
+
+      form.find('#save_button').button('option', 'disabled', true);
+      form.submit();
     }
   };
 }());
 
 $(function() {
   $('#editor_form').hide();
-  $('#save_button').button().click(function() { WIDE.editor.save_file(); return false; });
+  $('#save_button').button().click(function () {
+    WIDE.editor.save_file($('#save_button').parent());
+    return false;
+  });
 });
