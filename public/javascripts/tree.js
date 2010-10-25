@@ -1,6 +1,14 @@
-$(function() {
-  var base_path = '/projects/' + $('#project_id').val() + '/repository';
+"use strict";
 
+WIDE.tree = (function() {
+  return {
+    refresh: function() {
+      $.jstree._reference('#tree').refresh();
+    }
+  };
+}());
+
+$(function() {
   function get_path(node) {
     path = $('#tree').jstree('get_path', node)
     if(path.length > 0)
@@ -42,7 +50,7 @@ $(function() {
       var method = $.post;
 
     method(
-        base_path + '/' + action,
+        WIDE.repository_path() + '/' + action,
         { path: path },
         function (r) {
           if(r.success) {
@@ -92,7 +100,7 @@ $(function() {
 
       json_data: {
         ajax: {
-          url: base_path + '/ls',
+          url: WIDE.repository_path() + '/ls',
           data: function (n) {
             var path = '-1';
 
@@ -156,11 +164,11 @@ $(function() {
           if(node.attr('rel') == 'directory') {
             $('#tree').jstree('toggle_node', node);
           } else if(node.attr('rel') == 'file') {
-            $.get(base_path + '/cat',
+            $.get(WIDE.repository_path() + '/cat',
               { path: path },
               function(data) {
                 var file_name = node.attr('data-filename');
-                open_file_in_editor({path: path, file_name: file_name, data: data});
+                WIDE.editor.open_file({path: path, file_name: file_name, data: data});
               });
           }
         }
@@ -171,7 +179,7 @@ $(function() {
         var type = data.rslt.obj.attr('rel')
 
         $.post(
-            base_path + '/create_' + type,
+            WIDE.repository_path() + '/create_' + type,
             { path: path },
             function (r) {
               if(!r.success) {
@@ -191,7 +199,7 @@ $(function() {
 
         if(src_path !== dest_path) {
           $.post(
-            base_path + '/mv',
+            WIDE.repository_path() + '/mv',
             { src_path: src_path, dest_path: dest_path },
             function (r) {
               if(!r.success) {
@@ -212,7 +220,7 @@ $(function() {
         $.ajax({
           async : false,
           type: 'POST',
-          url: base_path + '/rm',
+          url: WIDE.repository_path() + '/rm',
           data : {
             path: path
           },
@@ -231,7 +239,7 @@ $(function() {
         var dest_path = get_path(renamed_node);
 
         $.post(
-          base_path + '/mv',
+          WIDE.repository_path() + '/mv',
           { src_path: src_path, dest_path: dest_path },
           function (r) {
             if(!r.success) {

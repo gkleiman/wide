@@ -1,6 +1,6 @@
 - content_for :javascripts do
   = javascript_include_tag 'jquery.cookie.js', 'jquery.hotkeys.js',
-    'jquery.jstree.js', 'jquery.jstree.overlays.js',
+    'jquery.jstree.js', 'jquery.jstree.overlays.js', 'wide.js',
     'jquery-ui-1.8.5.min.js', 'tree.js', 'editor.js', 'commit_dialog.js',
     'jlayout.border.min.js', 'jquery.jlayout.min.js', 'jquery.sizes.min.js',
     'layout.js'
@@ -24,10 +24,6 @@
   #tree_pane.west
     #tree
   #central_pane.center
-    = form_tag save_file_project_repository_path(@project), :remote => true, :id => :editor_form do
-      %button#save_button Save
-      = hidden_field_tag :project_id, @project.to_param
-      = hidden_field_tag :path
-      = text_area_tag :content
+    = render :partial => 'repositories/edit_file_form', :project => @project
 
 = render :partial => 'commit_dialog', :project => @project
