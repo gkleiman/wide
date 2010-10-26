@@ -2,14 +2,14 @@
 
 WIDE.tree = (function () {
   return {
-    refresh: function () {
-      $.jstree._reference('#tree').refresh();
+    refresh: function (node) {
+      $.jstree._reference('#tree').refresh(node);
     }
   };
 }());
 
 $(function () {
-  function get_path(node) {
+  var get_path = function (node) {
     path = $('#tree').jstree('get_path', node)
     if(path.length > 0)
       path.shift();
@@ -20,7 +20,7 @@ $(function () {
     return path;
   }
 
-  function get_parent(node) {
+  var get_parent = function (node) {
       return $('#tree').jstree('_get_parent', node);
   }
 
@@ -29,7 +29,7 @@ $(function () {
   * function is a hack to get the path of a node before having performed an
   * operation
   */
-  function path_before_operation(node, op_rlbk) {
+  var path_before_operation = function (node, op_rlbk) {
       var rlbk = $('#tree').jstree('get_rollback');
       $.jstree.rollback(op_rlbk);
       var old_node = $.jstree._reference("#tree")._get_node('#' + node.id);
@@ -39,49 +39,32 @@ $(function () {
       return path;
   }
 
-  function perform_scm_action(options) {
-    var parent_node = get_parent(options.node);
-    var path = get_path(options.node);
-    var action = options.action;
+  var perform_scm_action = function (node, action) {
+    var path = get_path(node);
+    var file = WIDE.file(path);
+    var action_func = file[action];
 
-    if(options.method === 'get')
-      var method = $.get;
-    else if(options.method === 'post')
-      var method = $.post;
+    action_func.call(file, function () {
+      WIDE.tree.refresh();
+      WIDE.commit.update_commit_button();
+    }, function () {
+      alert('Failed to ' + action + ' ' + path)
+    });
+  }
 
-    method(
-        WIDE.repository_path() + '/' + action,
-        { path: path },
-        function (r) {
-          if(r.success) {
-            $.jstree._reference("#tree").refresh();
-            update_commit_button();
-          }
-        }
-    );
-  }
-  function scm_add(node) {
-    perform_scm_action({node: node, method: 'post', action: 'add'});
-  }
-  function scm_forget(node) {
-    perform_scm_action({node: node, method: 'post', action: 'forget'});
-  }
-  function scm_revert(node) {
-    perform_scm_action({node: node, method: 'post', action: 'revert'});
-  }
   function context_menu_options(node) {
     if(node.hasClass('modified')) {
       return { revert: { 'label': 'Revert changes', 'action': function (node) {
-      scm_revert(node); } } };
+      perform_scm_action(node, 'revert'); } } };
     } else if(node.hasClass('added')) {
       return { forget: { 'label': 'Forget', 'action': function (node) {
-      scm_forget(node); } }, };
+      perform_scm_action(node, 'forget'); } } };
     } else if(node.hasClass('unversioned') || node.hasClass('removed') || node.attr('rel') == 'directory') {
       return { add: { 'label': 'Add', 'action': function (node) {
-      scm_add(node); } }, };
+      perform_scm_action(node, 'add'); } } };
     } else {
       return { forget: { 'label': 'Forget', 'action': function (node) {
-      scm_forget(node); } }, };
+      perform_scm_action(node, 'forget'); } } };
     }
   }
 
@@ -157,19 +140,25 @@ $(function () {
     .bind('dblclick.jstree',
       function (e) {
         var node = $('#tree').jstree('get_selected');
+        var path, file_name, file;
 
         if(node !== undefined) {
-          var path = get_path(node);
+          path = get_path(node);
 
           if(node.attr('rel') == 'directory') {
             $('#tree').jstree('toggle_node', node);
           } else if(node.attr('rel') == 'file') {
-            $.get(WIDE.repository_path() + '/cat',
-              { path: path },
+            file = WIDE.file(path);
+
+            file.cat(
               function (data) {
                 var file_name = node.attr('data-filename');
                 WIDE.editor.open_file({path: path, file_name: file_name, data: data});
-              });
+              },
+              function (data) {
+                alert('Error opening: ' + path);
+              }
+            );
           }
         }
     })
@@ -177,19 +166,14 @@ $(function () {
       function (e, data) {
         var path = get_path(data.rslt.obj);
         var type = data.rslt.obj.attr('rel')
+        var file = WIDE.file(path, type === 'directory');
 
-        $.post(
-            WIDE.repository_path() + '/create_' + type,
-            { path: path },
-            function (r) {
-              if(!r.success) {
+        file.create(function () {
+            WIDE.tree.refresh(data.rslt.obj);
+            WIDE.commit.update_commit_button();
+          }, function () {
                 $.jstree.rollback(data.rlbk);
-              } else {
-                data.inst.refresh(get_parent(data.rslt.obj));
-                update_commit_button();
-              }
-            }
-        );
+          });
     })
     .bind('move_node.jstree', function (e, data) {
         var moved_node = data.rslt.o[0];
@@ -197,39 +181,28 @@ $(function () {
         var src_path = path_before_operation(moved_node, data.rlbk);
         var dest_path = get_path(moved_node);
 
+        var file = WIDE.file(src_path);
+
         if(src_path !== dest_path) {
-          $.post(
-            WIDE.repository_path() + '/mv',
-            { src_path: src_path, dest_path: dest_path },
-            function (r) {
-              if(!r.success) {
-                $.jstree.rollback(data.rlbk);
-              } else {
-                data.inst.refresh(data.np);
-                update_commit_button();
-              }
-            }
-          );
+          file.mv(dest_path,
+            function () {
+              WIDE.tree.refresh(data.np);
+              WIDE.commit.update_commit_button();
+            },
+            function () {
+              $.jstree.rollback(data.rlbk);
+          });
         } else {
           $.jstree.rollback(data.rlbk);
         }
     })
     .bind('remove.jstree', function (e, data) {
         var path = path_before_operation(data.rslt.obj[0], data.rlbk);
+        var file = WIDE.file(path);
 
-        $.ajax({
-          async : false,
-          type: 'POST',
-          url: WIDE.repository_path() + '/rm',
-          data : {
-            path: path
-          },
-          success : function (r) {
-            if(!r.success) {
-              data.inst.refresh(get_parent(data.rslt.obj[0]));
-              update_commit_button();
-            }
-          }
+        file.rm(undefined, function() {
+              WIDE.tree.refresh(data.rslt.obj[0]);
+              WIDE.commit.update_commit_button();
         });
     })
     .bind('rename.jstree', function (e, data) {
@@ -238,18 +211,20 @@ $(function () {
         var src_path = path_before_operation(renamed_node, data.rlbk);
         var dest_path = get_path(renamed_node);
 
-        $.post(
-          WIDE.repository_path() + '/mv',
-          { src_path: src_path, dest_path: dest_path },
-          function (r) {
-            if(!r.success) {
+        var file = WIDE.file(src_path);
+
+        if(src_path !== dest_path) {
+          file.mv(dest_path,
+            function () {
+              WIDE.tree.refresh(get_parent(data.rslt.obj[0]));
+              WIDE.commit.update_commit_button();
+            },
+            function () {
               $.jstree.rollback(data.rlbk);
-            } else {
-              data.inst.refresh(get_parent(data.rslt.obj[0]));
-              update_commit_button();
-            }
-          }
-        );
+          });
+        } else {
+          $.jstree.rollback(data.rlbk);
+        }
     });
 
     $('#add_file_button').button().click(function () {
