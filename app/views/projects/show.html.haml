@@ -3,8 +3,9 @@
     'jquery.jstree.js', 'jquery.jstree.overlays.js', 'wide.js', 'file.js',
     'jquery-ui-1.8.5.min.js', 'tree.js', 'editor.js', 'commit_dialog.js',
     'jlayout.border.min.js', 'jquery.jlayout.min.js', 'jquery.sizes.min.js',
-    'layout.js'
+    'layout.js', 'jquery.tmpl.min.js'
   %link(id='bespin_base' href='/bespin')
+  %meta{:name => 'project_id', :content => @project.to_param}
   = javascript_include_tag '/bespin/BespinEmbedded.js'
 
 - title "wIDE | #{current_user.email} | #{@project.name}", false
@@ -24,6 +25,5 @@
   #tree_pane.west
     #tree
   #central_pane.center
-    = render :partial => 'repositories/edit_file_form', :project => @project
 
 = render :partial => 'commit_dialog', :project => @project

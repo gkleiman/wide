@@ -1,16 +1,18 @@
 "use strict";
 
 WIDE.editor = (function () {
-  var initialize_editor = function (after_init) {
+  var edit_form_tmpl = '<form accept-charset="UTF-8" action="${WIDE.repository_path()}/save_file" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input name="${csrf_param}" type="hidden" value="${csrf_token}" /> <button name="save_button">Save ${file_name}</button><input name="project_id" type="hidden" value="${project_id}" /><input name="path" type="hidden" value="${path}" /><textarea name="content"></textarea></form>';
+
+  var initialize_editor = function (node, after_init) {
     var firstWindowOnBespinLoad;
 
     function init() {
-        bespin.useBespin('content', {
+        bespin.useBespin(node, {
             stealFocus: true,
             syntax: 'c_cpp'
         }).then(function (env) {
           // Get the editor.
-          $('#content').get(0).bespin = env;
+          node.bespin = env;
           if(after_init !== undefined) {
             after_init.call();
           }
@@ -41,79 +43,100 @@ WIDE.editor = (function () {
     }
   }
 
-  var editor_env = function () {
-    return $('#content').get(0).bespin;
+  var prepare_save = function(editor) {
+    var save_button = editor.find('[name=save_button]');
+    var fail_func = function (data, result, xhr) {
+      alert('Error saving: ' + editor.path);
+      save_button.button('option', 'disabled', false).mouseout();
+
+      return false;
+    };
+    editor.one('ajax:failure', function () { fail_func(); });
+
+    editor.one('ajax:success', function (data, result, xhr) {
+      result = $.parseJSON(result);
+
+      if(result.success) {
+          WIDE.tree.refresh();
+          WIDE.commit.update_commit_button();
+      } else {
+        fail_func(data, result, xhr);
+      }
+      save_button.button('option', 'disabled', false).mouseout();
+
+      return false;
+    });
+
+    save_button.button().click(function () {
+      save_button.button('option', 'disabled', true);
+      editor.submit();
+      return false;
+    });
   }
 
+  var create_editor = function(options) {
+    var replacements = {csrf_token: WIDE.csrf_token(), csrf_param: WIDE.csrf_param(), project_id: WIDE.project_id()};
+    var aux = $.tmpl(edit_form_tmpl, $.extend(options, replacements));
+    var content = aux.find('textarea');
+    var save_button = aux.find('[name=save_button]');
+
+    content.val(options.data);
+    aux.path = options.path;
+    aux.file_name = options.file_name;
+
+    save_button.button().button('option', 'disabled', true).hide();
+
+    var after_init = function () {
+      save_button.button('option', 'disabled', false).button('option', 'label', 'Save: ' + aux.file_name).show();
+      prepare_save(aux);
+      content.get(0).bespin.dimensionsChanged();
+      content.get(0).bespin.editor.focus = true;
+    }
+
+    aux.appendTo('#central_pane');
+    initialize_editor(content.get(0), after_init);
+
+    return aux;
+  }
+
+  var editors = [];
+
   return {
-    dimensions_changed: function () {
-      env = editor_env();
-      if(env !== undefined) {
-        env.dimensionsChanged();
-      }
-    },
-    editor: function () {
-      var env = editor_env();
-      if(env === undefined) {
-        return undefined;
-      }
-      return env.editor;
-    },
-    open_file: function (options) {
-      var after_init = function () {
-        $('#path').val(options.path);
-        $('#save_button').button('option', 'disabled', false).button('option', 'label', 'Save: ' + options.file_name).show();
-        $('#editor_form').show();
-        WIDE.editor.dimensions_changed();
-        WIDE.editor.editor().focus = true;
-      }
+    new_editor: function (options) {
+      var editor = create_editor(options);
 
-      $('#save_button').button('option', 'disabled', true).hide();
-
-      if(this.editor() === undefined) {
-        $('#content').val(options.data);
-        initialize_editor(after_init);
-      } else {
-        this.editor().value = options.data;
-        after_init.call();
-      }
-    },
-    save_file: function (form) {
-      var fail_func = function (data, result, xhr) {
-        alert('Error saving: ' + form.find('input[name=path]').val());
-        $('#save_button').button('option', 'disabled', false).mouseout();
-
-        return false;
-      };
-
-      form = $(form);
-
-      form.one('ajax:failure', function () { fail_func(); });
-
-      form.one('ajax:success', function (data, result, xhr) {
-        result = $.parseJSON(result);
-
-        if(result.success) {
-            WIDE.tree.refresh();
-            WIDE.commit.update_commit_button();
-        } else {
-          fail_func(data, result, xhr);
-        }
-        $('#save_button').button('option', 'disabled', false).mouseout();
-
-        return false;
+      editor = $.extend(editor,
+      {
+        editor_env: function () {
+          return $(this).find('textarea').get(0).bespin;
+        },
+        editor: function() {
+          var env = this.editor_env();
+          if(env === undefined) {
+            return undefined;
+          }
+          return env.editor;
+        },
+        dimensions_changed: function () {
+          env = this.editor_env();
+          if(env !== undefined) {
+            env.dimensionsChanged();
+          }
+        },
       });
 
-      form.find('#save_button').button('option', 'disabled', true);
-      form.submit();
+      editors[editors.length] = editor;
+
+      return editor;
+    },
+    dimensions_changed: function () {
+      var i;
+      for(i = 0; i < editors.length; i++) {
+        editors[i].dimensions_changed();
+      }
     }
   };
 }());
 
 $(function () {
-  $('#editor_form').hide();
-  $('#save_button').button().click(function () {
-    WIDE.editor.save_file($('#save_button').parent());
-    return false;
-  });
 });

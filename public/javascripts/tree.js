@@ -153,7 +153,7 @@ $(function () {
             file.cat(
               function (data) {
                 var file_name = node.attr('data-filename');
-                WIDE.editor.open_file({path: path, file_name: file_name, data: data});
+                WIDE.editor.new_editor({path: path, file_name: file_name, data: data});
               },
               function (data) {
                 alert('Error opening: ' + path);
