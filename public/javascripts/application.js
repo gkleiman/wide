@@ -26,3 +26,24 @@
     return this;
   };
 })(jQuery);
+
+$(function () {
+  $('#tabs').tabs({
+    tabTemplate: '<li><a href="#{href}">#{label}</a> <span class="ui-icon ui-icon-close">Remove Tab</span></li>',
+    add: function(event, ui) {
+      $('#tabs').tabs('select', '#' + ui.panel.id);
+    },
+    show: function(event, ui) {
+      WIDE.editor.dimensions_changed();
+    }
+  }).hide();
+
+  $('#tabs span.ui-icon-close').live('click', function() {
+    var index = $('#tabs li').index($(this).parent());
+    $('#tabs').tabs('remove', index);
+    WIDE.editor.remove_editor(index);
+    if($('#tabs li').children().length === 0) {
+      $('#tabs').hide();
+    }
+  });
+});

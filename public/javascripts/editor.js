@@ -93,7 +93,11 @@ WIDE.editor = (function () {
       content.get(0).bespin.editor.focus = true;
     }
 
-    aux.appendTo('#central_pane');
+    if($('#tabs li').children().length === 0) {
+      $('#tabs').show();
+    }
+    $('#tabs').tabs('add', '#editor-tab-' + editors.length, aux.file_name);
+    aux.appendTo($('#editor-tab-' + editors.length));
     initialize_editor(content.get(0), after_init);
 
     return aux;
@@ -103,7 +107,21 @@ WIDE.editor = (function () {
 
   return {
     new_editor: function (options) {
-      var editor = create_editor(options);
+      var editor, file_names, editor_index;
+
+      // If there's already an editor for the given filename, then select its tab.
+      file_names = $.map(editors,
+          function (value, index) {
+            return value.file_name;
+          });
+      editor_index = $.inArray(options.file_name, file_names);
+      if(editor_index !== -1) {
+        $('#tabs').tabs('select', '#editor-tab-' + editor_index);
+
+        return null;
+      }
+
+      editor = create_editor(options);
 
       editor = $.extend(editor,
       {
@@ -134,6 +152,9 @@ WIDE.editor = (function () {
       for(i = 0; i < editors.length; i++) {
         editors[i].dimensions_changed();
       }
+    },
+    remove_editor: function(index) {
+      editors.splice(index, 1);
     }
   };
 }());
