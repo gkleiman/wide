@@ -6,7 +6,7 @@ class Repository < ActiveRecord::Base
 
   self.supported_actions = %w(add commit history forget)
 
-  attr_protected :path, :scm
+  attr_accessible_on_create :path, :scm
   belongs_to :project
 
   class ScmAdapterInstalledValidator < ActiveModel::EachValidator

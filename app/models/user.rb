@@ -6,5 +6,6 @@ class User < ActiveRecord::Base
 
   has_many :projects, :dependent => :destroy
 
+  attr_accessible_on_create :user_name
   attr_accessible :email, :password, :password_confirmation, :remember_me
 end

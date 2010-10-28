@@ -3,18 +3,17 @@ class Project < ActiveRecord::Base
 
   has_one :repository, :dependent => :destroy
 
-  validates :name, :presence => true, :format => { :with => /[\w\-]+/ }
+  validates :name, :presence => true, :format => { :with => /\A[\w\-]+\z/ }
 
   def to_param
     self.name
   end
 
-  def create_repository(url, scm)
-    repo = self.build_repository
-    repo.scm = scm
-    repo.path = Wide::PathUtils.secure_path_join(Settings.repositories_base, File.join(self.user.user_name, self.name))
-    repo.url = url unless url.blank?
+  def create_repository(params)
+    params[:path] = Wide::PathUtils.secure_path_join(Settings.repositories_base, File.join(self.user.user_name, self.name))
 
-    repo.save!
+    repo = self.build_repository(params)
+
+    repo.delay.save!
   end
 end
