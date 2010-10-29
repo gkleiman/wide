@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  validates :user_name, :presence => true, :format => { :with => /\A[\w\-]+\z/ }
+
   has_many :projects, :dependent => :destroy
 
   attr_accessible_on_create :user_name

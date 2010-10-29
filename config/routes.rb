@@ -3,7 +3,7 @@ Wide::Application.routes.draw do
 
   root :to => "projects#index"
 
-  resources :projects do
+  resources :projects, :except => [ :edit, :update ] do
     resource :repository, :except => [ :index, :show, :edit, :update, :new, :destroy, :create, :destroy ] do
       get 'ls'
       get 'cat'

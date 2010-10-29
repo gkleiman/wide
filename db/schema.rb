@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101021201412) do
+ActiveRecord::Schema.define(:version => 20101029031517) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -38,12 +38,14 @@ ActiveRecord::Schema.define(:version => 20101021201412) do
   add_index "projects", ["user_id"], :name => "index_projects_on_user_id"
 
   create_table "repositories", :force => true do |t|
-    t.integer  "project_id", :null => false
-    t.string   "path",       :null => false
+    t.integer  "project_id",                               :null => false
+    t.string   "path",                                     :null => false
     t.string   "url"
-    t.string   "scm",        :null => false
+    t.string   "scm",                                      :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "status",                :default => -1,    :null => false
+    t.boolean  "operation_in_progress", :default => false, :null => false
   end
 
   add_index "repositories", ["project_id"], :name => "index_repositories_on_project_id", :unique => true

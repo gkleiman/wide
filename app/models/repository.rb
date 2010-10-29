@@ -6,7 +6,10 @@ class Repository < ActiveRecord::Base
 
   self.supported_actions = %w(add commit history forget)
 
-  attr_accessible_on_create :path, :scm
+  # Status will be 0 if the repository is being initialized/cloned, -1 if there
+  # have been an error during the initialization, and 1 on success.
+  attr_protected :status
+
   belongs_to :project
 
   class ScmAdapterInstalledValidator < ActiveModel::EachValidator
@@ -30,7 +33,7 @@ class Repository < ActiveRecord::Base
   validates :scm, :presence => true, :scm_adapter_installed => true
   validates :url, :scm_valid_url => true
 
-  before_save :init_or_clone_scm
+  after_create :prepare_init_or_clone
 
   def directory_entries(rel_path)
     entries = Directory.new(full_path(rel_path)).entries
@@ -118,6 +121,28 @@ class Repository < ActiveRecord::Base
     self.entries_status = scm_engine.status
   end
 
+  def init_or_clone
+    begin
+      if url.blank?
+        scm_engine.init
+      else
+        scm_engine.clone(url)
+      end
+
+      self.status = 1
+
+      self.save!
+
+      true
+    rescue
+      self.status = -1
+
+      self.save!
+
+      false
+    end
+  end
+
   private
   def scm_engine
     @scm_engine ||= Wide::Scm::Scm.get_adapter(scm).new(path)
@@ -148,15 +173,16 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  def init_or_clone_scm
+  def prepare_init_or_clone
     # Create the directory tree
     FileUtils.mkdir_p(path)
 
-    if url.blank?
-      scm_engine.init
-    else
-      scm_engine.clone(url)
-    end
+    # Set status to initializing/cloning
+    self.status = 0
+    self.save
+
+    # Queue initialization/cloning
+    self.delay.init_or_clone
 
     true
   end

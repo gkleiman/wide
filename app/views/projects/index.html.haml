@@ -1,7 +1,14 @@
 - title "wIDE | #{current_user.email}"
 
 #projects
-  %h1 Projects
+  %h1
+    %span.title Projects
+    = link_to 'New Project', new_project_path, :class => 'ui-icon ui-icon-plusthick'
   %ul
-    - current_user.projects.each do |project|
-      %li= link_to project.name, project
+    - @projects.each do |project|
+      - if project.repository && project.repository.status == 1
+        %li= link_to project.name, project
+      - elsif project.repository && project.repository.status == 0
+        %li= "#{project.name} (Repository being initialized)"
+      - else
+        %li= "#{project.name} (There has been a problem initializing the repository)"
