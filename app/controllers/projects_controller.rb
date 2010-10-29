@@ -26,6 +26,12 @@ class ProjectsController < ApplicationController
     raise ActiveRecord::RecordNotFound unless @project
   end
 
+  def destroy
+    @project.destroy
+
+    redirect_to projects_path
+  end
+
   private
   def load_project
     @project = current_user.projects.find_by_name params[:id]

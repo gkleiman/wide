@@ -1,0 +1,10 @@
+- title "wIDE | #{current_user.email} | New Project"
+
+#projects.ui-widget-container
+  %h1 New Project
+  = simple_form_for @project do |f|
+    = f.input :name
+    = simple_form_for 'project[repository_attributes]' do |repository_form|
+      = repository_form.input :scm, :collection => Wide::Scm::Scm.all_adapters, :include_blank => false
+      = repository_form.input :url, :required => false
+      = f.button :submit
