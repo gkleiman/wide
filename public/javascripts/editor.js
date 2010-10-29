@@ -51,9 +51,9 @@ WIDE.editor = (function () {
 
       return false;
     };
-    editor.one('ajax:failure', function () { fail_func(); });
+    editor.bind('ajax:failure', function () { fail_func(); });
 
-    editor.one('ajax:success', function (data, result, xhr) {
+    editor.bind('ajax:success', function (data, result, xhr) {
       result = $.parseJSON(result);
 
       if(result.success) {
