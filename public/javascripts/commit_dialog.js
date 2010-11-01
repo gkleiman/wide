@@ -24,12 +24,13 @@ $(function () {
   // Commit dialog
   $('#commit_dialog').dialog({
     title: 'Commit changes',
-    resizable: false,
-    draggable: false,
     modal: true,
     width: 500,
     autoOpen: false,
-    buttons: { 'Commit': function () { $('#commit_dialog form').submit(); $('#commit_dialog').dialog('close'); update_commit_button(); } }
+    buttons: {
+      Commit: function () { $('#commit_dialog form').submit(); $(this).dialog('close'); update_commit_button(); },
+      Cancel: function () { $(this).dialog('close'); $('#commit_dialog form').get(0).reset(); }
+    }
   });
 
   $('#commit_button').click(function () {

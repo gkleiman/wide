@@ -94,36 +94,26 @@ li.root li.removed a ins ins.jstree-overlay {
   background-image: url('../images/overlays/deleted.gif');
 }
 
-#commit_dialog .message textarea {
-  width: 100%;
-  height: 100%;
-}
-
 .simple_form label {
   float: left;
   width: 100px;
   text-align: right;
   margin: 2px 10px;
 }
-
 .simple_form div.input {
   margin-bottom: 10px;
 }
-
 .simple_form div.boolean, .simple_form input[type='submit'] {
   margin-left: 120px;
 }
-
 .simple_form div.boolean label, .simple_form label.collection_radio {
   float: none;
   margin: 0;
 }
-
 .simple_form label.collection_radio {
   margin-right: 10px;
   margin-left: 2px;
 }
-
 .simple_form .error {
   clear: left;
   margin-left: 120px;
@@ -131,7 +121,6 @@ li.root li.removed a ins ins.jstree-overlay {
   color: #D00;
   display: block;
 }
-
 .simple_form .hint {
   clear: left;
   margin-left: 120px;
@@ -143,6 +132,17 @@ li.root li.removed a ins ins.jstree-overlay {
 
 #commit_dialog {
   display: none;
+}
+#commit_dialog form {
+  height: 80%;
+}
+#commit_dialog .message {
+  margin-top: 0.8em;
+  height: 96%;
+}
+#commit_dialog .message textarea {
+  width: 100%;
+  height: 100%;
 }
 
 #tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
@@ -159,20 +159,20 @@ li.root li.removed a ins ins.jstree-overlay {
   margin-left: 0.8em;
 }
 #projects h1 {
-  display: block;
   font-size: 1.5em;
   margin: 0.6em 0 0.4em;
 }
-#projects ul {
-  margin-left: 0.8em;
-  clear: both;
-}
 #projects h1 .title {
+  margin-bottom: 0.4em;
   float: left;
 }
 #projects h1 .ui-icon-circle-plus{
   float: left;
   clear: right;
+}
+#projects ul {
+  margin-left: 0.8em;
+  clear: both;
 }
 #projects ul li a, #projects ul li span {
   float: left;
