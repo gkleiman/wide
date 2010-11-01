@@ -50,7 +50,7 @@ WIDE.file = (function (path, is_directory, file_name) {
     },
     // fs functions
     create: function (success, fail) {
-      var action = 'create_' + (is_directory ? 'directoy' : 'file');
+      var action = 'create_' + (is_directory ? 'directory' : 'file');
       perform_action({method: 'post', action: action, success: success, fail: fail});
     },
     mv: function (dest_path, success, fail) {
