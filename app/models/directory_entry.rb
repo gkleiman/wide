@@ -8,6 +8,8 @@ class DirectoryEntry
       FileUtils.touch path
     elsif type == :directory
       FileUtils.mkdir path
+    else
+      raise StandardError.new('Unknown file type.')
     end
 
     return DirectoryEntry.new(path)

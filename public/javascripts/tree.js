@@ -48,7 +48,7 @@ $(function () {
       WIDE.tree.refresh();
       WIDE.commit.update_commit_button();
     }, function () {
-      alert('Failed to ' + action + ' ' + path)
+      WIDE.notifications.error('Failed to ' + action + ' ' + path);
     });
   }
 
@@ -156,7 +156,7 @@ $(function () {
                 WIDE.editor.new_editor({path: path, file_name: file_name, data: data});
               },
               function (data) {
-                alert('Error opening: ' + path);
+                WIDE.notifications.error('Error opening: ' + path);
               }
             );
           }
@@ -172,7 +172,8 @@ $(function () {
             WIDE.tree.refresh(data.rslt.obj);
             WIDE.commit.update_commit_button();
           }, function () {
-                $.jstree.rollback(data.rlbk);
+            WIDE.notifications.error('Error creating: ' + path);
+            $.jstree.rollback(data.rlbk);
           });
     })
     .bind('move_node.jstree', function (e, data) {

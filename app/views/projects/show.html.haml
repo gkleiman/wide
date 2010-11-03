@@ -1,17 +1,18 @@
 - content_for :javascripts do
   = javascript_include_tag 'jquery.cookie.js', 'jquery.hotkeys.js',
-    'jquery.jstree.js', 'jquery.jstree.overlays.js', 'wide.js', 'file.js',
-    'jquery-ui-1.8.5.min.js', 'tree.js', 'editor.js', 'commit_dialog.js',
-    'jlayout.border.min.js', 'jquery.jlayout.min.js', 'jquery.sizes.min.js',
-    'layout.js', 'jquery.tmpl.min.js'
+    'jquery.jstree.js', 'jquery.jstree.overlays.js', 'file.js','tree.js',
+    'editor.js', 'commit_dialog.js', 'jlayout.border.min.js',
+    'jquery.jlayout.min.js', 'jquery.sizes.min.js', 'layout.js',
+    'jquery.tmpl.min.js'
   %link(id='bespin_base' href='/bespin')
   %meta{:name => 'project_id', :content => @project.to_param}
   = javascript_include_tag '/bespin/BespinEmbedded.js'
 
 - title "wIDE | #{current_user.email} | #{@project.name}", false
 
-#title
-  %h1.ui-widget-header= raw("wIDE | #{link_to(h(current_user.email), root_path)} | #{h(@project.name)}")
+- content_for :alternative_title do
+  #title
+    %h1.ui-widget-header= raw("wIDE | #{link_to(h(current_user.email), root_path)} | #{h(@project.name)}")
 
 .layout
   #toolbar.north
@@ -25,6 +26,9 @@
   #tree_pane.west
     #tree
   #central_pane.center
+    #notification.ui-widget.ui-helper-hidden
+      - flash.each do |name, msg|
+        = content_tag :div, msg, :id => "flash_#{name}"
     #tabs
       %ul
 
