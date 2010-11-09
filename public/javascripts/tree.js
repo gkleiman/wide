@@ -212,9 +212,14 @@ $(function () {
         var path = path_before_operation(data.rslt.obj[0], data.rlbk);
         var file = WIDE.file(path);
 
-        file.rm(undefined, function() {
-              WIDE.tree.refresh(data.rslt.obj[0]);
-              WIDE.commit.update_commit_button();
+        file.rm(function() {
+            WIDE.tree.select_node('#root_node');
+            WIDE.commit.update_commit_button();
+          },
+          function() {
+            WIDE.tree.refresh(data.rslt.obj[0]);
+            WIDE.tree.select_node(get_parent(data.rslt.obj[0]));
+            WIDE.commit.update_commit_button();
         });
     })
     .bind('rename.jstree', function (e, data) {
