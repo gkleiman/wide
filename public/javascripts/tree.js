@@ -4,11 +4,22 @@ WIDE.tree = (function () {
   return {
     refresh: function (node) {
       $.jstree._reference('#tree').refresh(node);
+    },
+    select_node: function (node) {
+      $('#tree').jstree('select_node', node);
     }
   };
 }());
 
 $(function () {
+  var select_root_if_nothing_selected = function () {
+    var selected = $('#tree').jstree('get_selected');
+
+    if(selected.length === 0) {
+      $('#tree').jstree('select_node', $('#root_node'));
+    }
+  }
+
   var get_path = function (node) {
     path = $('#tree').jstree('get_path', node)
     if(path.length > 0)
@@ -169,7 +180,7 @@ $(function () {
         var file = WIDE.file(path, type === 'directory');
 
         file.create(function () {
-            WIDE.tree.refresh(data.rslt.obj);
+            WIDE.tree.refresh(get_parent(data.rslt.obj));
             WIDE.commit.update_commit_button();
           }, function () {
             WIDE.notifications.error('Error creating: ' + path);
@@ -229,10 +240,12 @@ $(function () {
     });
 
     $('#add_file_button').button().click(function () {
+      select_root_if_nothing_selected();
       $('#tree').jstree('create', null, 'last', { 'attr' : { 'rel' : 'file'} });
       return false;
     });
     $('#add_directory_button').button().click(function () {
+      select_root_if_nothing_selected();
       $('#tree').jstree('create', null, 'last', { 'attr' : { 'rel' : 'directory'} });
       return false;
     });
