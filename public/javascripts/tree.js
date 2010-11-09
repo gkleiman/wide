@@ -102,6 +102,11 @@ $(function () {
               path = get_path(n);
             }
             return { path: path };
+          },
+          error: function (r) {
+            WIDE.notifications.error('Error trying to load the repository tree.');
+
+            return false;
           }
         }
       },
@@ -168,6 +173,8 @@ $(function () {
               },
               function (data) {
                 WIDE.notifications.error('Error opening: ' + path);
+
+                return false;
               }
             );
           }
@@ -185,6 +192,8 @@ $(function () {
           }, function () {
             WIDE.notifications.error('Error creating: ' + path);
             $.jstree.rollback(data.rlbk);
+
+            return false;
           });
     })
     .bind('move_node.jstree', function (e, data) {
@@ -202,6 +211,7 @@ $(function () {
               WIDE.commit.update_commit_button();
             },
             function () {
+              WIDE.notifications.error('Error moving: ' + src_path);
               $.jstree.rollback(data.rlbk);
           });
         } else {
@@ -212,15 +222,22 @@ $(function () {
         var path = path_before_operation(data.rslt.obj[0], data.rlbk);
         var file = WIDE.file(path);
 
-        file.rm(function() {
-            WIDE.tree.select_node('#root_node');
+        var after_remove = function (r) {
+          if(r && r.success) {
+            WIDE.tree.refresh();
+            WIDE.tree.select_node($('#root_node'));
             WIDE.commit.update_commit_button();
-          },
-          function() {
-            WIDE.tree.refresh(data.rslt.obj[0]);
-            WIDE.tree.select_node(get_parent(data.rslt.obj[0]));
-            WIDE.commit.update_commit_button();
-        });
+
+            return true;
+          } else {
+            WIDE.notifications.error('Error removing: ' + path);
+
+            $.jstree.rollback(data.rlbk);
+            return false;
+          }
+        }
+
+        file.rm(after_remove, after_remove);
     })
     .bind('rename.jstree', function (e, data) {
         var renamed_node = data.rslt.obj[0];
@@ -237,7 +254,10 @@ $(function () {
               WIDE.commit.update_commit_button();
             },
             function () {
+              WIDE.notifications.error('Error renaming: ' + src_path);
               $.jstree.rollback(data.rlbk);
+
+              return false;
           });
         } else {
           $.jstree.rollback(data.rlbk);

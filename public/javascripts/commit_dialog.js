@@ -8,6 +8,10 @@ WIDE.commit = (function () {
 
       $('#commit_button').button().button('option', 'disabled', true).mouseout().blur();
       $.getJSON(WIDE.repository_path() + '/is_clean', function (response) {
+        if(!response) {
+          WIDE.notifications.error("An error has happened trying to get the status of the repository.");
+          return false;
+        }
         if(response.clean == true) {
           $('#commit_button').button('option', 'disabled', true);
         } else {
