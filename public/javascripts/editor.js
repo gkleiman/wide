@@ -124,24 +124,24 @@ WIDE.editor = (function () {
       editor = create_editor(options);
 
       editor = $.extend(editor,
-      {
-        editor_env: function () {
-          return $(this).find('textarea').get(0).bespin;
-        },
-        editor: function() {
-          var env = this.editor_env();
-          if(env === undefined) {
-            return undefined;
-          }
-          return env.editor;
-        },
-        dimensions_changed: function () {
-          env = this.editor_env();
-          if(env !== undefined) {
-            env.dimensionsChanged();
-          }
-        },
-      });
+        {
+          editor_env: function () {
+            return $(this).find('textarea').get(0).bespin;
+          },
+          editor: function() {
+            var env = this.editor_env();
+            if(env === undefined) {
+              return undefined;
+            }
+            return env.editor;
+          },
+          dimensions_changed: function () {
+            env = this.editor_env();
+            if(env !== undefined) {
+              env.dimensionsChanged();
+            }
+          },
+        });
 
       editors[editors.length] = editor;
 

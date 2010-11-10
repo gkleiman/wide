@@ -37,7 +37,6 @@ WIDE.notifications = (function () {
         }
     };
 
-
     return {
       success: function(message) {
         add_notification('success', message);
