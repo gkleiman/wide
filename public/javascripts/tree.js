@@ -63,20 +63,121 @@ $(function () {
     });
   }
 
+  var create_file = function () {
+    select_root_if_nothing_selected();
+    $('#tree').jstree('create', null, 'last', { 'attr' : { 'rel' : 'file'} });
+    return false;
+  }
+  var add_directory = function () {
+    select_root_if_nothing_selected();
+    $('#tree').jstree('create', null, 'last', { 'attr' : { 'rel' : 'directory'} });
+    return false;
+  }
+  var remove_node = function () {
+    $('#tree').jstree('remove');
+    return false;
+  }
+  var rename_node = function () {
+    $('#tree').jstree('rename');
+    return false;
+  }
+
   function context_menu_options(node) {
+    var default_menu = {
+      create_file: {
+        separator_before: false,
+        separator_after: false,
+        label: 'Create File',
+        action: create_file
+      },
+      create_directory: {
+        separator_before: false,
+        separator_after: true,
+        label: 'Create Folder',
+        action: add_directory
+      },
+      rename: {
+        separator_before: false,
+        separator_after: true,
+        label: 'Rename',
+        action: rename_node
+      },
+      remove: {
+        separator_before: false,
+        icon: false,
+        separator_after: false,
+        label: 'Delete',
+        action: remove_node
+      }
+    };
+    var scm_menu = {
+      scm: {
+        separator_before: true,
+        separator_after: false,
+        label: 'Version Control',
+        action: false,
+        submenu: {}
+      }
+    };
+    var add_scm_menu = false;
+
     if(node.hasClass('modified')) {
-      return { revert: { 'label': 'Revert changes', 'action': function (node) {
-      perform_scm_action(node, 'revert'); } } };
-    } else if(node.hasClass('added')) {
-      return { forget: { 'label': 'Forget', 'action': function (node) {
-      perform_scm_action(node, 'forget'); } } };
-    } else if(node.hasClass('unversioned') || node.hasClass('removed') || node.attr('rel') == 'directory') {
-      return { add: { 'label': 'Add', 'action': function (node) {
-      perform_scm_action(node, 'add'); } } };
-    } else {
-      return { forget: { 'label': 'Forget', 'action': function (node) {
-      perform_scm_action(node, 'forget'); } } };
+      add_scm_menu = true;
+
+      $.extend(scm_menu.scm.submenu,
+        {
+          revert: {
+            label: 'Revert changes',
+            action: function (node) {
+              perform_scm_action(node, 'revert');
+            }
+          }
+      });
     }
+    if(node.hasClass('added')) {
+      add_scm_menu = true;
+
+      $.extend(scm_menu.scm.submenu,
+        {
+          forget: {
+            label: 'Forget',
+            action: function (node) {
+              perform_scm_action(node, 'forget');
+            }
+          }
+      });
+    }
+    if(node.hasClass('unversioned') || node.hasClass('removed') || node.attr('rel') == 'directory') {
+      add_scm_menu = true;
+
+      $.extend(scm_menu.scm.submenu,
+        {
+          add: {
+            label: 'Add',
+            action: function (node) {
+              perform_scm_action(node, 'add');
+            }
+         }
+      });
+    } else {
+      add_scm_menu = true;
+
+      $.extend(scm_menu.scm.submenu,
+        {
+          forget: {
+            label: 'Forget',
+            action: function (node) {
+              perform_scm_action(node, 'forget');
+            }
+          }
+      });
+    }
+
+    if(add_scm_menu) {
+      $.extend(default_menu, scm_menu);
+    }
+
+    return default_menu;
   }
 
   if($.jstree !== undefined) {
@@ -150,7 +251,8 @@ $(function () {
       },
 
       contextmenu: {
-        items: context_menu_options
+        items: context_menu_options,
+        select_note: true
        }
     })
     .bind('dblclick.jstree',
@@ -264,25 +366,9 @@ $(function () {
         }
     });
 
-    $('#add_file_button').button().click(function () {
-      select_root_if_nothing_selected();
-      $('#tree').jstree('create', null, 'last', { 'attr' : { 'rel' : 'file'} });
-      return false;
-    });
-    $('#add_directory_button').button().click(function () {
-      select_root_if_nothing_selected();
-      $('#tree').jstree('create', null, 'last', { 'attr' : { 'rel' : 'directory'} });
-      return false;
-    });
-
-    $('#remove_button').button().click(function () {
-      $('#tree').jstree('remove');
-      return false;
-    });
-
-    $('#rename_button').button().click(function () {
-      $('#tree').jstree('rename');
-      return false;
-    });
+    $('#add_file_button').button().click(create_file);
+    $('#add_directory_button').button().click(add_directory);
+    $('#remove_button').button().click(remove_node);
+    $('#rename_button').button().click(rename_node);
   }
 });
