@@ -334,7 +334,7 @@ $(function () {
 
         var after_remove = function (r) {
           if(r && r.success) {
-            WIDE.tree.refresh();
+            WIDE.tree.refresh(get_parent(data.rslt.obj[0]));
             WIDE.tree.select_node($('#root_node'));
             WIDE.commit.update_commit_button();
 
