@@ -7,6 +7,8 @@ module Wide
 
         # Name of the mercurial binary
         HG_BIN = 'hg'
+
+        # List of paths to skip when browsing the repository
         self.skip_paths = %w(.hg)
 
         def status
@@ -35,6 +37,26 @@ module Wide
             end
           end
           raise CommandFailed.new("Failed to get status for #{base_path}") if $? && $?.exitstatus != 0
+
+          cmd = cmd_prefix.push('resolve', '-l')
+          shellout(Escape.shell_command(cmd)) do |io|
+            io.each_line do |line|
+              # HG uses antislashs as separator on Windows
+              line = line.gsub(/\\/, "/")
+              line.chomp!
+
+              status, entry_path = line.match(/\A(.) (.+)\z/).captures
+              entry_path = Wide::PathUtils.secure_path_join(base_path, entry_path)
+              status_hash[entry_path] ||= []
+              case status
+              when 'R'
+                status_hash[entry_path] << :resolved
+              when 'U'
+                status_hash[entry_path] << :unresolved
+              end
+            end
+          end
+          raise CommandFailed.new("Failed to get merge status for #{base_path}") if $? && $?.exitstatus != 0
 
           status_hash
         end
