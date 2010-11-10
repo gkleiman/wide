@@ -12,12 +12,18 @@ WIDE.tree = (function () {
 }());
 
 $(function () {
-  var select_root_if_nothing_selected = function () {
-    var selected = $('#tree').jstree('get_selected');
+  var get_insertion_node = function() {
+    var selected_node = $('#tree').jstree('get_selected');
+    var root_node = $('#root_node');
 
-    if(selected.length === 0) {
-      $('#tree').jstree('select_node', $('#root_node'));
+    if(selected_node.length === 0) {
+      selected_node = root_node;
+      $('#tree').jstree('select_node', selected_node);
+    } else if(selected_node !== root_node && selected_node.attr('rel') === 'file') {
+      selected_node = get_parent(selected_node);
     }
+
+    return selected_node;
   }
 
   var get_path = function (node) {
@@ -32,7 +38,7 @@ $(function () {
   }
 
   var get_parent = function (node) {
-      return $('#tree').jstree('_get_parent', node);
+      return $.jstree._reference('#tree')._get_parent(node);
   }
 
   /*
@@ -64,13 +70,15 @@ $(function () {
   }
 
   var create_file = function () {
-    select_root_if_nothing_selected();
-    $('#tree').jstree('create', null, 'last', { 'attr' : { 'rel' : 'file'} });
+    var insertion_node = get_insertion_node();
+
+    $('#tree').jstree('create', insertion_node, 'last', { attr: { rel: 'file' }, data: 'New File' });
     return false;
   }
   var add_directory = function () {
-    select_root_if_nothing_selected();
-    $('#tree').jstree('create', null, 'last', { 'attr' : { 'rel' : 'directory'} });
+    var insertion_node = get_insertion_node();
+
+    $('#tree').jstree('create', insertion_node, 'last', { attr: { rel: 'directory' }, data: 'New Folder' });
     return false;
   }
   var remove_node = function () {
