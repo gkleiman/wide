@@ -5,7 +5,7 @@ class Project < ActiveRecord::Base
 
   accepts_nested_attributes_for :repository, :update_only => true
 
-  validates :name, :presence => true, :format => { :with => /\A[\w\-]+\z/ }
+  validates :name, :presence => true, :format => { :with => /\A[\w\- ]+\z/ }
 
   before_validation :set_repository_path
 
