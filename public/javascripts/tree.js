@@ -260,7 +260,7 @@ $(function () {
 
       contextmenu: {
         items: context_menu_options,
-        select_note: true
+        select_node: true
        }
     })
     .bind('dblclick.jstree',
