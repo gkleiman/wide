@@ -8,7 +8,7 @@ class RepositoriesController < ApplicationController
       :create_directory, :rm, :add, :forget, :revert ]
 
   around_filter :json_failable_action, :only => [ :save_file, :create_file,
-    :create_directory, :rm, :mv, :is_clean, :commit, :add, :forget, :revert ]
+    :create_directory, :rm, :mv, :summary, :commit, :add, :forget, :revert ]
 
   def ls
     entries = @repository.directory_entries(@path)
@@ -76,8 +76,8 @@ class RepositoriesController < ApplicationController
     render :json => { :success => 1 }
   end
 
-  def is_clean
-    render :json  => { :success => 1, :clean => @repository.clean? }
+  def summary
+    render :json  => { :success => 1, :summary => @repository.summary }
   end
 
   def commit

@@ -57,8 +57,6 @@ class DirectoryEntry
   end
 
   def move!(dest_path)
-    dest_path = dest_path
-
     FileUtils.move(path, dest_path)
   end
 

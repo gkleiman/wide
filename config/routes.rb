@@ -12,7 +12,7 @@ Wide::Application.routes.draw do
       post 'create_directory'
 
       # SCM
-      get 'is_clean'
+      get 'summary'
       get 'status'
       post 'add'
       post 'forget'

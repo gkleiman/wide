@@ -69,7 +69,13 @@ module Wide
           cmd = cmd_prefix.push('mv', src_path, dest_path)
           shellout(Escape.shell_command(cmd))
 
-          raise CommandFailed.new("Failed to move file #{src_path} to #{dest_path} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
+          begin
+            if($? && $?.exitstatus != 0)
+              entry.move!(dest_path);
+            end
+          rescue
+            raise CommandFailed.new("Failed to move file #{src_path} to #{dest_path} in the Mercurial repository in #{base_path}")
+          end
         end
 
         # dest_path must be a full expanded path
@@ -125,16 +131,29 @@ module Wide
           return ($? && $?.exitstatus == 0)
         end
 
-        def clean?
+        def summary
           cmd = cmd_prefix.push('summary')
+          summary = {
+            :clean? => false,
+            :unresolved? => false
+          }
 
           shellout(Escape.shell_command(cmd)) do |io|
             io.each_line do |line|
-              return true if line.chomp! =~ /\Acommit:.*\(clean\)\z/
+              line.chomp!
+
+              summary[:clean?] = true if line =~ /\Acommit:.*\(clean\)\z/
+              summary[:unresolved?] = true if line =~ /\Acommit:.*unresolved.*\(merge\)\z/
             end
           end
 
-          false
+          summary[:commitable?] = !summary[:clean?] && !summary[:unresolved?]
+
+          summary
+        end
+
+        def clean?
+          !!self.summary[:clean?]
         end
 
         def init

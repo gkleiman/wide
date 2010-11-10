@@ -7,15 +7,15 @@ WIDE.commit = (function () {
         return false;
 
       $('#commit_button').button().button('option', 'disabled', true).mouseout().blur();
-      $.getJSON(WIDE.repository_path() + '/is_clean', function (response) {
+      $.getJSON(WIDE.repository_path() + '/summary', function (response) {
         if(!response) {
           WIDE.notifications.error("An error has happened trying to get the status of the repository.");
           return false;
         }
-        if(response.clean == true) {
-          $('#commit_button').button('option', 'disabled', true);
-        } else {
+        if(response.summary['commitable?'] === true) {
           $('#commit_button').button('option', 'disabled', false);
+        } else {
+          $('#commit_button').button('option', 'disabled', true);
         }
       });
 

@@ -104,6 +104,10 @@ class Repository < ActiveRecord::Base
     scm_engine.commit(user, message)
   end
 
+  def summary
+    scm_engine ? scm_engine.summary : {}
+  end
+
   def clean?
     scm_engine ? scm_engine.clean? : true
   end
