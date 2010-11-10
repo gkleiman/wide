@@ -65,6 +65,7 @@ $(function () {
 
 
   $('#commit_dialog').bind('ajax:success', function () {
+    $('#commit_dialog form').get(0).reset();
     WIDE.tree.refresh();
   });
 
