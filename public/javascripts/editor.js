@@ -8,8 +8,7 @@ WIDE.editor = (function () {
 
     function init() {
         bespin.useBespin(node, {
-            stealFocus: true,
-            syntax: 'c_cpp'
+            stealFocus: true
         }).then(function (env) {
           // Get the editor.
           node.bespin = env;
@@ -74,6 +73,30 @@ WIDE.editor = (function () {
     });
   }
 
+  var set_syntax_highlighting = function (editor, file_name) {
+    var extension = file_name.substr(file_name.lastIndexOf(".") + 1);
+    var syntax;
+
+    switch(extension) {
+      case 'h':
+      case 'hpp':
+      case 'c':
+      case 'cpp':
+        syntax = 'c_cpp';
+        break;
+      case 'js':
+        syntax = 'js';
+        break;
+      case 'html':
+        syntax = 'html';
+        break;
+    }
+
+    if(syntax) {
+      editor.syntax = syntax;
+    }
+  }
+
   var create_editor = function(options) {
     var replacements = {csrf_token: WIDE.csrf_token(), csrf_param: WIDE.csrf_param(), project_id: WIDE.project_id()};
     var aux = $.tmpl(edit_form_tmpl, $.extend(options, replacements));
@@ -91,6 +114,8 @@ WIDE.editor = (function () {
       prepare_save(aux);
       content.get(0).bespin.dimensionsChanged();
       content.get(0).bespin.editor.focus = true;
+
+      set_syntax_highlighting(content.get(0).bespin.editor, aux.file_name);
     }
 
     if($('#tabs li').children().length === 0) {
