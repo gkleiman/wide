@@ -88,8 +88,11 @@ li.root li.ignored a ins ins.jstree-overlay {
 li.root li.readonly a ins ins.jstree-overlay {
   background-image: url('../images/overlays/readonly.gif');
 }
-li.root li.conflict a ins ins.jstree-overlay {
-  background-image: url('../images/overlays/conflict.gif');
+li.root li.unresolved a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/unresolved.gif') !important;
+}
+li.root li.resolved a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/resolved.gif') !important;
 }
 li.root li.removed a ins ins.jstree-overlay {
   background-image: url('../images/overlays/deleted.gif');
