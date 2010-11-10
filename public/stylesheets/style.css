@@ -60,7 +60,7 @@ body, #container {
   overflow: hidden;
 }
 #central_pane form textarea {
-  width: 100%;
+  width: 97%;
   height: 94%;
   margin-top: 5px;
 }
@@ -157,8 +157,10 @@ li.root li.removed a ins ins.jstree-overlay {
   margin-top: 1em;
 }
 #tabs div {
-  width: 100%;
   height: 96%;
+}
+#tabs div.ui-tabs-panel {
+  width: 98%;
 }
 
 #projects {

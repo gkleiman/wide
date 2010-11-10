@@ -161,7 +161,7 @@ WIDE.editor = (function () {
             return env.editor;
           },
           dimensions_changed: function () {
-            env = this.editor_env();
+            var env = this.editor_env();
             if(env !== undefined) {
               env.dimensionsChanged();
             }
