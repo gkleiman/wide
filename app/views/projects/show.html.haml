@@ -22,14 +22,14 @@
     %button#remove_button Remove
     - if @project.repository.supports_commit?
       %button#commit_button Commit
+    #notification-wrapper.ui-widget
+      #notification.ui-helper-hidden
+        - flash.each do |name, msg|
+          = content_tag :div, msg, :id => "flash_#{name}"
 
   #tree_pane.west
     #tree
   #central_pane.center
-    #notification-wrapper
-      #notification.ui-widget.ui-helper-hidden
-        - flash.each do |name, msg|
-          = content_tag :div, msg, :id => "flash_#{name}"
     #tabs
       %ul
 

@@ -38,11 +38,14 @@ WIDE.notifications = (function () {
     };
 
     return {
-      success: function(message) {
+      success: function (message) {
         add_notification('success', message);
       },
-      error: function(message) {
+      error: function (message) {
         add_notification('error', message);
+      },
+      hide: function () {
+        $('#notification').clearQueue().fadeOut('fast');
       }
     };
 }());

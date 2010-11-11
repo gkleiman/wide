@@ -200,7 +200,9 @@ WIDE.editor = (function () {
     dimensions_changed: function () {
       var i;
       for(i = 0; i < editors.length; i++) {
-        editors[i].dimensions_changed();
+        if(editors[i].is(':visible')) {
+          editors[i].dimensions_changed();
+        }
       }
     },
     remove_editor: function(index) {

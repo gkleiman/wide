@@ -300,11 +300,13 @@ $(function () {
           if(node.attr('rel') == 'directory') {
             $('#tree').jstree('toggle_node', node);
           } else if(node.attr('rel') == 'file') {
+            file_name = node.attr('data-filename');
             file = WIDE.file(path);
 
+            WIDE.notifications.success('Loading ' + path + ' ...');
             file.cat(
               function (data) {
-                var file_name = node.attr('data-filename');
+                WIDE.notifications.hide();
                 WIDE.editor.new_editor({path: path, file_name: file_name, data: data});
               },
               function (data) {
