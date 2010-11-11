@@ -117,6 +117,7 @@ WIDE.editor = (function () {
     aux.file_name = options.file_name;
 
     save_button.button().button('option', 'disabled', true).hide();
+    save_button.button('option', 'disabled', true).button('option', 'label', 'Save: ' + aux.file_name).show();
 
     if($('#tabs li').children().length === 0) {
       $('#tabs').show();
@@ -127,8 +128,6 @@ WIDE.editor = (function () {
 
     var after_init = function () {
       var env = content.get(0).bespin;
-
-      save_button.button('option', 'disabled', true).button('option', 'label', 'Save: ' + aux.file_name).show();
 
       env.dimensionsChanged();
       env.editor.focus = true;
@@ -198,10 +197,16 @@ WIDE.editor = (function () {
       return editor;
     },
     dimensions_changed: function () {
-      var i;
-      for(i = 0; i < editors.length; i++) {
+      for(var i = 0; i < editors.length; i++) {
         if(editors[i].is(':visible')) {
           editors[i].dimensions_changed();
+        }
+      }
+    },
+    focus: function () {
+      for(var i = 0; i < editors.length; i++) {
+        if(editors[i].is(':visible')) {
+          editors[i].editor().focus = true;
         }
       }
     },

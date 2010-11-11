@@ -36,6 +36,7 @@ $(function () {
       },
       show: function(event, ui) {
         WIDE.editor.dimensions_changed();
+        WIDE.editor.focus();
       }
     }).hide();
 
