@@ -42,26 +42,35 @@ WIDE.editor = (function () {
     }
   }
 
-  var prepare_save = function(editor) {
+  var prepare_save = function (editor) {
     var save_button = editor.find('[name=save_button]');
     var fail_func = function (data, result, xhr) {
-      alert('Error saving: ' + editor.path);
+      WIDE.notifications.error('Error saving: ' + editor.path);
       save_button.button('option', 'disabled', false).mouseout();
 
       return false;
     };
+    var mark_tab_as_clean = function () {
+      editor.modified = false;
+      editor.title.text(editor.file_name);
+
+      editor.find('textarea').get(0).bespin.editor.textChanged.add(editor.mark_tab_as_dirty);
+    };
+
     editor.bind('ajax:failure', function () { fail_func(); });
 
     editor.bind('ajax:success', function (data, result, xhr) {
       result = $.parseJSON(result);
 
       if(result.success) {
+          mark_tab_as_clean();
+
           WIDE.tree.refresh();
           WIDE.commit.update_commit_button();
       } else {
         fail_func(data, result, xhr);
       }
-      save_button.button('option', 'disabled', false).mouseout();
+      save_button.button('option', 'disabled', true).mouseout();
 
       return false;
     });
@@ -109,20 +118,36 @@ WIDE.editor = (function () {
 
     save_button.button().button('option', 'disabled', true).hide();
 
-    var after_init = function () {
-      save_button.button('option', 'disabled', false).button('option', 'label', 'Save: ' + aux.file_name).show();
-      prepare_save(aux);
-      content.get(0).bespin.dimensionsChanged();
-      content.get(0).bespin.editor.focus = true;
-
-      set_syntax_highlighting(content.get(0).bespin.editor, aux.file_name);
-    }
-
     if($('#tabs li').children().length === 0) {
       $('#tabs').show();
     }
     $('#tabs').tabs('add', '#editor-tab-' + editors.length, aux.file_name);
-    aux.appendTo($('#editor-tab-' + editors.length));
+    aux.containing_tab = $('#editor-tab-' + editors.length);
+    aux.appendTo(aux.containing_tab);
+
+    var after_init = function () {
+      var env = content.get(0).bespin;
+
+      save_button.button('option', 'disabled', true).button('option', 'label', 'Save: ' + aux.file_name).show();
+
+      env.dimensionsChanged();
+      env.editor.focus = true;
+
+      set_syntax_highlighting(env.editor, aux.file_name);
+
+      aux.title = $('#tabs > ul.ui-tabs-nav > li > a[href=#' + aux.containing_tab[0].id + ']');
+      aux.mark_tab_as_dirty = function () {
+        env.editor.textChanged.remove(aux.mark_tab_as_dirty);
+
+        aux.modified = true;
+        aux.title.text(aux.file_name + ' +');
+        aux.find('[name=save_button]').button('option', 'disabled', false);
+      }
+      aux.modified = false;
+
+      prepare_save(aux);
+      env.editor.textChanged.add(aux.mark_tab_as_dirty);
+    }
     initialize_editor(content.get(0), after_init);
 
     return aux;
