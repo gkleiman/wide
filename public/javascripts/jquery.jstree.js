@@ -2896,8 +2896,8 @@
 	};
 	$(function () {
 		var css_string = '' + 
-			'#vakata-contextmenu { display:none; position:absolute; margin:0; padding:0; min-width:180px; background:#ebebeb; border:1px solid silver; z-index:10000; *width:180px; } ' + 
-			'#vakata-contextmenu ul { min-width:180px; *width:180px; } ' + 
+			'#vakata-contextmenu { display:none; position:absolute; margin:0; padding:0; min-width:190px; background:#ebebeb; border:1px solid silver; z-index:10000; } ' + 
+			'#vakata-contextmenu ul { min-width:190px; } ' + 
 			'#vakata-contextmenu ul, #vakata-contextmenu li { margin:0; padding:0; list-style-type:none; display:block; } ' + 
 			'#vakata-contextmenu li { line-height:20px; min-height:20px; position:relative; padding:0px; } ' + 
 			'#vakata-contextmenu li a { padding:1px 6px; line-height:17px; display:block; text-decoration:none; margin:1px 1px 0 1px; } ' + 
