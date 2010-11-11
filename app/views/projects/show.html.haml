@@ -26,9 +26,10 @@
   #tree_pane.west
     #tree
   #central_pane.center
-    #notification.ui-widget.ui-helper-hidden
-      - flash.each do |name, msg|
-        = content_tag :div, msg, :id => "flash_#{name}"
+    #notification-wrapper
+      #notification.ui-widget.ui-helper-hidden
+        - flash.each do |name, msg|
+          = content_tag :div, msg, :id => "flash_#{name}"
     #tabs
       %ul
 
