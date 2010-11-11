@@ -48,6 +48,12 @@ WIDE.file = (function (path, is_directory, file_name) {
     revert: function (success, fail) {
       perform_action({method: 'post', action: 'revert', success: success, fail: fail});
     },
+    mark_resolved: function (success, fail) {
+      perform_action({method: 'post', action: 'mark_resolved', success: success, fail: fail});
+    },
+    mark_unresolved: function (success, fail) {
+      perform_action({method: 'post', action: 'mark_unresolved', success: success, fail: fail});
+    },
     // fs functions
     create: function (success, fail) {
       var action = 'create_' + (is_directory ? 'directory' : 'file');

@@ -62,7 +62,7 @@ $(function () {
     var action_func = file[action];
 
     action_func.call(file, function () {
-      WIDE.tree.refresh();
+      WIDE.tree.refresh(get_parent(node));
       WIDE.commit.update_commit_button();
     }, function () {
       WIDE.notifications.error('Failed to ' + action + ' ' + path);
@@ -90,7 +90,7 @@ $(function () {
     return false;
   }
 
-  function context_menu_options(node) {
+  var context_menu_options = function (node) {
     var default_menu = {
       create_file: {
         separator_before: false,
@@ -129,7 +129,31 @@ $(function () {
     };
     var add_scm_menu = false;
 
-    if(node.hasClass('modified')) {
+    if(node.hasClass('unresolved')) {
+      add_scm_menu = true;
+
+      $.extend(scm_menu.scm.submenu,
+        {
+          resolve: {
+            label: 'Mark as Resolved',
+            action: function (node) {
+              perform_scm_action(node, 'mark_resolved');
+            }
+         }
+      });
+    } else if(node.hasClass('resolved')) {
+      add_scm_menu = true;
+
+      $.extend(scm_menu.scm.submenu,
+        {
+          resolve: {
+            label: 'Mark as Unresolved',
+            action: function (node) {
+              perform_scm_action(node, 'mark_unresolved');
+            }
+         }
+      });
+    } else if(node.hasClass('modified')) {
       add_scm_menu = true;
 
       $.extend(scm_menu.scm.submenu,
@@ -142,6 +166,7 @@ $(function () {
           }
       });
     }
+
     if(node.hasClass('added')) {
       add_scm_menu = true;
 
@@ -155,6 +180,7 @@ $(function () {
           }
       });
     }
+
     if(node.hasClass('unversioned') || node.hasClass('removed') || node.attr('rel') == 'directory') {
       add_scm_menu = true;
 

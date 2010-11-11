@@ -20,6 +20,8 @@ Wide::Application.routes.draw do
       post 'mv'
       post 'rm'
       post 'commit'
+      post 'mark_resolved'
+      post 'mark_unresolved'
     end
   end
 end

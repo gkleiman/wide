@@ -4,7 +4,7 @@ class Repository < ActiveRecord::Base
   cattr_accessor :supported_actions
   attr_accessor :entries_status
 
-  self.supported_actions = %w(add commit history forget)
+  self.supported_actions = %w(add commit history forget mark_resolved mark_unresolved)
 
   # Status will be 0 if the repository is being initialized/cloned, -1 if there
   # have been an error during the initialization, and 1 on success.
@@ -98,6 +98,16 @@ class Repository < ActiveRecord::Base
   def revert!(rel_path)
     entry = DirectoryEntry.new(full_path(rel_path))
     scm_engine.revert!(entry)
+  end
+
+  def mark_resolved(rel_path)
+    entry = DirectoryEntry.new(full_path(rel_path))
+    scm_engine.mark_resolved(entry)
+  end
+
+  def mark_unresolved(rel_path)
+    entry = DirectoryEntry.new(full_path(rel_path))
+    scm_engine.mark_unresolved(entry)
   end
 
   def commit(user, message)

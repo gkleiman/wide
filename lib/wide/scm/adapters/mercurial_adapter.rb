@@ -131,6 +131,24 @@ module Wide
           return ($? && $?.exitstatus == 0)
         end
 
+        def mark_resolved(entry)
+          rel_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
+
+          cmd = cmd_prefix.push('resolve', '-m', "path:#{rel_path}")
+          shellout(Escape.shell_command(cmd))
+
+          raise CommandFailed.new("Failed to mark as resolved #{rel_path} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
+        end
+
+        def mark_unresolved(entry)
+          rel_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
+
+          cmd = cmd_prefix.push('resolve', '-u', "path:#{rel_path}")
+          shellout(Escape.shell_command(cmd))
+
+          raise CommandFailed.new("Failed to mark as unresolved #{rel_path} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
+        end
+
         def summary
           cmd = cmd_prefix.push('summary')
           summary = {

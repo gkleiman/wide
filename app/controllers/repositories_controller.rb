@@ -4,11 +4,12 @@ class RepositoriesController < ApplicationController
   before_filter :authenticate_user!
   before_filter :load_repository
   before_filter lambda { @path = extract_path_from_param(:path) },
-    :only => [ :ls, :cat, :save_file, :create_file,
-      :create_directory, :rm, :add, :forget, :revert ]
+    :only => [ :ls, :cat, :save_file, :create_file, :create_directory, :rm,
+      :add, :forget, :revert, :mark_resolved, :mark_unresolved ]
 
   around_filter :json_failable_action, :only => [ :save_file, :create_file,
-    :create_directory, :rm, :mv, :summary, :commit, :add, :forget, :revert ]
+    :create_directory, :rm, :mv, :summary, :commit, :add, :forget, :revert,
+    :mark_resolved, :mark_unresolved]
 
   def ls
     entries = @repository.directory_entries(@path)
@@ -91,6 +92,18 @@ class RepositoriesController < ApplicationController
 
     message = "<pre>#{@repository.entries_status.to_s}</pre>"
     render :text => message
+  end
+
+  def mark_resolved
+    @repository.mark_resolved(@path)
+
+    render :json => { :success => 1 }
+  end
+
+  def mark_unresolved
+    @repository.mark_unresolved(@path)
+
+    render :json => { :success => 1 }
   end
 
   private
