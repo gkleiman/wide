@@ -2,12 +2,14 @@ class Repository < ActiveRecord::Base
   include ActiveModel::Validations
 
   cattr_accessor :supported_actions
+  self.supported_actions = %w(add commit history forget mark_resolved mark_unresolved push pull merge)
+
   attr_accessor :entries_status
 
-  self.supported_actions = %w(add commit history forget mark_resolved mark_unresolved)
+  serialize :async_op_status
 
-  # Status will be 0 if the repository is being initialized/cloned, -1 if there
-  # have been an error during the initialization, and 1 on success.
+  # Status will be 0 if the repository is being initialized/cloned, -1 if
+  # there have been an error during the initialization, and 1 on success.
   attr_protected :status
 
   belongs_to :project
@@ -122,6 +124,14 @@ class Repository < ActiveRecord::Base
     scm_engine ? scm_engine.clean? : true
   end
 
+  def pull(url)
+    queue_async_operation(:pull, url)
+  end
+
+  def push(url)
+    queue_async_operation(:push, url)
+  end
+
   def respond_to?(symbol, include_private = false)
     match = symbol.to_s.match(/^supports_(\w+)\?$/)
     if match && self.supported_actions.include?(match[1])
@@ -135,6 +145,8 @@ class Repository < ActiveRecord::Base
     self.entries_status = scm_engine.status
   end
 
+  # These methods should be private, but DelayedJobs can't delay private
+  # methods.
   def init_or_clone
     begin
       if url.blank?
@@ -155,6 +167,22 @@ class Repository < ActiveRecord::Base
 
       false
     end
+  end
+
+  def async_operation(operation, url)
+    status = 'error'
+
+    begin
+      if(scm_engine.send(operation, url))
+        status = 'success'
+      end
+    rescue
+    end
+
+    self.async_op_status = Wide::Scm::AsyncOpStatus.new(:operation => operation, :status => status)
+    self.save!
+
+    return status == 'success'
   end
 
   private
@@ -199,5 +227,22 @@ class Repository < ActiveRecord::Base
     self.delay.init_or_clone
 
     true
+  end
+
+  def queue_async_operation(operation, url)
+    if(!scm_engine || url.blank? || !scm_engine.class.valid_url?(url))
+      self.async_op_status = Wide::Scm::AsyncOpStatus.new(:operation => operation, :status => 'error')
+
+      self.save!
+
+      return self.async_op_status
+    end
+
+    self.async_op_status = Wide::Scm::AsyncOpStatus.new(:operation => operation)
+    self.save!
+
+    self.delay.async_operation(operation, url)
+
+    self.async_op_status
   end
 end

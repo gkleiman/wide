@@ -194,6 +194,26 @@ module Wide
           true
         end
 
+        def pull(url)
+          cmd = cmd_prefix.push('pull', '-u', '--config', 'ui.merge=merge', url)
+
+          shellout(Escape.shell_command(cmd))
+
+          raise CommandFailed.new("Failed to pull repository #{url} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus > 1
+
+          true
+        end
+
+        def push(url)
+          cmd = cmd_prefix.push('push', url)
+
+          shellout(Escape.shell_command(cmd))
+
+          raise CommandFailed.new("Failed to push to repository #{url} (Mercurial repository in #{base_path})") if $? && $?.exitstatus > 1
+
+          true
+        end
+
         def self.valid_url?(url)
           (url =~ %r{\A(http://|https://|ssh://)}) != nil
         end

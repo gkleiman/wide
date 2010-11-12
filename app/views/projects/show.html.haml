@@ -3,7 +3,7 @@
     'jquery.jstree.js', 'jquery.jstree.overlays.js', 'file.js','tree.js',
     'editor.js', 'commit_dialog.js', 'jlayout.border.min.js',
     'jquery.jlayout.min.js', 'jquery.sizes.min.js', 'layout.js',
-    'jquery.tmpl.min.js'
+    'jquery.tmpl.min.js', 'pull_dialog.js', 'async_op.js'
   %link(id='bespin_base' href='/bespin')
   %meta{:name => 'project_id', :content => @project.to_param}
   = javascript_include_tag '/bespin/BespinEmbedded.js'
@@ -22,6 +22,10 @@
     %button#remove_button Remove
     - if @project.repository.supports_commit?
       %button#commit_button Commit
+    - if @project.repository.supports_pull?
+      %button#pull_button Pull
+    -#- if @project.repository.supports_push?
+      -#%button#push_button Push
     #notification-wrapper.ui-widget
       #notification.ui-helper-hidden
         - flash.each do |name, msg|
@@ -34,3 +38,5 @@
       %ul
 
 = render :partial => 'commit_dialog', :project => @project
+= render :partial => 'push_dialog', :project => @project
+= render :partial => 'pull_dialog', :project => @project

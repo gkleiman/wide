@@ -14,14 +14,18 @@ Wide::Application.routes.draw do
       # SCM
       get 'summary'
       get 'status'
+      get 'async_op_status'
+
       post 'add'
       post 'forget'
       post 'revert'
       post 'mv'
       post 'rm'
-      post 'commit'
       post 'mark_resolved'
       post 'mark_unresolved'
+      post 'commit'
+      post 'push'
+      post 'pull'
     end
   end
 end

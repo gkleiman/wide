@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101029031517) do
+ActiveRecord::Schema.define(:version => 20101111232304) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(:version => 20101029031517) do
     t.datetime "updated_at"
     t.integer  "status",                :default => -1,    :null => false
     t.boolean  "operation_in_progress", :default => false, :null => false
+    t.string   "async_op_status"
   end
 
   add_index "repositories", ["project_id"], :name => "index_repositories_on_project_id", :unique => true

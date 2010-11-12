@@ -10,10 +10,22 @@ WIDE.notifications = (function () {
       return notification_div;
     };
 
-    var add_notification = function (notification_type, message) {
-        var div_class = (notification_type === 'success') ? 'ui-state-highlight' : 'ui-state-error';
-        var icon_class = (notification_type === 'success') ? 'ui-icon-info' : 'ui-icon-alert';
+    var add_notification = function (notification_type, message, fade_out) {
+        var div_class = (notification_type === 'error') ? 'ui-state-error' : 'ui-state-highlight'
+        var icon_class;
         var set_message_and_display;
+
+        switch(notification_type) {
+          case 'error':
+            icon_class = 'ui-icon-alert';
+            break;
+          case 'activity':
+            icon_class = 'ui-icon-gear';
+            break;
+          case 'success':
+            icon_class = 'ui-icon-info';
+            break;
+        }
 
         set_notification_div();
 
@@ -24,8 +36,10 @@ WIDE.notifications = (function () {
             .removeClass('ui-state-error ui-state-highlight')
             .addClass(div_class)
             .fadeIn('fast')
-            .delay(delay)
-            .fadeOut('fast')
+
+          if(fade_out) {
+            notification_div.delay(delay).fadeOut('fast')
+          }
         }
 
         if(notification_div.css('display') !== 'hidden') {
@@ -39,10 +53,13 @@ WIDE.notifications = (function () {
 
     return {
       success: function (message) {
-        add_notification('success', message);
+        add_notification('success', message, true);
+      },
+      activity_started: function (message) {
+        add_notification('activity', message, false);
       },
       error: function (message) {
-        add_notification('error', message);
+        add_notification('error', message, true);
       },
       hide: function () {
         $('#notification').clearQueue().fadeOut('fast');
