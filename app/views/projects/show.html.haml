@@ -26,10 +26,6 @@
       %button#pull_button Pull
     -#- if @project.repository.supports_push?
       -#%button#push_button Push
-    #notification-wrapper.ui-widget
-      #notification.ui-helper-hidden
-        - flash.each do |name, msg|
-          = content_tag :div, msg, :id => "flash_#{name}"
 
   #tree_pane.west
     #tree

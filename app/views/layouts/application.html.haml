@@ -24,7 +24,9 @@
           %h1.ui-widget-header=h yield(:title)
       = yield :alternative_title
 
-      - flash.each do |name, msg|
-        = content_tag :div, msg, :id => "flash_#{name}"
+      #notification-wrapper.ui-widget
+        #notification.ui-helper-hidden
+          - flash.each do |name, msg|
+            = content_tag :div, msg, :id => "flash_#{name}"
 
       = yield
