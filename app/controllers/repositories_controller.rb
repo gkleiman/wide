@@ -9,7 +9,7 @@ class RepositoriesController < ApplicationController
 
   around_filter :json_failable_action, :only => [ :save_file, :create_file,
     :create_directory, :rm, :mv, :summary, :commit, :add, :forget, :revert,
-    :mark_resolved, :mark_unresolved, :pull, :push, :async_op_status ]
+    :mark_resolved, :mark_unresolved, :pull, :async_op_status ]
 
   def ls
     entries = @repository.directory_entries(@path)
@@ -108,12 +108,6 @@ class RepositoriesController < ApplicationController
 
   def pull
     op_status = @repository.pull(params[:url])
-
-    render :json => { :success => 1, :async_op_status => op_status }
-  end
-
-  def push
-    op_status = @repository.push(params[:url])
 
     render :json => { :success => 1, :async_op_status => op_status }
   end

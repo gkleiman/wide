@@ -2,7 +2,7 @@ class Repository < ActiveRecord::Base
   include ActiveModel::Validations
 
   cattr_accessor :supported_actions
-  self.supported_actions = %w(add commit history forget mark_resolved mark_unresolved push pull merge)
+  self.supported_actions = %w(add commit history forget mark_resolved mark_unresolved pull merge)
 
   attr_accessor :entries_status
 
@@ -126,10 +126,6 @@ class Repository < ActiveRecord::Base
 
   def pull(url)
     queue_async_operation(:pull, url)
-  end
-
-  def push(url)
-    queue_async_operation(:push, url)
   end
 
   def respond_to?(symbol, include_private = false)

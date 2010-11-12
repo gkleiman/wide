@@ -24,8 +24,6 @@
       %button#commit_button Commit
     - if @project.repository.supports_pull?
       %button#pull_button Pull
-    -#- if @project.repository.supports_push?
-      -#%button#push_button Push
 
   #tree_pane.west
     #tree

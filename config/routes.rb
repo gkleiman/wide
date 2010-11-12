@@ -24,7 +24,6 @@ Wide::Application.routes.draw do
       post 'mark_resolved'
       post 'mark_unresolved'
       post 'commit'
-      post 'push'
       post 'pull'
     end
   end
