@@ -8,10 +8,6 @@ class Repository < ActiveRecord::Base
 
   serialize :async_op_status
 
-  # Status will be 0 if the repository is being initialized/cloned, -1 if
-  # there have been an error during the initialization, and 1 on success.
-  attr_protected :status
-
   belongs_to :project
 
   class ScmAdapterInstalledValidator < ActiveModel::EachValidator
@@ -141,39 +137,30 @@ class Repository < ActiveRecord::Base
     self.entries_status = scm_engine.status
   end
 
-  # These methods should be private, but DelayedJobs can't delay private
-  # methods.
-  def init_or_clone
+  def init_or_clone(url)
     begin
       if url.blank?
         scm_engine.init
       else
         scm_engine.clone(url)
       end
-
-      self.status = 1
-
-      self.save!
-
-      true
     rescue
-      self.status = -1
-
-      self.save!
-
       false
     end
+
+    true
   end
 
-  def async_operation(operation, url)
+  def async_operation(operation, url, delegate_to_scm_engine = true)
     status = 'error'
 
-    begin
-      if(scm_engine.send(operation, url))
+      receiver = self
+      if(delegate_to_scm_engine)
+        receiver = scm_engine
+      end
+      if(receiver.send(operation, url))
         status = 'success'
       end
-    rescue
-    end
 
     self.async_op_status = Wide::Scm::AsyncOpStatus.new(:operation => operation, :status => status)
     self.save!
@@ -215,18 +202,14 @@ class Repository < ActiveRecord::Base
     # Create the directory tree
     FileUtils.mkdir_p(path)
 
-    # Set status to initializing/cloning
-    self.status = 0
-    self.save
-
     # Queue initialization/cloning
-    self.delay.init_or_clone
+    queue_async_operation(:init_or_clone, self.url, false)
 
     true
   end
 
-  def queue_async_operation(operation, url)
-    if(!scm_engine || url.blank? || !scm_engine.class.valid_url?(url))
+  def queue_async_operation(operation, url, delegate_to_scm_engine = true)
+    if(delegate_to_scm_engine && (!scm_engine || url.blank? || !scm_engine.class.valid_url?(url)))
       self.async_op_status = Wide::Scm::AsyncOpStatus.new(:operation => operation, :status => 'error')
 
       self.save!
@@ -237,7 +220,7 @@ class Repository < ActiveRecord::Base
     self.async_op_status = Wide::Scm::AsyncOpStatus.new(:operation => operation)
     self.save!
 
-    self.delay.async_operation(operation, url)
+    self.delay.async_operation(operation, url, delegate_to_scm_engine)
 
     self.async_op_status
   end

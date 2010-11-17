@@ -6,10 +6,11 @@
     = link_to 'New Project', new_project_path, :class => 'ui-icon ui-icon-circle-plus'
   %ul
     - @projects.each do |project|
+      - async_op_status = project.repository.async_op_status
       %li
-        - if project.repository && project.repository.status == 1
+        -if !async_op_status || async_op_status[:operation] != :init_or_clone || async_op_status[:status] == 'success'
           = link_to project.name, project
-        - elsif project.repository && project.repository.status == 0
+        - elsif async_op_status[:operation] == :init_or_clone && async_op_status[:status] == 'running'
           %span= "#{project.name} (Repository being initialized)"
         - else
           %span= "#{project.name} (There has been a problem initializing the repository)"
