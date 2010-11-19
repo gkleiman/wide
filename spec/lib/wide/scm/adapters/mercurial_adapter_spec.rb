@@ -6,7 +6,7 @@ describe Wide::Scm::Adapters::MercurialAdapter do
     FileUtils.rm_rf(Rails.root.join('tmp', 'scm_tests', 'hg_test'))
     FileUtils.cp_r(Rails.root.join('spec', 'fixtures', 'hg_test'), Rails.root.join('tmp', 'scm_tests'))
 
-    @scm = Wide::Scm::Adapters::MercurialAdapter.new(Rails.root.join('tmp', 'scm_tests'))
+    @scm = Wide::Scm::Adapters::MercurialAdapter.new(Rails.root.join('tmp', 'scm_tests', 'hg_test').to_s)
   end
 
   it "should contain .hg in its skip_paths" do

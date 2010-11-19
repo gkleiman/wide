@@ -22,6 +22,8 @@ module Wide
         end
 
         def shellout(cmd, &block)
+          cmd = cmd.to_s
+
           logger.debug "Shelling out: #{cmd}" if logger && logger.debug?
           if Rails.env == 'development'
             # Capture stderr when running in dev environment
