@@ -14,3 +14,7 @@ Factory.define :repository do |r|
   r.association :project
   r.scm "Mercurial"
 end
+
+Factory.define :ssh_key do |s|
+  s.association :user
+end

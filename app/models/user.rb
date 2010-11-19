@@ -4,9 +4,10 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  validates :user_name, :presence => true, :format => { :with => /\A[\w\-]+\z/ }, :uniqueness => true
+  validates :user_name, :presence => true, :format => { :with => /\A[A-Za-z0-9._-]+\z/ }, :uniqueness => true
 
   has_many :projects, :dependent => :destroy
+  has_many :ssh_keys, :dependent => :destroy
 
   attr_accessible_on_create :user_name
   attr_accessible :email, :password, :password_confirmation, :remember_me
