@@ -10,9 +10,6 @@ body, #container {
   height: 93%;
   font-size: 1em !important;
 }
-.center, .east, .west, .south {
-  display: inline-block;
-}
 .ui-resizable-handle {
   background-color: rgb(220, 220, 220);
 }
@@ -69,6 +66,10 @@ body, #container {
   margin-bottom: 0.5em;
   font-size: 0.8em;
   min-height: 22px;
+}
+
+#toolbar, #central_pane, #tree_pane {
+  display: inline-block;
 }
 
 li.root a ins ins.jstree-overlay {
