@@ -44,5 +44,4 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'autotest'
   gem 'autotest-rails'
-  gem 'accept_values_for'
 end

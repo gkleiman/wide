@@ -7,9 +7,6 @@ require 'rspec/rails'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
-# Requires accept_values_for matchers
-require 'accept_values_for'
-
 RSpec.configure do |config|
   config.mock_with :rspec
 
