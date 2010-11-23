@@ -24,9 +24,15 @@
           %h1.ui-widget-header=h yield(:title)
       = yield :alternative_title
 
+      - notification_class = 'ui-state-error' if flash[:alert]
+      - notification_class ||= 'ui-state-highlight' if flash[:notice]
+      - notification_class ||= 'ui-helper-hidden'
       #notification-wrapper.ui-widget
-        #notification.ui-helper-hidden
-          - flash.each do |name, msg|
-            = content_tag :div, msg, :id => "flash_#{name}"
-
+        #notification{:class => notification_class}
+          - if flash[:alert]
+            %span.ui-icon.ui-icon-alert
+            = flash[:alert]
+          - if flash[:notice]
+            %span.ui-icon.ui-icon-info
+            = flash[:notice]
       = yield

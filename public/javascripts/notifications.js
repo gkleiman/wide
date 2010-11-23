@@ -66,3 +66,11 @@ WIDE.notifications = (function () {
       }
     };
 }());
+
+$(function () {
+    var notification_div = $('#notification');
+
+    if(!notification_div.hasClass('ui-helper-hidden')) {
+      notification_div.delay(10000).fadeOut('fast');
+    }
+});
