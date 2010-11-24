@@ -1,5 +1,6 @@
 $(function () {
-    $('#user_submit').button({label: 'Login', width: '50px'})
+    $('input[type=submit]').button({width: '50px'})
+    $('input').addClass('ui-state-default');
     $('input').focus(function () {
       $(this).toggleClass('ui-state-focus');
     });

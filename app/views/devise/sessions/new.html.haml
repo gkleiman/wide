@@ -3,15 +3,15 @@
 
 - title 'Welcome to wIDE!', true
 
-#sign_in_form.ui-widget-content
+.devise_form.ui-widget-content
   %h2.ui-widget-header Login
   = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
     %p
-      = f.label :email, 'Email:'
-      = f.text_field :email, :class => 'ui-state-default'
+      = f.label :email
+      = f.text_field :email
     %p
-      = f.label :password, 'Password:'
-      = f.password_field :password, :class => 'ui-state-default'
+      = f.label :password
+      = f.password_field :password
     - if devise_mapping.rememberable?
       %p#remember_me_p
         = f.check_box :remember_me
