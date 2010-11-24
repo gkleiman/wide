@@ -1,9 +1,14 @@
-%h2 Forgot your password?
-= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f|
-  = devise_error_messages!
-  %p
-    = f.label :email
-    %br/
-    = f.text_field :email
-  %p= f.submit "Send me reset password instructions"
+- content_for :javascripts do
+  = javascript_include_tag 'login.js'
+
+- title 'wIDE | Forgot your password?', true
+
+.devise_form.ui-widget-content
+  %h2 Forgot your password?
+  = form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f|
+    = devise_error_messages!
+    %p
+      = f.label :email
+      = f.text_field :email
+    %p= f.submit "Submit"
 = render :partial => "devise/shared/links"
