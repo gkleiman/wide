@@ -1,6 +1,6 @@
 defaults: &defaults
   repositories_base: <%= Rails.root.join('public', 'repositories') %>
-  compilation_base: <%= Rails.root.join('public', 'bin') %>
+  compilation_base: <%= Rails.root.join('public', 'compiled') %>
 
 development:
   <<: *defaults

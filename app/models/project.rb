@@ -9,8 +9,41 @@ class Project < ActiveRecord::Base
 
   before_validation :set_repository_path
 
+  serialize :compilation_status
+
   def to_param
     self.name
+  end
+
+  def compile
+    # Make sure that the project is not being compiled
+    if(compilation_status && compilation_status[:status] == 'running')
+      return Wide::Scm::AsyncOpStatus.new(:operation => 'compile', :status => 'error')
+    end
+
+    self.compilation_status = Wide::Scm::AsyncOpStatus.new(:operation => 'compile', :status => 'running')
+    self.save!
+
+    Delayed::Job.enqueue(Wide::Jobs::CompileJob.new(id))
+
+    self.compilation_status
+  end
+
+  def compiler_output
+    status = compilation_status
+
+    if(compilation_status && %w(error success).include?(compilation_status[:status]))
+      status = status.merge('output' =>
+                            Wide::CompilerOutputParser.parse_file(File.join(bin_path,
+                                                                            'messages')))
+    end
+
+    status
+  end
+
+  # Returns the path in which the compiled binaries should be stored
+  def bin_path
+    @bin_path ||= Wide::PathUtils.secure_path_join(Settings.compilation_base, File.join(self.user.user_name, self.name))
   end
 
   private

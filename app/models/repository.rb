@@ -209,8 +209,16 @@ class Repository < ActiveRecord::Base
   end
 
   def queue_async_operation(operation, url, delegate_to_scm_engine = true)
+    # Run one async_operation at a time.
+    if self.async_op_status && self.async_op_status[:status] == 'running'
+      return Wide::Scm::AsyncOpStatus.new(:operation => operation, :status => 'error')
+    end
+
+    # If the operation is to be delegated to the scm, ensure that the url is
+    # valid.
     if(delegate_to_scm_engine && (!scm_engine || url.blank? || !scm_engine.class.valid_url?(url)))
-      self.async_op_status = Wide::Scm::AsyncOpStatus.new(:operation => operation, :status => 'error')
+      self.async_op_status = Wide::Scm::AsyncOpStatus.new(:operation => operation,
+                                                          :status => 'error')
 
       self.save!
 
