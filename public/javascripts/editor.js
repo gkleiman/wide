@@ -78,6 +78,8 @@ WIDE.editor = (function () {
     save_button.button().click(function () {
       save_button.button('option', 'disabled', true);
       editor.submit();
+      editor.editor().focus = true;
+
       return false;
     });
   }
@@ -104,6 +106,41 @@ WIDE.editor = (function () {
     if(syntax) {
       editor.syntax = syntax;
     }
+  }
+
+  var edit_file = function(path, line_number) {
+    var file = WIDE.file(path);
+    var file_names, editor_index;
+    var editor;
+
+    // If there's already an editor for the given filename, then select its tab.
+    file_names = $.map(editors,
+        function (value, index) {
+          return value.file_name;
+        });
+    editor_index = $.inArray(file.file_name(), file_names);
+    if(editor_index !== -1) {
+      $('#tabs').tabs('select', '#editor-tab-' + editor_index);
+      if(line_number !== undefined) {
+        editor = editors[editor_index].editor();
+        editor.setLineNumber(line_number);
+        editor.focus = true;
+      }
+      return null;
+    }
+
+    WIDE.notifications.success('Loading ' + path + ' ...');
+    file.cat(
+      function (data) {
+        WIDE.notifications.hide();
+        new_editor({path: path, file_name: file.file_name(), data: data, line_number: line_number});
+      },
+      function (data) {
+        WIDE.notifications.error('Error opening: ' + path);
+
+        return false;
+      }
+    );
   }
 
   var create_editor = function(options) {
@@ -146,55 +183,53 @@ WIDE.editor = (function () {
 
       prepare_save(aux);
       env.editor.textChanged.add(aux.mark_tab_as_dirty);
+
+      if(options.line_number !== undefined) {
+        env.editor.setLineNumber(options.line_number);
+      }
     }
+
+    WIDE.layout.layout();
     initialize_editor(content.get(0), after_init);
 
     return aux;
   }
 
+  var new_editor = function (options) {
+    var editor;
+
+    editor = create_editor(options);
+
+    editor = $.extend(editor,
+      {
+        editor_env: function () {
+          return $(this).find('textarea').get(0).bespin;
+        },
+        editor: function() {
+          var env = this.editor_env();
+          if(env === undefined) {
+            return undefined;
+          }
+          return env.editor;
+        },
+        dimensions_changed: function () {
+          var env = this.editor_env();
+          if(env !== undefined) {
+            env.dimensionsChanged();
+          }
+        },
+      });
+
+    editors[editors.length] = editor;
+
+    return editor;
+  };
+
   var editors = [];
 
   return {
-    new_editor: function (options) {
-      var editor, file_names, editor_index;
-
-      // If there's already an editor for the given filename, then select its tab.
-      file_names = $.map(editors,
-          function (value, index) {
-            return value.file_name;
-          });
-      editor_index = $.inArray(options.file_name, file_names);
-      if(editor_index !== -1) {
-        $('#tabs').tabs('select', '#editor-tab-' + editor_index);
-
-        return null;
-      }
-
-      editor = create_editor(options);
-
-      editor = $.extend(editor,
-        {
-          editor_env: function () {
-            return $(this).find('textarea').get(0).bespin;
-          },
-          editor: function() {
-            var env = this.editor_env();
-            if(env === undefined) {
-              return undefined;
-            }
-            return env.editor;
-          },
-          dimensions_changed: function () {
-            var env = this.editor_env();
-            if(env !== undefined) {
-              env.dimensionsChanged();
-            }
-          },
-        });
-
-      editors[editors.length] = editor;
-
-      return editor;
+    edit_file: function (path, line_number) {
+      return edit_file(path, line_number);
     },
     dimensions_changed: function () {
       for(var i = 0; i < editors.length; i++) {
@@ -215,6 +250,3 @@ WIDE.editor = (function () {
     }
   };
 }());
-
-$(function () {
-});

@@ -301,20 +301,8 @@ $(function () {
             $('#tree').jstree('toggle_node', node);
           } else if(node.attr('rel') == 'file') {
             file_name = node.attr('data-filename');
-            file = WIDE.file(path);
 
-            WIDE.notifications.success('Loading ' + path + ' ...');
-            file.cat(
-              function (data) {
-                WIDE.notifications.hide();
-                WIDE.editor.new_editor({path: path, file_name: file_name, data: data});
-              },
-              function (data) {
-                WIDE.notifications.error('Error opening: ' + path);
-
-                return false;
-              }
-            );
+            WIDE.editor.edit_file(path);
           }
         }
     })
@@ -401,10 +389,5 @@ $(function () {
           $.jstree.rollback(data.rlbk);
         }
     });
-
-    $('#add_file_button').button().click(create_file);
-    $('#add_directory_button').button().click(add_directory);
-    $('#remove_button').button().click(remove_node);
-    $('#rename_button').button().click(rename_node);
   }
 });

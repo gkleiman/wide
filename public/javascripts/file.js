@@ -4,6 +4,10 @@ WIDE.file = (function (path, is_directory, file_name) {
   // Convert whatever is passed to a boolean value
   is_directory = !!is_directory;
 
+  if(file_name === undefined) {
+    file_name = path.replace(/^.*\//, '');
+  }
+
   var perform_action = function (options) {
     var action = options.action;
     var method;
@@ -67,6 +71,9 @@ WIDE.file = (function (path, is_directory, file_name) {
     },
     rm: function (success, fail) {
       perform_action({method: 'post', action: 'rm', success: success, fail: fail});
+    },
+    file_name: function () {
+      return file_name;
     }
   };
 });

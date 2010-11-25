@@ -16,10 +16,6 @@
 
 .layout
   #toolbar.north
-    %button#add_file_button Add File
-    %button#add_directory_button Add Folder
-    %button#rename_button Rename
-    %button#remove_button Remove
     - if @project.repository.supports_commit?
       %button#commit_button Commit
     - if @project.repository.supports_pull?
@@ -30,6 +26,7 @@
   #central_pane.center
     #tabs
       %ul
+
 
 = render :partial => 'commit_dialog', :project => @project
 = render :partial => 'pull_dialog', :project => @project
