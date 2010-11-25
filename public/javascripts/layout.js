@@ -14,9 +14,11 @@ WIDE.layout = (function () {
     var navbar_h = $('.ui-tabs-nav').outerHeight();
 
     $('.ui-tabs-panel').height(tabs_h - navbar_h);
-    $('textarea:visible', '.ui-tabs-panel').height(tabs_h - navbar_h - button_h - 20);
-    $('.bespin:visible', '.ui-tabs-panel').height(tabs_h - navbar_h - button_h - 20);
+
+    $('textarea:visible', '.ui-tabs-panel').height(tabs_h - navbar_h - button_h - 30);
     $('textarea:visible', '.ui-tabs-panel').width(tab_panel_w);
+
+    $('.bespin:visible', '.ui-tabs-panel').height(tabs_h - navbar_h - button_h - 30);
     $('.bespin:visible', '.ui-tabs-panel').width(tab_panel_w);
 
     WIDE.editor.dimensions_changed();
