@@ -27,7 +27,7 @@ WIDE.compile = (function () {
                 WIDE.compilator_output.add_output(response.compile_status.output[i]);
               }
             } else {
-              setTimeout(WIDE.compile.poll_compilator_output, 5000);
+              setTimeout(function () { WIDE.compile.poll_compilator_output(timestamp) }, 5000);
             }
         });
       };
