@@ -24,7 +24,7 @@ module Wide
       # Matches: <resource>:<line>: <(warning|error)>: <description>
       error_or_warning_regexp = /\A([^:]+):(\d+): ([^:]+): (.+)\z/
       # Matches: <resource>: <description>
-      info_regexp = /\A([^:]+): ([^:]+)\z/
+      info_regexp = /\A([^:]+):\s*(.+)\z/
 
       compiler_output = []
       file = File.open(file_name)
@@ -36,7 +36,7 @@ module Wide
         elsif(info_regexp.match(line))
           compiler_output.push(CompilerOutput.new(:type => 'info', :resource => $1, :description => $2))
         else
-          compiler_output.push(CompilerOutput.new(:description => line))
+          compiler_output.push(CompilerOutput.new(:description => line, :type => 'info'))
         end
       end
 
