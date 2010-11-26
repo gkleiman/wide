@@ -51,8 +51,7 @@ module Wide
         else
           project.compilation_status = Wide::Scm::AsyncOpStatus.new(:operation => 'compile', :status => 'success')
           FileUtils.mv(File.join(@dst_path, 'binary'), File.join(project.bin_path, 'binary'))
-          # FIXME descomentar cuando este seguro que dst_path toma el valor correcto
-          #FileUtils.rm_rf(@dst_path)
+          FileUtils.rm_rf(@dst_path)
         end
       end
 

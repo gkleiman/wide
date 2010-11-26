@@ -4,6 +4,11 @@ Wide::Application.routes.draw do
   root :to => "projects#index"
 
   resources :projects, :except => [ :edit, :update ] do
+    member do
+      post 'compile'
+      get 'compiler_output'
+    end
+
     resource :repository, :except => [ :index, :show, :edit, :update, :new, :destroy, :create, :destroy ] do
       get 'ls'
       get 'cat'

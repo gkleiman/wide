@@ -23,7 +23,16 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    raise ActiveRecord::RecordNotFound unless @project
+  end
+
+  def compile
+    compile_status = @project.compile
+
+    render :json => { :success => 1, :compile_status => compile_status }
+  end
+
+  def compiler_output
+    render :json => { :success => 1, :compile_status => @project.compiler_output }
   end
 
   def destroy
@@ -35,6 +44,8 @@ class ProjectsController < ApplicationController
   private
   def load_project
     @project = current_user.projects.find_by_name params[:id]
+
+    raise ActiveRecord::RecordNotFound unless @project
   end
 
 end

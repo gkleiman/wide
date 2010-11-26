@@ -39,6 +39,7 @@ WIDE.compilator_output = (function () {
           $('tr', '#compilator_output_rows').removeClass('ui-state-focus');
           $(this).toggleClass('ui-state-focus');
 
+          if($(this).attr('line_number') && $(this).attr('line_number') >= 0)
           WIDE.editor.edit_file($(this).attr('path'), Number($(this).attr('line_number')));
 
           return false;
