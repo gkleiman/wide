@@ -1,0 +1,17 @@
+#notification-wrapper {
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  top: 0.4em;
+  text-align: center;
+  z-index: 10000;
+}
+#notification {
+  display: inline-block;
+  padding: 0pt 1em;
+  text-align: center;
+}
+#notification > span {
+  display: inline-block;
+  margin-right: 0.3em;
+}

@@ -4,9 +4,9 @@
     'file.js','tree.js', 'compilator_output', 'compile.js',
     'editor.js', 'commit_dialog.js', 'jlayout.border.min.js',
     'jquery.jlayout.min.js', 'jquery.sizes.min.js', 'layout.js',
-    'jquery.tmpl.min.js', 'pull_dialog.js', 'async_op.js'
-  %link(id='bespin_base' href='/bespin')
+    'jquery.tmpl.min.js', 'pull_dialog.js', 'async_op.js', :cache => 'project'
   %meta{:name => 'project_id', :content => @project.to_param}
+  %link(id='bespin_base' href='/bespin')
   = javascript_include_tag '/bespin/BespinEmbedded.js'
 
 - title "wIDE | #{current_user.email} | #{@project.name}", false

@@ -1,0 +1,56 @@
+
+.devise_form {
+  display: block;
+  margin: 1em auto;
+  width: 25%;
+}
+.devise_form p.sign_in {
+  text-align: center;
+}
+.devise_form legend {
+  text-align: center;
+  font-size: 1.2em;
+  width: 100%;
+}
+.devise_form p {
+  display: block;
+  clear: both;
+  padding-top: 0.5em;
+  margin-left: 1em;
+}
+.devise_form label {
+  float: left;
+  text-align: right;
+  font-size: 0.9em;
+  width: 20%;
+  padding-right: 1em;
+}
+.devise_form input {
+  float: left;
+  clear: right;
+  widt: 80%;
+}
+#remember_me_p {
+  padding-left: 35%;
+}
+#remember_me_p label {
+  width: 65%;
+  text-align: left;
+}
+
+#user_submit {
+  display: block !important;
+  float: none !important;
+  font-size: 1em;
+  width: 5em;
+  margin: 0px auto 0.5em;
+}
+
+#login_shared_links {
+  margin-top: 1em;
+  text-align: center;
+}
+#login_shared_links li {
+  display: inline-block;
+  margin-left: 1em;
+}

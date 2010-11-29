@@ -1,0 +1,34 @@
+#tree {
+  height: 100%;
+  overflow: auto;
+  font-size: 0.8em;
+}
+
+li.root a ins ins.jstree-overlay {
+  background-image: none;
+}
+li.root li.modified a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/modified.gif');
+}
+li.root li.added a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/added.gif');
+}
+li.root li.unversioned a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/unversioned.gif');
+}
+li.root li.ignored a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/ignored.gif');
+}
+li.root li.readonly a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/readonly.gif');
+}
+li.root li.unresolved a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/unresolved.gif') !important;
+}
+li.root li.resolved a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/resolved.gif') !important;
+}
+li.root li.removed a ins ins.jstree-overlay {
+  background-image: url('../images/overlays/deleted.gif');
+}
+

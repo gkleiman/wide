@@ -1,0 +1,31 @@
+#projects {
+  width: 35%;
+  margin: 0px auto;
+  padding: 0 5em;
+}
+#projects h1 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0.6em 0 0.4em;
+}
+#projects h1 .title {
+  margin-bottom: 0.4em;
+  float: left;
+}
+#projects h1 .ui-icon-circle-plus {
+  float: left;
+  clear: right;
+}
+#projects ul {
+  display: block;
+  margin: 0px 0px 2em 0.8em;
+  font-size: 1.1em;
+}
+#projects ul li {
+  display: block;
+  clear: both;
+}
+#projects ul li a, #projects ul li span {
+  float: left;
+  margin-right: 0.4em;
+}
