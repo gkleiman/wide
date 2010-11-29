@@ -66,7 +66,7 @@ WIDE.compile = (function () {
 }());
 
 $(function () {
-    $('#compile_button').button().click(function () {
+    $('#compile_button').button({ icons: { primary: 'ui-icon-gear' } }).click(function () {
       WIDE.compile.compile();
     });
 });

@@ -5,7 +5,7 @@ WIDE.layout = (function () {
     var container = $('.layout');
     var central_layout = $('#central_pane');
 
-    container.layout({resize: false, type: 'border', vgap: 8, hgap: 8});
+    container.layout({resize: false, type: 'border', hgap: 8});
     central_layout.layout({resize: false, type: 'border', vgap: 8, hgap: 8});
 
     var tabs_h = $('#tabs').height();

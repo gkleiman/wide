@@ -1,5 +1,5 @@
 .layout {
-  height: 93%;
+  height: 96%;
   font-size: 1em !important;
 }
 .ui-resizable-handle {
@@ -20,15 +20,14 @@
 
 #tree_pane {
   height: 100%;
-  width: 16%;
+  width: 13.54%;
 }
 
 #central_pane {
   height: 100%;
-  width: 74%;
+  width: 86.46%;
 }
 
 #toolbar, #central_pane, #tree_pane {
   display: inline-block;
 }
-
