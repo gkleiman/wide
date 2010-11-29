@@ -33,9 +33,9 @@ class Project < ActiveRecord::Base
     status = compilation_status
 
     if(compilation_status && %w(error success).include?(compilation_status[:status]))
-      status = status.merge('output' =>
-                            Wide::CompilerOutputParser.parse_file(File.join(bin_path,
-                                                                            'messages')))
+      status = status.merge('output' => Wide::CompilerOutputParser.parse_file(
+        File.join(bin_path, 'messages'),
+        Wide::PathUtils.with_trailing_slash(bin_path) + 'tmp/'))
     end
 
     status

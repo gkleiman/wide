@@ -20,7 +20,7 @@ module Wide
 
   class CompilerOutputParser
 
-    def self.parse_file(file_name)
+    def self.parse_file(file_name, source_base = '')
       # Matches: <resource>:<line>: <(warning|error)>: <description>
       error_or_warning_regexp = /\A([^:]+):(\d+): ([^:]+): (.+)\z/
       # Matches: <resource>: <description>
@@ -33,10 +33,15 @@ module Wide
 
         if(error_or_warning_regexp.match(line))
           compiler_output.push(CompilerOutput.new(:resource => $1, :line => $2.to_i, :type => $3, :description => $4))
+          compiler_output.last[:resource].sub!(source_base, '') unless source_base.blank?
+          compiler_output.last[:description].sub!(source_base, '') unless source_base.blank?
         elsif(info_regexp.match(line))
           compiler_output.push(CompilerOutput.new(:type => 'info', :resource => $1, :description => $2))
+          compiler_output.last[:resource].sub!(source_base, '') unless source_base.blank?
+          compiler_output.last[:description].sub!(source_base, '') unless source_base.blank?
         else
           compiler_output.push(CompilerOutput.new(:description => line, :type => 'info'))
+          compiler_output.last[:description].sub!(source_base, '') unless source_base.blank?
         end
       end
 

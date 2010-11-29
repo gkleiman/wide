@@ -1,6 +1,6 @@
 prueba.c: In function "main":
 prueba.c:6: warning: missing terminating " character
-prueba.c:6: error: missing terminating " character
+/home/gkleiman/prueba.c:6: error: missing terminating " character
 prueba.c:7: error: expected expression before "}" token
 prueba.c:7: error: expected ";" before "}" token
 make: *** [prueba] Error 1

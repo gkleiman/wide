@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Wide::CompilerOutputParser do
   it 'should correctly parse gcc output with info, warning and error lines' do
-    result = Wide::CompilerOutputParser.parse_file(Rails.root.join('spec', 'fixtures', 'compiler_output'))
+    result = Wide::CompilerOutputParser.parse_file(Rails.root.join('spec', 'fixtures', 'compiler_output'), '/home/gkleiman/')
 
     result[0].should == Wide::CompilerOutput.new(:type => 'info', :resource => 'prueba.c', :description => 'In function "main":')
     result[1].should == Wide::CompilerOutput.new(:type => 'warning', :resource => 'prueba.c', :description => 'missing terminating " character', :line => 6)
