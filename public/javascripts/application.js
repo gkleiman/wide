@@ -42,8 +42,10 @@ $(function () {
 
     $('#tabs span.ui-icon-close').live('click', function() {
       var index = $('#tabs li').index($(this).parent());
-      $('#tabs').tabs('remove', index);
+
       WIDE.editor.remove_editor(index);
+      $('#tabs').tabs('remove', index);
+
       if($('#tabs li').children().length === 0) {
         $('#tabs').hide();
       }
