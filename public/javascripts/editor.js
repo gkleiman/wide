@@ -1,7 +1,7 @@
 "use strict";
 
 WIDE.editor = (function () {
-  var edit_form_tmpl = '<form accept-charset="UTF-8" action="${WIDE.repository_path()}/save_file" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input name="${csrf_param}" type="hidden" value="${csrf_token}" /> <button name="save_button">Save ${file_name}</button><input name="project_id" type="hidden" value="${project_id}" /><input name="path" type="hidden" value="${path}" /><textarea name="content"></textarea></form>';
+  var edit_form_tmpl = '<form accept-charset="UTF-8" action="${WIDE.repository_path()}/save_file" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input name="${csrf_param}" type="hidden" value="${csrf_token}" /><input name="project_id" type="hidden" value="${project_id}" /><input name="path" type="hidden" value="${path}" /><textarea name="content"></textarea></form>';
 
   var initialize_editor = function (node, after_init) {
     var firstWindowOnBespinLoad;
@@ -43,10 +43,10 @@ WIDE.editor = (function () {
   }
 
   var prepare_save = function (editor) {
-    var save_button = editor.find('[name=save_button]');
+    //var save_button = editor.find('[name=save_button]');
     var fail_func = function (data, result, xhr) {
       WIDE.notifications.error('Error saving: ' + editor.path);
-      save_button.button('option', 'disabled', false).mouseout();
+      //save_button.button('option', 'disabled', false).mouseout();
 
       return false;
     };
@@ -70,18 +70,18 @@ WIDE.editor = (function () {
       } else {
         fail_func(data, result, xhr);
       }
-      save_button.button('option', 'disabled', true).mouseout();
+      //save_button.button('option', 'disabled', true).mouseout();
 
       return false;
     });
 
-    save_button.button().click(function () {
-      save_button.button('option', 'disabled', true);
-      editor.submit();
-      editor.editor().focus = true;
+    //save_button.button().click(function () {
+      //save_button.button('option', 'disabled', true);
+      //editor.submit();
+      //editor.editor().focus = true;
 
-      return false;
-    });
+      //return false;
+    //});
   }
 
   var set_syntax_highlighting = function (editor, file_name) {
@@ -147,14 +147,14 @@ WIDE.editor = (function () {
     var replacements = {csrf_token: WIDE.csrf_token(), csrf_param: WIDE.csrf_param(), project_id: WIDE.project_id()};
     var aux = $.tmpl(edit_form_tmpl, $.extend(options, replacements));
     var content = aux.find('textarea');
-    var save_button = aux.find('[name=save_button]');
+    //var save_button = aux.find('[name=save_button]');
 
     content.val(options.data);
     aux.path = options.path;
     aux.file_name = options.file_name;
 
-    save_button.button().button('option', 'disabled', true).hide();
-    save_button.button('option', 'disabled', true).button('option', 'label', 'Save: ' + aux.file_name).show();
+    //save_button.button().button('option', 'disabled', true).hide();
+    //save_button.button('option', 'disabled', true).button('option', 'label', 'Save: ' + aux.file_name).show();
 
     if($('#tabs li').children().length === 0) {
       $('#tabs').show();
@@ -177,7 +177,7 @@ WIDE.editor = (function () {
 
         aux.modified = true;
         aux.title.text(aux.file_name + ' +');
-        aux.find('[name=save_button]').button('option', 'disabled', false);
+        //aux.find('[name=save_button]').button('option', 'disabled', false);
       }
       aux.modified = false;
 
