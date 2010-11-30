@@ -1,7 +1,7 @@
 "use strict";
 
 WIDE.editor = (function () {
-  var edit_form_tmpl = '<form accept-charset="UTF-8" action="${WIDE.repository_path()}/save_file" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input name="${csrf_param}" type="hidden" value="${csrf_token}" /><input name="project_id" type="hidden" value="${project_id}" /><input name="path" type="hidden" value="${path}" /><textarea name="content"></textarea></form>';
+  var edit_form_tmpl = '<form accept-charset="UTF-8" action="${WIDE.repository_path()}/save_file" data-remote="true" data-type="json" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input name="${csrf_param}" type="hidden" value="${csrf_token}" /><input name="project_id" type="hidden" value="${project_id}" /><input name="path" type="hidden" value="${path}" /><textarea name="content"></textarea></form>';
 
   var editors = [];
 
@@ -63,9 +63,7 @@ WIDE.editor = (function () {
       fail_func();
     });
 
-    $(editor).bind('ajax:success', function (data, result, xhr) {
-      result = $.parseJSON(result);
-
+    $(editor).bind('ajax:success', function (xhr, result, status) {
       if(result.success) {
           editor.mark_tab_as_clean();
 
