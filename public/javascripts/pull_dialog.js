@@ -1,31 +1,5 @@
 "use strict";
 
-WIDE.pull = (function () {
-  return {
-    update_pull_button: function () {
-      var pull_button = $('#pull_button');
-
-      if(pull_button.length == 0)
-        return false;
-
-      pull_button.button().button('option', 'disabled', true).mouseout().blur();
-      $.getJSON(WIDE.repository_path() + '/summary', function (response) {
-        if(!response) {
-          WIDE.notifications.error("An error has happened trying to get the status of the repository.");
-          return false;
-        }
-        if(response.summary['unresolved?'] === true) {
-          pull_button.button('option', 'disabled', true);
-        } else {
-          pull_button.button('option', 'disabled', false);
-        }
-      });
-
-      return true;
-    }
-  };
-}());
-
 $(function () {
   var pull_button = $('#pull_button');
   var pull_dialog = $('#pull_dialog');
@@ -65,7 +39,7 @@ $(function () {
     if(!result.success || result.async_op_status.status == 'error') {
       report_pull_error();
 
-      WIDE.pull.update_pull_button();
+      WIDE.toolbar.update_scm_buttons();
       return false;
     }
 
@@ -77,7 +51,7 @@ $(function () {
         report_pull_error();
       }
 
-      WIDE.pull.update_pull_button();
+      WIDE.toolbar.update_scm_buttons();
     };
 
     WIDE.notifications.activity_started('Pulling from ' + $('input[name=url]', pull_dialog).val() + ' ...');
@@ -85,6 +59,4 @@ $(function () {
     WIDE.async_op.poll_async_op(result.async_op_status.updated_at,
         process_pull_result, report_pull_error);
   });
-
-  WIDE.pull.update_pull_button();
 });

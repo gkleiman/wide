@@ -1,29 +1,5 @@
 "use strict";
 
-WIDE.commit = (function () {
-  return {
-    update_commit_button: function () {
-      if($('#commit_button').length == 0)
-        return false;
-
-      $('#commit_button').button().button('option', 'disabled', true).mouseout().blur();
-      $.getJSON(WIDE.repository_path() + '/summary', function (response) {
-        if(!response) {
-          WIDE.notifications.error("An error has happened trying to get the status of the repository.");
-          return false;
-        }
-        if(response.summary['commitable?'] === true) {
-          $('#commit_button').button('option', 'disabled', false);
-        } else {
-          $('#commit_button').button('option', 'disabled', true);
-        }
-      });
-
-      return true;
-    }
-  };
-}());
-
 $(function () {
   // Commit dialog
   $('#commit_dialog').dialog({
@@ -32,7 +8,7 @@ $(function () {
     width: 500,
     autoOpen: false,
     buttons: {
-      Commit: function () { $('#commit_dialog form').submit(); $(this).dialog('close'); update_commit_button(); },
+      Commit: function () { $('#commit_dialog form').submit(); $(this).dialog('close'); WIDE.toolbars.update_scm_buttons(); },
       Cancel: function () { $(this).dialog('close'); $('#commit_dialog form').get(0).reset(); }
     }
   });
@@ -68,7 +44,4 @@ $(function () {
     $('#commit_dialog form').get(0).reset();
     WIDE.tree.refresh();
   });
-
-
-  WIDE.commit.update_commit_button();
 });

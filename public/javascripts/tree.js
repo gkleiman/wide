@@ -63,7 +63,7 @@ $(function () {
 
     action_func.call(file, function () {
       WIDE.tree.refresh(get_parent(node));
-      WIDE.commit.update_commit_button();
+      WIDE.toolbar.update_scm_buttons();
     }, function () {
       WIDE.notifications.error('Failed to ' + action + ' ' + path);
     });
@@ -314,7 +314,7 @@ $(function () {
 
         file.create(function () {
             WIDE.tree.refresh(get_parent(data.rslt.obj));
-            WIDE.commit.update_commit_button();
+            WIDE.toolbar.update_scm_buttons();
           }, function () {
             WIDE.notifications.error('Error creating: ' + path);
             $.jstree.rollback(data.rlbk);
@@ -334,7 +334,7 @@ $(function () {
           file.mv(dest_path,
             function () {
               WIDE.tree.refresh(data.np);
-              WIDE.commit.update_commit_button();
+              WIDE.toolbar.update_scm_buttons();
             },
             function () {
               WIDE.notifications.error('Error moving: ' + src_path);
@@ -352,7 +352,7 @@ $(function () {
           if(r && r.success) {
             WIDE.tree.refresh(get_parent(data.rslt.obj[0]));
             WIDE.tree.select_node($('#root_node'));
-            WIDE.commit.update_commit_button();
+            WIDE.toolbar.update_scm_buttons();
 
             return true;
           } else {
@@ -377,7 +377,7 @@ $(function () {
           file.mv(dest_path,
             function () {
               WIDE.tree.refresh(get_parent(data.rslt.obj[0]));
-              WIDE.commit.update_commit_button();
+              WIDE.toolbar.update_scm_buttons();
             },
             function () {
               WIDE.notifications.error('Error renaming: ' + src_path);
