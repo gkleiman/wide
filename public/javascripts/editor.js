@@ -45,16 +45,23 @@ WIDE.editor = (function () {
   }
 
   var prepare_save = function (editor) {
-    var save_button = $('[name=save_button]');
-
     var fail_func = function (data, result, xhr) {
       WIDE.notifications.error('Error saving: ' + editor.path);
-      save_button.button('option', 'disabled', false).mouseout();
+
+      WIDE.toolbar.update_save_buttons();
 
       return false;
     };
 
-    $(editor).bind('ajax:failure', function () { fail_func(); });
+    editor.save = function () {
+      $(editor).submit();
+
+      return editor;
+    }
+
+    $(editor).bind('ajax:failure', function () {
+      fail_func();
+    });
 
     $(editor).bind('ajax:success', function (data, result, xhr) {
       result = $.parseJSON(result);
@@ -62,23 +69,16 @@ WIDE.editor = (function () {
       if(result.success) {
           editor.mark_tab_as_clean();
 
-          WIDE.tree.refresh();
           WIDE.toolbar.update_scm_buttons();
       } else {
         fail_func(data, result, xhr);
       }
-      save_button.button('option', 'disabled', true).mouseout();
+
+      WIDE.tree.refresh();
+      WIDE.toolbar.update_save_buttons();
 
       return false;
     });
-
-    //save_button.button().click(function () {
-      //save_button.button('option', 'disabled', true);
-      //editor.submit();
-      //editor.editor().focus = true;
-
-      //return false;
-    //});
   }
 
   var set_syntax_highlighting = function (editor, file_name) {
@@ -164,13 +164,6 @@ WIDE.editor = (function () {
     aux.file_name = options.file_name;
     aux.modified = false;
 
-    aux.mark_tab_as_clean = function () {
-      aux.modified = false;
-      aux.tab_title.text(editor.file_name);
-
-      aux.find('textarea').get(0).bespin.editor.textChanged.add(editor.mark_tab_as_dirty);
-    };
-
     // Set the content of the editor
     content = $('textarea', aux);
     content.val(options.data);
@@ -186,11 +179,22 @@ WIDE.editor = (function () {
 
       set_syntax_highlighting(env.editor, aux.file_name);
 
+      aux.mark_tab_as_clean = function () {
+        env.editor.textChanged.add(aux.mark_tab_as_dirty);
+
+        aux.modified = false;
+        aux.tab_title.text(aux.file_name);
+
+        WIDE.toolbar.update_save_buttons();
+      };
+
       aux.mark_tab_as_dirty = function () {
         env.editor.textChanged.remove(aux.mark_tab_as_dirty);
 
         aux.modified = true;
         aux.tab_title.text(aux.file_name + ' +');
+
+        WIDE.toolbar.update_save_buttons();
       };
 
       prepare_save(aux);
@@ -273,14 +277,32 @@ WIDE.editor = (function () {
       return undefined;
     },
     save_current: function () {
-      WIDE.editor.get_current_editor().save().editor().focus = true;
+      var editor = WIDE.editor.get_current_editor();
+
+      if(editor !== undefined) {
+        editor.save().editor().focus = true;
+      }
     },
     save_all: function () {
       var editor;
       for(var i = 0; i < editors.length; ++i) {
         editor = editors[i];
-        editor.save();
+        if(editor.modified === true) {
+          editor.save();
+        }
       }
+    },
+    modified_editors: function () {
+      var editor;
+      for(var i = 0; i < editors.length; ++i) {
+        editor = editors[i];
+
+        if(editor.modified === true) {
+          return true;
+        }
+      }
+
+      return false;
     }
   };
 }());
