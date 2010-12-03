@@ -19,6 +19,7 @@ gem 'jquery-rails'
 gem 'simple_form'
 gem 'delayed_job', "2.1.0.pre2"
 gem 'settingslogic'
+gem 'typus', :git => 'https://github.com/fesplugas/typus.git'
 
 # Use unicorn as the web server
 # gem 'unicorn'

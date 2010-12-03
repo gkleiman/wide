@@ -11,4 +11,8 @@ class User < ActiveRecord::Base
 
   attr_accessible_on_create :user_name
   attr_accessible :email, :password, :password_confirmation, :remember_me
+
+  def to_label
+    "#{user_name} <#{email}>"
+  end
 end

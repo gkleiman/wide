@@ -1,0 +1,54 @@
+# Typus Models Configuration File
+#
+# Use the README file as a reference to customize settings.
+
+Project:
+  fields:
+    default: user, name, project_type
+    form: user, name, project_type
+  order_by:
+  relationships: project_type, repository, user
+  filters:
+  search: name
+  application: wide
+
+ProjectType:
+  fields:
+    default: name, description
+    form: name, description, makefile_template
+  order_by:
+  relationships:
+  filters:
+  search: name
+  application: wide
+
+Repository:
+  fields:
+    default: project, path, scm
+    form: project, path, url, scm
+  order_by:
+  relationships: project
+  filters:
+  search:
+  application: wide
+
+SshKey:
+  fields:
+    default: user, name_base64_encoded, name, content
+    form: user, name_base64_encoded, name, content
+  order_by:
+  relationships: user
+  filters:
+  search: name
+  application: wide
+
+User:
+  fields:
+    default: email, user_name
+    form: email, user_name
+  order_by:
+  relationships: projects, ssh_keys
+  filters:
+  search:
+  application: wide
+

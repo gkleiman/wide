@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/fesplugas/typus.git
+  revision: 598a7f8ad06714b0181f47cbc2e4e74f450ccc8b
+  specs:
+    typus (3.0.3)
+      will_paginate (~> 3.0.pre2)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -110,6 +117,7 @@ GEM
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
       rack-test (>= 0.5.3)
+    will_paginate (3.0.pre2)
 
 PLATFORMS
   ruby
@@ -128,4 +136,5 @@ DEPENDENCIES
   simple_form
   sqlite3-ruby
   thin
+  typus!
   webrat
