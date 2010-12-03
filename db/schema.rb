@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101124020758) do
+ActiveRecord::Schema.define(:version => 20101203173818) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -27,12 +27,21 @@ ActiveRecord::Schema.define(:version => 20101124020758) do
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
+  create_table "project_types", :force => true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.text     "makefile_template"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "projects", :force => true do |t|
     t.integer  "user_id"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "compilation_status"
+    t.integer  "project_type_id"
   end
 
   add_index "projects", ["name"], :name => "index_projects_on_name"
