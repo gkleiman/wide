@@ -26,6 +26,11 @@ WIDE.compile = (function () {
               for(var i = 0; i < response.compile_status.output.length; ++i) {
                 WIDE.compilator_output.add_output(response.compile_status.output[i]);
               }
+
+              if(response.compile_status.status === 'success') {
+                document.location.href = encodeURI(WIDE.base_path() + '/download_binary');
+                WIDE.compilator_output.add_output({type: 'info', description: 'Compilation successfull, downloading the binary file.'});
+              }
             } else {
               setTimeout(function () { WIDE.compile.poll_compilator_output(timestamp) }, 5000);
             }

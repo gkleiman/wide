@@ -26,9 +26,7 @@ class ProjectsController < ApplicationController
   end
 
   def compile
-    compile_status = @project.compile
-
-    render :json => { :success => 1, :compile_status => compile_status }
+    render :json => { :success => 1, :compile_status => @project.compile }
   end
 
   def compiler_output
@@ -39,6 +37,12 @@ class ProjectsController < ApplicationController
     @project.destroy
 
     redirect_to projects_path
+  end
+
+  def download_binary
+    raise ActiveRecord::RecordNotFound unless @project.compiler_output[:status] == 'success'
+
+    send_file("#{@project.bin_path}/binary", :filename => @project.name)
   end
 
   private

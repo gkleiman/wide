@@ -7,6 +7,7 @@ Wide::Application.routes.draw do
     member do
       post 'compile'
       get 'compiler_output'
+      get 'download_binary'
     end
 
     resource :repository, :except => [ :index, :show, :edit, :update, :new, :destroy, :create, :destroy ] do
