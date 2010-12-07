@@ -77,7 +77,6 @@ ActiveRecord::Schema.define(:version => 20101203184932) do
 
   create_table "ssh_keys", :force => true do |t|
     t.integer  "user_id"
-    t.boolean  "name_base64_encoded"
     t.string   "name"
     t.string   "content"
     t.datetime "created_at"
