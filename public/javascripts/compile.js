@@ -49,6 +49,7 @@ WIDE.compile = (function () {
       };
 
       $('#compile_button').button('option', 'disabled', true).mouseout().blur();
+      WIDE.compilator_output.clear();
       WIDE.notifications.activity_started('Compiling ...');
 
       $.ajax({
