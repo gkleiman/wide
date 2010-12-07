@@ -2,14 +2,16 @@
   display: inline-block;
   position: absolute;
   left: 50%;
-  top: 0.4em;
+  top: 25px;
   text-align: center;
   z-index: 10000;
+  font-size: 13px;
 }
 #notification {
   display: inline-block;
   padding: 0pt 1em;
   text-align: center;
+  opacity: 1;
 }
 #notification > span {
   display: inline-block;

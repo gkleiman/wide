@@ -35,7 +35,7 @@ WIDE.notifications = (function () {
             .html("<span class='ui-icon " + icon_class + "'></span>" + message)
             .removeClass('ui-state-error ui-state-highlight')
             .addClass(div_class)
-            .fadeIn('fast')
+            .show();
 
           if(fade_out) {
             notification_div.delay(delay).fadeOut('fast')
