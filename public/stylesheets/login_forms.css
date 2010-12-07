@@ -1,10 +1,9 @@
-
 .devise_form {
   display: block;
   margin: 1em auto;
-  width: 25%;
+  width: 45%;
 }
-.devise_form p.sign_in {
+.devise_form form p {
   text-align: center;
 }
 .devise_form legend {
@@ -17,32 +16,36 @@
   clear: both;
   padding-top: 0.5em;
   margin-left: 1em;
+  margin-right: 1em;
 }
-.devise_form label {
+.devise_form fieldset label {
   float: left;
   text-align: right;
   font-size: 0.9em;
-  width: 20%;
+  width: 25%;
   padding-right: 1em;
 }
-.devise_form input {
+.devise_form fieldset input {
   float: left;
   clear: right;
-  widt: 80%;
+  width: 60%;
 }
 #remember_me_p {
-  padding-left: 35%;
+  width: 100%;
+  text-align: center;
+}
+#remember_me_p input {
+  display: inline-block;
+  margin-right: 0.3em;
 }
 #remember_me_p label {
-  width: 65%;
+  display: inline-block;
   text-align: left;
 }
 
 #user_submit {
-  display: block !important;
-  float: none !important;
-  font-size: 1em;
-  width: 5em;
+  display: inline-block;
+  font-size: 0.9em;
   margin: 0px auto 0.5em;
 }
 

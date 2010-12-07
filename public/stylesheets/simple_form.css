@@ -1,9 +1,13 @@
 .simple_form label {
   float: left;
-  width: 100px;
+  width: 25%;
   text-align: right;
   margin: 2px 10px;
 }
+.simple_form input {
+  width: 60%;
+}
+
 .simple_form div.input {
   margin-bottom: 10px;
 }
