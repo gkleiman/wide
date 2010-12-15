@@ -13,8 +13,7 @@
 - title "wIDE | #{current_user.email} | #{@project.name}", false
 
 - content_for :alternative_title do
-  #title
-    %h1.ui-widget-header= raw("wIDE | #{link_to(h(current_user.email), root_path)} | #{h(@project.name)}")
+  %h1= raw("wIDE | #{link_to(h(current_user.email), root_path)} | #{h(@project.name)}")
 
 .layout
   #toolbar.north

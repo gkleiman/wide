@@ -1,6 +1,16 @@
+.new_project {
+  width: 45%;
+  margin: 0px auto;
+  padding: 0 5em;
+}
+
+.new_project h1 {
+  margin-bottom: 1em;
+}
+
 #projects {
   width: 35%;
-  margin: 0px auto;
+  margin: 2em auto;
   padding: 0 5em;
 }
 #projects h1 {

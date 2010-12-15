@@ -52,7 +52,9 @@ WIDE.editor = (function () {
     };
 
     editor.save = function () {
-      $(editor).submit();
+      if(editor.modified  === true) {
+        $(editor).submit();
+      }
 
       return editor;
     };
@@ -199,6 +201,10 @@ WIDE.editor = (function () {
       if(options.line_number !== undefined) {
         env.editor.setLineNumber(options.line_number);
       }
+
+      $('textarea', aux).bind('keydown', 'Ctrl+s', function () { WIDE.editor.save_current(); });
+      $('textarea', aux).bind('keydown', 'Meta+s', function () { WIDE.editor.save_current(); });
+
     };
 
     WIDE.layout.layout();
@@ -302,3 +308,8 @@ WIDE.editor = (function () {
     }
   };
 }());
+
+$(function () {
+  $(document).bind('keydown', 'Ctrl+s', function () { WIDE.editor.save_current(); });
+  $(document).bind('keydown', 'Meta+s', function () { WIDE.editor.save_current(); });
+});
