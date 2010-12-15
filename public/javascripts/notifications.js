@@ -1,5 +1,3 @@
-"use strict"
-
 WIDE.notifications = (function () {
   var delay = 10000;
   var notification_div;

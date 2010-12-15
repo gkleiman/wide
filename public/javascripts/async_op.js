@@ -1,5 +1,3 @@
-"use strict";
-
 WIDE.async_op = (function () {
   var async_op_in_progress = false;
 

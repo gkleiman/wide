@@ -1,5 +1,3 @@
-"use strict";
-
 var WIDE = (function () {
   var project_id = function () {
     return $('meta[name=project_id]').attr('content');

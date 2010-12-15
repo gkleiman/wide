@@ -1,4 +1,3 @@
-"use strict";
 (function ($) {
   var show_placeholder_if_blank = function (o, text) {
     if(o.val() === '') {

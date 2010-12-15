@@ -1,4 +1,3 @@
-"use strict";
 (function ($) {
   $.jstree.plugin("overlays", {
     __init : function () {

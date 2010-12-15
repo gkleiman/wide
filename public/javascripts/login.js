@@ -1,5 +1,3 @@
-"use strict";
-
 $(function () {
   $('input[type=submit]').button({
     width: '50px'

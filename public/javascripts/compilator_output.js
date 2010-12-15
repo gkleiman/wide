@@ -1,5 +1,3 @@
-"use strict";
-
 WIDE.compilator_output = (function () {
   var row_tmpl = '<tr class="ui-state-default"><td class="col0"><span class="ui-icon ui-icon-${icon_name}"></span></td><td class="col1">${description}</td><td class="col2">${resource}</td><td class="col3">${line}</td></tr>';
 

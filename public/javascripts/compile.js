@@ -1,5 +1,3 @@
-"use strict";
-
 WIDE.compile = (function () {
   var compilation_in_progress = false;
 

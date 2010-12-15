@@ -1,5 +1,3 @@
-"use strict";
-
 WIDE.toolbar = (function () {
   return {
     update_scm_buttons: function () {

@@ -1,5 +1,3 @@
-"use strict";
-
 WIDE.tree = (function () {
   return {
     refresh: function (node) {

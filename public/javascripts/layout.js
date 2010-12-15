@@ -1,5 +1,3 @@
-"use strict";
-
 WIDE.layout = (function () {
   var layout = function () {
     var container = $('.layout');

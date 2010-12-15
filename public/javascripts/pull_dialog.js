@@ -1,5 +1,3 @@
-"use strict";
-
 $(function () {
   var pull_button = $('#pull_button');
   var pull_dialog = $('#pull_dialog');

@@ -1,5 +1,3 @@
-"use strict";
-
 WIDE.file = function (path, is_directory, file_name) {
   // Convert whatever is passed to a boolean value
   is_directory = !!is_directory;

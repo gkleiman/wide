@@ -1,5 +1,3 @@
-"use strict";
-
 $(function () {
   // Commit dialog
   $('#commit_dialog').dialog({
