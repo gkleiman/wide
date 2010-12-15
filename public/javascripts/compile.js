@@ -6,34 +6,38 @@ WIDE.compile = (function () {
   return {
     poll_compilator_output: function (timestamp) {
       var perform_poll = function () {
-        $.getJSON(WIDE.base_path() + '/compiler_output',
-          function (response) {
-            if(!response || !response.success) {
-              compilation_in_progress = false;
+        $.getJSON(WIDE.base_path() + '/compiler_output', function (response) {
+          if(!response || !response.success) {
+            compilation_in_progress = false;
 
-              WIDE.notifications.error('Compilation failed.');
+            WIDE.notifications.error('Compilation failed.');
 
-              return false;
+            return false;
+          }
+
+          if(response.compile_status.updated_at > timestamp) {
+            compilation_in_progress = false;
+
+            $('#compile_button').button('option', 'disabled', false);
+            WIDE.notifications.success('Compilation finished.');
+
+            WIDE.compilator_output.clear();
+            for(var i = 0; i < response.compile_status.output.length; ++i) {
+              WIDE.compilator_output.add_output(response.compile_status.output[i]);
             }
 
-            if(response.compile_status.updated_at > timestamp) {
-              compilation_in_progress = false;
-
-              $('#compile_button').button('option', 'disabled', false);
-              WIDE.notifications.success('Compilation finished.');
-
-              WIDE.compilator_output.clear();
-              for(var i = 0; i < response.compile_status.output.length; ++i) {
-                WIDE.compilator_output.add_output(response.compile_status.output[i]);
-              }
-
-              if(response.compile_status.status === 'success') {
-                document.location.href = encodeURI(WIDE.base_path() + '/download_binary');
-                WIDE.compilator_output.add_output({type: 'info', description: 'Compilation successfull, downloading the binary file.'});
-              }
-            } else {
-              setTimeout(function () { WIDE.compile.poll_compilator_output(timestamp) }, 5000);
+            if(response.compile_status.status === 'success') {
+              document.location.href = encodeURI(WIDE.base_path() + '/download_binary');
+              WIDE.compilator_output.add_output({
+                type: 'info',
+                description: 'Compilation successfull, downloading the binary file.'
+              });
             }
+          } else {
+            setTimeout(function () {
+              WIDE.compile.poll_compilator_output(timestamp)
+            }, 5000);
+          }
         });
       };
 
@@ -42,8 +46,56 @@ WIDE.compile = (function () {
     },
     is_compilation_in_progress: function () {
       return compilation_in_progress == true;
-   },
-   compile: function () {
+    }"use strict";
+
+WIDE.compile = (function () {
+  var compilation_in_progress = false;
+
+  return {
+    poll_compilator_output: function (timestamp) {
+      var perform_poll = function () {
+        $.getJSON(WIDE.base_path() + '/compiler_output', function (response) {
+          if(!response || !response.success) {
+            compilation_in_progress = false;
+
+            WIDE.notifications.error('Compilation failed.');
+
+            return false;
+          }
+
+          if(response.compile_status.updated_at > timestamp) {
+            compilation_in_progress = false;
+
+            $('#compile_button').button('option', 'disabled', false);
+            WIDE.notifications.success('Compilation finished.');
+
+            WIDE.compilator_output.clear();
+            for(var i = 0; i < response.compile_status.output.length; ++i) {
+              WIDE.compilator_output.add_output(response.compile_status.output[i]);
+            }
+
+            if(response.compile_status.status === 'success') {
+              document.location.href = encodeURI(WIDE.base_path() + '/download_binary');
+              WIDE.compilator_output.add_output({
+                type: 'info',
+                description: 'Compilation successfull, downloading the binary file.'
+              });
+            }
+          } else {
+            setTimeout(function () {
+              WIDE.compile.poll_compilator_output(timestamp)
+            }, 5000);
+          }
+        });
+      };
+
+      compilation_in_progress = true;
+      perform_poll();
+    },
+    is_compilation_in_progress: function () {
+      return compilation_in_progress == true;
+    },
+    compile: function () {
       var error_handler = function (xhr, textStatus, errorThrown) {
         WIDE.notifications.error('Compilation failed.');
       };
@@ -72,7 +124,11 @@ WIDE.compile = (function () {
 }());
 
 $(function () {
-    $('#compile_button').button({ icons: { primary: 'ui-icon-gear' } }).click(function () {
-      WIDE.compile.compile();
-    });
-});
+  $('#compile_button').button({
+    icons: {
+      primary: 'ui-icon-gear'
+    }
+  }).click(function () {
+    WIDE.compile.compile();
+  });
+});,

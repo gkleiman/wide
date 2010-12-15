@@ -1,14 +1,14 @@
 "use strict";
 (function ($) {
   var show_placeholder_if_blank = function (o, text) {
-    if(o.val() === '' ) {
-      o.val(text).css('color','#b7b7b7').css('font-style','italic');
+    if(o.val() === '') {
+      o.val(text).css('color', '#b7b7b7').css('font-style', 'italic');
     }
   }
 
   var clear_placeholder_if_not_blank = function (o, text) {
     if(o.val() === text) {
-      o.val('').css('color','').css('font-style','normal');
+      o.val('').css('color', '').css('font-style', 'normal');
     }
   }
 

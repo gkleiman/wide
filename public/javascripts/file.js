@@ -14,9 +14,14 @@ WIDE.file = function (path, is_directory, file_name) {
     var data;
 
     if(options.dest_path !== undefined) {
-      data = { src_path: path, dest_path: options.dest_path };
+      data = {
+        src_path: path,
+        dest_path: options.dest_path
+      };
     } else {
-      data = { path: path };
+      data = {
+        path: path
+      };
     }
 
     if(options.method === 'get') {
@@ -26,52 +31,95 @@ WIDE.file = function (path, is_directory, file_name) {
     }
 
     method(
-      WIDE.repository_path() + '/' + action,
-      data,
-      function (r) {
-        if(r.success === undefined || r.success === 1) {
-          if(typeof(options.success) === 'function') {
-            options.success.call(this, r);
-          }
-        } else {
-          if(typeof(options.fail) === 'function') {
-            options.fail.call(this, r);
-          }
+    WIDE.repository_path() + '/' + action, data, function (r) {
+      if(r.success === undefined || r.success === 1) {
+        if(typeof(options.success) === 'function') {
+          options.success.call(this, r);
+        }
+      } else {
+        if(typeof(options.fail) === 'function') {
+          options.fail.call(this, r);
         }
       }
-    );
+    });
   };
 
   return {
     // SCM functions
     add: function (success, fail) {
-      perform_action({method: 'post', action: 'add', success: success, fail: fail});
+      perform_action({
+        method: 'post',
+        action: 'add',
+        success: success,
+        fail: fail
+      });
     },
     forget: function (success, fail) {
-      perform_action({method: 'post', action: 'forget', success: success, fail: fail});
+      perform_action({
+        method: 'post',
+        action: 'forget',
+        success: success,
+        fail: fail
+      });
     },
     revert: function (success, fail) {
-      perform_action({method: 'post', action: 'revert', success: success, fail: fail});
+      perform_action({
+        method: 'post',
+        action: 'revert',
+        success: success,
+        fail: fail
+      });
     },
     mark_resolved: function (success, fail) {
-      perform_action({method: 'post', action: 'mark_resolved', success: success, fail: fail});
+      perform_action({
+        method: 'post',
+        action: 'mark_resolved',
+        success: success,
+        fail: fail
+      });
     },
     mark_unresolved: function (success, fail) {
-      perform_action({method: 'post', action: 'mark_unresolved', success: success, fail: fail});
+      perform_action({
+        method: 'post',
+        action: 'mark_unresolved',
+        success: success,
+        fail: fail
+      });
     },
     // fs functions
     create: function (success, fail) {
       var action = 'create_' + (is_directory ? 'directory' : 'file');
-      perform_action({method: 'post', action: action, success: success, fail: fail});
+      perform_action({
+        method: 'post',
+        action: action,
+        success: success,
+        fail: fail
+      });
     },
     mv: function (dest_path, success, fail) {
-      perform_action({method: 'post', action: 'mv', dest_path: dest_path, success: success, fail: fail});
+      perform_action({
+        method: 'post',
+        action: 'mv',
+        dest_path: dest_path,
+        success: success,
+        fail: fail
+      });
     },
     cat: function (success, fail) {
-      perform_action({method: 'get', action: 'cat', success: success, fail: fail});
+      perform_action({
+        method: 'get',
+        action: 'cat',
+        success: success,
+        fail: fail
+      });
     },
     rm: function (success, fail) {
-      perform_action({method: 'post', action: 'rm', success: success, fail: fail});
+      perform_action({
+        method: 'post',
+        action: 'rm',
+        success: success,
+        fail: fail
+      });
     },
     file_name: function () {
       return file_name;

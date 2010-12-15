@@ -8,23 +8,29 @@ $(function () {
     width: 500,
     autoOpen: false,
     buttons: {
-      Commit: function () { $('#commit_dialog form').submit(); $(this).dialog('close'); WIDE.toolbars.update_scm_buttons(); },
-      Cancel: function () { $(this).dialog('close'); $('#commit_dialog form').get(0).reset(); }
+      Commit: function () {
+        $('#commit_dialog form').submit();
+        $(this).dialog('close');
+        WIDE.toolbars.update_scm_buttons();
+      },
+      Cancel: function () {
+        $(this).dialog('close');
+        $('#commit_dialog form').get(0).reset();
+      }
     }
   });
 
   $('#commit_button').click(function () {
     $('#commit_button').attr('disabled', 'disabled');
     $('#commit_dialog pre.description').load(
-      WIDE.repository_path() + '/status',
-      function (response, status, xhr) {
-        if(status !== 'error') {
-          $('#commit_dialog textarea').placeholder('Type your commit message here.');
+    WIDE.repository_path() + '/status', function (response, status, xhr) {
+      if(status !== 'error') {
+        $('#commit_dialog textarea').placeholder('Type your commit message here.');
 
-          $('#commit_dialog').dialog('open');
-        }
+        $('#commit_dialog').dialog('open');
+      }
 
-        $('#commit_button').button('option', 'disabled', false);
+      $('#commit_button').button('option', 'disabled', false);
     });
 
     return false;

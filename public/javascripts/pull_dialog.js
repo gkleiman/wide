@@ -12,8 +12,14 @@ $(function () {
     autoOpen: false,
     resizable: false,
     buttons: {
-      Pull: function () { $('form', pull_dialog).submit(); $(this).dialog('close'); },
-      Cancel: function () { $(this).dialog('close'); pull_button.button('option', 'disabled', false); }
+      Pull: function () {
+        $('form', pull_dialog).submit();
+        $(this).dialog('close');
+      },
+      Cancel: function () {
+        $(this).dialog('close');
+        pull_button.button('option', 'disabled', false);
+      }
     }
   });
 
@@ -56,7 +62,6 @@ $(function () {
 
     WIDE.notifications.activity_started('Pulling from ' + $('input[name=url]', pull_dialog).val() + ' ...');
 
-    WIDE.async_op.poll_async_op(result.async_op_status.updated_at,
-        process_pull_result, report_pull_error);
+    WIDE.async_op.poll_async_op(result.async_op_status.updated_at, process_pull_result, report_pull_error);
   });
 });

@@ -5,11 +5,19 @@ WIDE.layout = (function () {
     var container = $('.layout');
     var central_layout = $('#central_pane');
     var tab_panel = $('.ui-tabs-panel');
-    var height_difference, tabs_h, navbar_h, form_w, tab_panel_border,
-        tab_panel_padding;
+    var height_difference, tabs_h, navbar_h, form_w, tab_panel_border, tab_panel_padding;
 
-    container.layout({resize: false, type: 'border', hgap: 8});
-    central_layout.layout({resize: false, type: 'border', vgap: 8, hgap: 8});
+    container.layout({
+      resize: false,
+      type: 'border',
+      hgap: 8
+    });
+    central_layout.layout({
+      resize: false,
+      type: 'border',
+      vgap: 8,
+      hgap: 8
+    });
 
     // Some dark magic to make the editor resize
     tabs_h = $('#tabs').height();
@@ -21,8 +29,7 @@ WIDE.layout = (function () {
     tab_panel_border = tab_panel.border();
     tab_panel_padding = tab_panel.padding();
 
-    height_difference = tab_panel_border.bottom + tab_panel_border.top +
-                        tab_panel_padding.bottom + tab_panel_padding.top;
+    height_difference = tab_panel_border.bottom + tab_panel_border.top + tab_panel_padding.bottom + tab_panel_padding.top;
 
     $('.ui-tabs-panel').height(tabs_h - navbar_h - height_difference);
     $('form', '.ui-tabs-panel').height(tabs_h - navbar_h - height_difference);
@@ -33,7 +40,9 @@ WIDE.layout = (function () {
   };
 
   return {
-    layout: function() { layout(); }
+    layout: function () {
+      layout();
+    }
   };
 }());
 

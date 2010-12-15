@@ -9,27 +9,29 @@ WIDE.editor = (function () {
     var firstWindowOnBespinLoad;
 
     function init() {
-        bespin.useBespin(node, {
-            stealFocus: true
-        }).then(function (env) {
-          // Get the editor.
-          node.bespin = env;
-          if(after_init !== undefined) {
-            after_init.call();
-          }
-        }, function (error) {
-            throw new Error("Launch failed: " + error);
-        });
+      bespin.useBespin(node, {
+        stealFocus: true
+      }).then(function (env) {
+        // Get the editor.
+        node.bespin = env;
+        if(after_init !== undefined) {
+          after_init.call();
+        }
+      }, function (error) {
+        throw new Error("Launch failed: " + error);
+      });
     }
 
     // Check if Bespin is already loaded or currently loading. In this case,
     // bind the init function to the `load` promise.
-    if (typeof bespin !== 'undefined' && typeof bespin.loaded !== 'undefined') {
+    if(typeof bespin !== 'undefined' && typeof bespin.loaded !== 'undefined') {
       bespin.loaded.then(init);
-    } else if (typeof window.onBespinLoad === 'undefined') {
+    } else if(typeof window.onBespinLoad === 'undefined') {
       // If the `window.onBespinLoad` function is undefined, we can set the init
       // function so that it is called when Bespin is loaded.
-      window.onBespinLoad = function () { init(after_init); };
+      window.onBespinLoad = function () {
+        init(after_init);
+      };
     } else {
       // If there is already a function listening to the `window.onBespinLoad`
       // function, then create a new function that calls the old
@@ -52,7 +54,7 @@ WIDE.editor = (function () {
     };
 
     editor.save = function () {
-      if(editor.modified  === true) {
+      if(editor.modified === true) {
         $(editor).submit();
       }
 
@@ -65,9 +67,9 @@ WIDE.editor = (function () {
 
     $(editor).bind('ajax:success', function (xhr, result, status) {
       if(result.success) {
-          editor.mark_tab_as_clean();
+        editor.mark_tab_as_clean();
 
-          WIDE.toolbar.update_scm_buttons();
+        WIDE.toolbar.update_scm_buttons();
       } else {
         fail_func(data, result, xhr);
       }
@@ -83,7 +85,7 @@ WIDE.editor = (function () {
     var extension = file_name.substr(file_name.lastIndexOf(".") + 1);
     var syntax;
 
-    switch(extension) {
+    switch (extension) {
       case 'h':
       case 'hpp':
       case 'c':
@@ -103,16 +105,15 @@ WIDE.editor = (function () {
     }
   };
 
-  var edit_file = function(path, line_number) {
+  var edit_file = function (path, line_number) {
     var file = WIDE.file(path);
     var file_names, editor_index;
     var editor;
 
     // If there's already an editor for the given filename, then select its tab.
-    file_names = $.map(editors,
-        function (value, index) {
-          return value.file_name;
-        });
+    file_names = $.map(editors, function (value, index) {
+      return value.file_name;
+    });
     editor_index = $.inArray(file.file_name(), file_names);
     if(editor_index !== -1) {
       $('#tabs').tabs('select', '#editor-tab-' + editor_index);
@@ -126,20 +127,28 @@ WIDE.editor = (function () {
 
     WIDE.notifications.success('Loading ' + path + ' ...');
     file.cat(
-      function (data) {
-        WIDE.notifications.hide();
-        new_editor({path: path, file_name: file.file_name(), data: data, line_number: line_number});
-      },
-      function (data) {
-        WIDE.notifications.error('Error opening: ' + path);
 
-        return false;
-      }
-    );
+    function (data) {
+      WIDE.notifications.hide();
+      new_editor({
+        path: path,
+        file_name: file.file_name(),
+        data: data,
+        line_number: line_number
+      });
+    }, function (data) {
+      WIDE.notifications.error('Error opening: ' + path);
+
+      return false;
+    });
   };
 
-  var create_editor = function(options) {
-    var replacements = {csrf_token: WIDE.csrf_token(), csrf_param: WIDE.csrf_param(), project_id: WIDE.project_id()};
+  var create_editor = function (options) {
+    var replacements = {
+      csrf_token: WIDE.csrf_token(),
+      csrf_param: WIDE.csrf_param(),
+      project_id: WIDE.project_id()
+    };
     var aux = $.tmpl(edit_form_tmpl, $.extend(options, replacements));
     var content;
 
@@ -202,8 +211,12 @@ WIDE.editor = (function () {
         env.editor.setLineNumber(options.line_number);
       }
 
-      $('textarea', aux).bind('keydown', 'Ctrl+s', function () { WIDE.editor.save_current(); });
-      $('textarea', aux).bind('keydown', 'Meta+s', function () { WIDE.editor.save_current(); });
+      $('textarea', aux).bind('keydown', 'Ctrl+s', function () {
+        WIDE.editor.save_current();
+      });
+      $('textarea', aux).bind('keydown', 'Meta+s', function () {
+        WIDE.editor.save_current();
+      });
 
     };
 
@@ -219,25 +232,24 @@ WIDE.editor = (function () {
 
     editor = create_editor(options);
 
-    $.extend(editor,
-      {
-        editor_env: function () {
-          return editor.env;
-        },
-        editor: function() {
-          var env = editor.editor_env();
-          if(env === undefined) {
-            return undefined;
-          }
-          return env.editor;
-        },
-        dimensions_changed: function () {
-          var env = editor.editor_env();
-          if(env !== undefined) {
-            env.dimensionsChanged();
-          }
+    $.extend(editor, {
+      editor_env: function () {
+        return editor.env;
+      },
+      editor: function () {
+        var env = editor.editor_env();
+        if(env === undefined) {
+          return undefined;
         }
-      });
+        return env.editor;
+      },
+      dimensions_changed: function () {
+        var env = editor.editor_env();
+        if(env !== undefined) {
+          env.dimensionsChanged();
+        }
+      }
+    });
 
     editors[editors.length] = editor;
 
@@ -310,6 +322,10 @@ WIDE.editor = (function () {
 }());
 
 $(function () {
-  $(document).bind('keydown', 'Ctrl+s', function () { WIDE.editor.save_current(); });
-  $(document).bind('keydown', 'Meta+s', function () { WIDE.editor.save_current(); });
+  $(document).bind('keydown', 'Ctrl+s', function () {
+    WIDE.editor.save_current();
+  });
+  $(document).bind('keydown', 'Meta+s', function () {
+    WIDE.editor.save_current();
+  });
 });
