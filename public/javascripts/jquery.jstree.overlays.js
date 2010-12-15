@@ -15,7 +15,7 @@
     },
     _fn : {
       _prepare_overlays : function (obj) {
-        obj = !obj || obj == -1 ? this.get_container() : this._get_node(obj);
+        obj = !obj || obj === -1 ? this.get_container() : this._get_node(obj);
         var c, _this = this, t;
         obj.each(function () {
           t = $(this);

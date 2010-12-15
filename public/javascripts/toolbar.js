@@ -6,8 +6,9 @@ WIDE.toolbar = (function () {
         var pull_button = $('#pull_button');
         var commit_button = $('#commit_button');
 
-        if(commit_button.length == 0 && pull_button.length == 0)
+        if(commit_button.length === 0 && pull_button.length === 0) {
           return false;
+        }
 
         commit_button.button().button('option', 'disabled', true).mouseout().blur();
         $.getJSON(WIDE.repository_path() + '/summary', function (response) {
@@ -16,7 +17,7 @@ WIDE.toolbar = (function () {
             return false;
           }
 
-          if(commit_button.length != 0) {
+          if(commit_button.length !== 0) {
             if(response.summary['commitable?'] === true) {
               commit_button.button('option', 'disabled', false).mouseout().blur();
             } else {
@@ -24,7 +25,7 @@ WIDE.toolbar = (function () {
             }
           }
 
-          if(pull_button.length != 0) {
+          if(pull_button.length !== 0) {
             if(response.summary['unresolved?'] === true) {
               pull_button.button('option', 'disabled', true).mouseout().blur();
             } else {

@@ -21,8 +21,8 @@ WIDE.layout = (function () {
     tab_panel_border = tab_panel.border();
     tab_panel_padding = tab_panel.padding();
 
-    height_difference = tab_panel_border['bottom'] + tab_panel_border['top'] +
-                        tab_panel_padding['bottom'] + tab_panel_padding['top'];
+    height_difference = tab_panel_border.bottom + tab_panel_border.top +
+                        tab_panel_padding.bottom + tab_panel_padding.top;
 
     $('.ui-tabs-panel').height(tabs_h - navbar_h - height_difference);
     $('form', '.ui-tabs-panel').height(tabs_h - navbar_h - height_difference);
@@ -30,7 +30,7 @@ WIDE.layout = (function () {
     $('.bespin:visible', '.ui-tabs-panel').height(tabs_h - navbar_h - height_difference - 5).width(form_w + 1);
 
     WIDE.editor.dimensions_changed();
-  }
+  };
 
   return {
     layout: function() { layout(); }

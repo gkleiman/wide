@@ -11,7 +11,7 @@ WIDE.notifications = (function () {
     };
 
     var add_notification = function (notification_type, message, fade_out) {
-        var div_class = (notification_type === 'error') ? 'ui-state-error' : 'ui-state-highlight'
+        var div_class = (notification_type === 'error') ? 'ui-state-error' : 'ui-state-highlight';
         var icon_class;
         var set_message_and_display;
 
@@ -35,12 +35,12 @@ WIDE.notifications = (function () {
             .html("<span class='ui-icon " + icon_class + "'></span>" + message)
             .removeClass('ui-state-error ui-state-highlight')
             .addClass(div_class)
-            .fadeIn('fast')
+            .fadeIn('fast');
 
           if(fade_out) {
-            notification_div.delay(delay).fadeOut('fast')
+            notification_div.delay(delay).fadeOut('fast');
           }
-        }
+        };
 
         if(notification_div.css('display') !== 'hidden') {
           notification_div

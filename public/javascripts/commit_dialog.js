@@ -32,8 +32,10 @@ $(function () {
 
   $('#commit_dialog').bind('ajax:before', function () {
     var value = $('#commit_dialog textarea').val();
-    if(value === 'Type your commit message here.' || value == '')
+    if(value === 'Type your commit message here.' || value === '') {
       return false;
+    }
+
     return true;
   }).bind('dialogclose', function (event, ui) {
     $('#commit_button').mouseout().blur();

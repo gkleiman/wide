@@ -1,5 +1,7 @@
+"use strict";
+
 $(function () {
-    $('input[type=submit]').button({width: '50px'})
+    $('input[type=submit]').button({width: '50px'});
     $('input').addClass('ui-state-default');
     $('input').focus(function () {
       $(this).addClass('ui-state-focus');

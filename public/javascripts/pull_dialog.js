@@ -36,7 +36,7 @@ $(function () {
 
     result = $.parseJSON(result);
 
-    if(!result.success || result.async_op_status.status == 'error') {
+    if(!result.success || result.async_op_status.status === 'error') {
       report_pull_error();
 
       WIDE.toolbar.update_scm_buttons();
@@ -44,7 +44,7 @@ $(function () {
     }
 
     var process_pull_result = function (result) {
-      if(result.success && result.async_op_status.status == 'success') {
+      if(result.success && result.async_op_status.status === 'success') {
         WIDE.notifications.success('Pull successfull.');
         WIDE.tree.refresh();
       } else {

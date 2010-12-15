@@ -12,6 +12,10 @@ WIDE.tree = (function () {
 }());
 
 $(function () {
+  var get_parent = function (node) {
+      return $.jstree._reference('#tree')._get_parent(node);
+  };
+
   var get_insertion_node = function() {
     var selected_node = $('#tree').jstree('get_selected');
     var root_node = $('#root_node');
@@ -24,22 +28,20 @@ $(function () {
     }
 
     return selected_node;
-  }
+  };
 
   var get_path = function (node) {
-    path = $('#tree').jstree('get_path', node)
-    if(path.length > 0)
+    var path = $('#tree').jstree('get_path', node);
+    if(path.length > 0) {
       path.shift();
-    else
+    } else {
       path = [''];
+    }
+
     path = path.join('/');
 
     return path;
-  }
-
-  var get_parent = function (node) {
-      return $.jstree._reference('#tree')._get_parent(node);
-  }
+  };
 
   /*
   * Some operations (like remove, move, and rename) change the tree. This
@@ -54,7 +56,7 @@ $(function () {
       $.jstree.rollback(rlbk);
 
       return path;
-  }
+  };
 
   var perform_scm_action = function (node, action) {
     var path = get_path(node);
@@ -67,28 +69,28 @@ $(function () {
     }, function () {
       WIDE.notifications.error('Failed to ' + action + ' ' + path);
     });
-  }
+  };
 
   var create_file = function () {
     var insertion_node = get_insertion_node();
 
     $('#tree').jstree('create', insertion_node, 'last', { attr: { rel: 'file' }, data: 'New File' });
     return false;
-  }
+  };
   var add_directory = function () {
     var insertion_node = get_insertion_node();
 
     $('#tree').jstree('create', insertion_node, 'last', { attr: { rel: 'directory' }, data: 'New Folder' });
     return false;
-  }
+  };
   var remove_node = function () {
     $('#tree').jstree('remove');
     return false;
-  }
+  };
   var rename_node = function () {
     $('#tree').jstree('rename');
     return false;
-  }
+  };
 
   var context_menu_options = function (node) {
     var default_menu = {
@@ -181,7 +183,7 @@ $(function () {
       });
     }
 
-    if(node.hasClass('unversioned') || node.hasClass('removed') || node.attr('rel') == 'directory') {
+    if(node.hasClass('unversioned') || node.hasClass('removed') || node.attr('rel') === 'directory') {
       add_scm_menu = true;
 
       $.extend(scm_menu.scm.submenu,
@@ -212,7 +214,7 @@ $(function () {
     }
 
     return default_menu;
-  }
+  };
 
   if($.jstree !== undefined) {
     $.jstree._themes = '/javascripts/themes/';
@@ -233,7 +235,7 @@ $(function () {
           data: function (n) {
             var path = '-1';
 
-            if(n != '-1') {
+            if(n !== '-1') {
               path = get_path(n);
             }
             return { path: path };
@@ -292,14 +294,14 @@ $(function () {
     .bind('dblclick.jstree',
       function (e) {
         var node = $('#tree').jstree('get_selected');
-        var path, file_name, file;
+        var path, file_name;
 
         if(node !== undefined) {
           path = get_path(node);
 
-          if(node.attr('rel') == 'directory') {
+          if(node.attr('rel') === 'directory') {
             $('#tree').jstree('toggle_node', node);
-          } else if(node.attr('rel') == 'file') {
+          } else if(node.attr('rel') === 'file') {
             file_name = node.attr('data-filename');
 
             WIDE.editor.edit_file(path);
@@ -309,7 +311,7 @@ $(function () {
     .bind('create.jstree',
       function (e, data) {
         var path = get_path(data.rslt.obj);
-        var type = data.rslt.obj.attr('rel')
+        var type = data.rslt.obj.attr('rel');
         var file = WIDE.file(path, type === 'directory');
 
         file.create(function () {
@@ -361,7 +363,7 @@ $(function () {
             $.jstree.rollback(data.rlbk);
             return false;
           }
-        }
+        };
 
         file.rm(after_remove, after_remove);
     })

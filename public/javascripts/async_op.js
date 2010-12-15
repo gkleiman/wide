@@ -28,7 +28,7 @@ WIDE.async_op = (function () {
       perform_poll();
     },
     is_async_op_in_progress: function () {
-      return async_op_in_progress == true;
+      return async_op_in_progress === true;
    }
   };
 }());

@@ -7,15 +7,15 @@ WIDE.compilator_output = (function () {
       add_output: function (row_data) {
         var row;
 
-        switch(row_data['type']) {
+        switch(row_data.type) {
           case 'warning':
-            row_data['icon_name'] = 'alert';
+            row_data.icon_name = 'alert';
             break;
           case 'error':
-            row_data['icon_name'] = 'circle-minus';
+            row_data.icon_name = 'circle-minus';
             break;
           case 'info':
-            row_data['icon_name'] = 'info';
+            row_data.icon_name = 'info';
             break;
         }
 
@@ -39,8 +39,9 @@ WIDE.compilator_output = (function () {
           $('tr', '#compilator_output_rows').removeClass('ui-state-focus');
           $(this).toggleClass('ui-state-focus');
 
-          if($(this).attr('line_number') && $(this).attr('line_number') >= 0)
-          WIDE.editor.edit_file($(this).attr('path'), Number($(this).attr('line_number')));
+          if($(this).attr('line_number') && $(this).attr('line_number') >= 0) {
+            WIDE.editor.edit_file($(this).attr('path'), Number($(this).attr('line_number')));
+          }
 
           return false;
         });
@@ -50,8 +51,9 @@ WIDE.compilator_output = (function () {
         $('#compilator_output_rows').html('');
       }
     };
-})();
+}());
 
+/*
 $(function() {
     var element = $('#compilator_output_table');
     var make_column_resizeable = function (column_number) {
@@ -65,6 +67,7 @@ $(function() {
               },
               handles: 'e'});
     };
-//      make_column_resizeable(i)
+      make_column_resizeable(i)
 });
+*/
 

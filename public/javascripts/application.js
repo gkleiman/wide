@@ -31,17 +31,17 @@ $(function () {
   if($('#tabs').length > 0) {
     $('#tabs').tabs({
       tabTemplate: '<li><a href="#{href}">#{label}</a> <span class="ui-icon ui-icon-close">Remove Tab</span></li>',
-      add: function(event, ui) {
+      add: function (event, ui) {
         $('#tabs').tabs('select', '#' + ui.panel.id);
       },
-      show: function(event, ui) {
+      show: function (event, ui) {
         WIDE.editor.dimensions_changed();
         WIDE.toolbar.update_save_buttons();
         WIDE.editor.focus();
       }
     }).hide();
 
-    $('#tabs span.ui-icon-close').live('click', function() {
+    $('#tabs span.ui-icon-close').live('click', function () {
       var index = $('#tabs li').index($(this).parent());
 
       WIDE.editor.remove_editor(index);

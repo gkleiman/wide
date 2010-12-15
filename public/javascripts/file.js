@@ -1,6 +1,6 @@
 "use strict";
 
-WIDE.file = (function (path, is_directory, file_name) {
+WIDE.file = function (path, is_directory, file_name) {
   // Convert whatever is passed to a boolean value
   is_directory = !!is_directory;
 
@@ -19,10 +19,11 @@ WIDE.file = (function (path, is_directory, file_name) {
       data = { path: path };
     }
 
-    if(options.method === 'get')
+    if(options.method === 'get') {
       method = $.get;
-    else if(options.method === 'post')
+    } else if(options.method === 'post') {
       method = $.post;
+    }
 
     method(
       WIDE.repository_path() + '/' + action,
@@ -39,7 +40,7 @@ WIDE.file = (function (path, is_directory, file_name) {
         }
       }
     );
-  }
+  };
 
   return {
     // SCM functions
@@ -76,4 +77,4 @@ WIDE.file = (function (path, is_directory, file_name) {
       return file_name;
     }
   };
-});
+};

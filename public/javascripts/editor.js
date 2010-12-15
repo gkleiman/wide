@@ -24,25 +24,23 @@ WIDE.editor = (function () {
 
     // Check if Bespin is already loaded or currently loading. In this case,
     // bind the init function to the `load` promise.
-    if (typeof bespin != 'undefined' && typeof bespin.loaded != 'undefined') {
-        bespin.loaded.then(init);
+    if (typeof bespin !== 'undefined' && typeof bespin.loaded !== 'undefined') {
+      bespin.loaded.then(init);
+    } else if (typeof window.onBespinLoad === 'undefined') {
+      // If the `window.onBespinLoad` function is undefined, we can set the init
+      // function so that it is called when Bespin is loaded.
+      window.onBespinLoad = function () { init(after_init); };
+    } else {
+      // If there is already a function listening to the `window.onBespinLoad`
+      // function, then create a new function that calls the old
+      // `window.onBespinLoad` function first and the `init` function later.
+      firstWindowOnBespinLoad = window.onBespinLoad;
+      window.onBespinLoad = function () {
+        firstWindowOnBespinLoad();
+        init(after_init);
+      };
     }
-    // If the `window.onBespinLoad` function is undefined, we can set the init
-    // function so that it is called when Bespin is loaded.
-    else if (typeof window.onBespinLoad == 'undefined') {
-        window.onBespinLoad = function () { init(after_init) };
-    }
-    // If there is already a function listening to the `window.onBespinLoad`
-    // function, then create a new function that calls the old
-    // `window.onBespinLoad` function first and the `init` function later.
-    else {
-        firstWindowOnBespinLoad = window.onBespinLoad;
-        window.onBespinLoad = function () {
-            firstWindowOnBespinLoad();
-            init(after_init);
-        }
-    }
-  }
+  };
 
   var prepare_save = function (editor) {
     var fail_func = function (data, result, xhr) {
@@ -57,7 +55,7 @@ WIDE.editor = (function () {
       $(editor).submit();
 
       return editor;
-    }
+    };
 
     $(editor).bind('ajax:failure', function () {
       fail_func();
@@ -77,7 +75,7 @@ WIDE.editor = (function () {
 
       return false;
     });
-  }
+  };
 
   var set_syntax_highlighting = function (editor, file_name) {
     var extension = file_name.substr(file_name.lastIndexOf(".") + 1);
@@ -101,7 +99,7 @@ WIDE.editor = (function () {
     if(syntax) {
       editor.syntax = syntax;
     }
-  }
+  };
 
   var edit_file = function(path, line_number) {
     var file = WIDE.file(path);
@@ -136,7 +134,7 @@ WIDE.editor = (function () {
         return false;
       }
     );
-  }
+  };
 
   var create_editor = function(options) {
     var replacements = {csrf_token: WIDE.csrf_token(), csrf_param: WIDE.csrf_param(), project_id: WIDE.project_id()};
@@ -201,14 +199,14 @@ WIDE.editor = (function () {
       if(options.line_number !== undefined) {
         env.editor.setLineNumber(options.line_number);
       }
-    }
+    };
 
     WIDE.layout.layout();
 
     initialize_editor(content.get(0), after_init);
 
     return aux;
-  }
+  };
 
   var new_editor = function (options) {
     var editor;
@@ -232,7 +230,7 @@ WIDE.editor = (function () {
           if(env !== undefined) {
             env.dimensionsChanged();
           }
-        },
+        }
       });
 
     editors[editors.length] = editor;
