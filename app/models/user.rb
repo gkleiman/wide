@@ -4,7 +4,9 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  validates :user_name, :presence => true, :format => { :with => /\A[A-Za-z0-9._-]+\z/ }, :uniqueness => true
+  validates_presence_of :user_name
+  validates_format_of :user_name, :with => /\A[A-Za-z0-9._-]+\z/, :allow_blank => true, :message => "can only contain letters, numbers and the following characters: '.' ',' '_' and '-'"
+  validates_uniqueness_of :user_name, :allow_blank => true
 
   has_many :projects, :dependent => :destroy
   has_many :ssh_keys, :dependent => :destroy

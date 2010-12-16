@@ -7,6 +7,7 @@
   text-align: center;
 }
 .devise_form legend {
+  display: block;
   text-align: center;
   font-size: 1.2em;
   width: 100%;
@@ -56,4 +57,28 @@
 #login_shared_links li {
   display: inline-block;
   margin-left: 1em;
+}
+
+#error_explanation {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  margin: .7em auto;
+}
+#error_explanation div {
+  width: 75%;
+  display: inline-block;
+  text-align: left;
+  padding: 0 .7em;
+}
+#error_explanation h2 {
+  font-weight: bold;
+  margin-bottom: .5em;
+}
+#error_explanation ul {
+  padding-left: 1em;
+}
+#error_explanation li {
+  list-style-type: disc;
+  list-style-position: inside;
 }
