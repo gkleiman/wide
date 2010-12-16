@@ -211,9 +211,13 @@ WIDE.editor = (function () {
 
       $('textarea', aux).bind('keydown', 'Ctrl+s', function () {
         WIDE.editor.save_current();
+
+        return false;
       });
       $('textarea', aux).bind('keydown', 'Meta+s', function () {
         WIDE.editor.save_current();
+
+        return false;
       });
 
     };
@@ -322,8 +326,12 @@ WIDE.editor = (function () {
 $(function () {
   $(document).bind('keydown', 'Ctrl+s', function () {
     WIDE.editor.save_current();
+
+    return false;
   });
   $(document).bind('keydown', 'Meta+s', function () {
     WIDE.editor.save_current();
+
+    return false;
   });
 });
