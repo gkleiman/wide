@@ -64,10 +64,15 @@ WIDE.toolbar = (function () {
 $(function () {
   $('#pull_button').button();
   $('#commit_button').button();
-  $('#save_button').button().click(function () {
+  $('#save_button').button({
+    icons: {
+      primary: 'ui-icon-disk'
+    }
+  }).click(function () {
     $(this).button('option', 'disabled', true).mouseout().blur();
     WIDE.editor.save_current();
   });
+
   $('#save_all_button').button().click(function () {
     $(this).button('option', 'disabled', true).mouseout().blur();
     WIDE.editor.save_all();

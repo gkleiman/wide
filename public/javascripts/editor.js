@@ -1,7 +1,7 @@
 WIDE.editor = (function () {
   var edit_form_tmpl = '<form accept-charset="UTF-8" action="${WIDE.repository_path()}/save_file" data-remote="true" data-type="json" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input name="${csrf_param}" type="hidden" value="${csrf_token}" /><input name="project_id" type="hidden" value="${project_id}" /><input name="path" type="hidden" value="${path}" /><textarea name="content"></textarea></form>';
 
-  var editors = [];
+  var editors = [], modified_editors = 0;
 
   var initialize_editor = function (node, after_init) {
     var firstWindowOnBespinLoad;
@@ -59,8 +59,23 @@ WIDE.editor = (function () {
       return editor;
     };
 
+    $(editor).bind('ajax:before', function () {
+      editor.show_throbber();
+      editor.editor().readOnly = true;
+
+      return true;
+    });
+
+
+    $(editor).bind('ajax:complete', function () {
+      editor.hide_throbber();
+      editor.editor().readOnly = false;
+
+      return true;
+    });
+
     $(editor).bind('ajax:failure', function () {
-      fail_func();
+      return fail_func();
     });
 
     $(editor).bind('ajax:success', function (xhr, result, status) {
@@ -165,9 +180,19 @@ WIDE.editor = (function () {
     // Add some attributes to the editor
     aux.containing_tab = $('#editor-tab-' + editors.length);
     aux.tab_title = $('#tabs > ul.ui-tabs-nav > li > a[href=#' + aux.containing_tab[0].id + ']');
+    aux.throbber_icon = aux.tab_title.parent().find('.ui-icon-throbber');
+    aux.close_icon = aux.tab_title.parent().find('.ui-icon-close');
     aux.path = options.path;
     aux.file_name = options.file_name;
     aux.modified = false;
+    aux.show_throbber = function () {
+      this.close_icon.hide();
+      this.throbber_icon.show();
+    };
+    aux.hide_throbber = function () {
+      this.close_icon.show();
+      this.throbber_icon.hide();
+    };
 
     // Set the content of the editor
     content = $('textarea', aux);
@@ -185,6 +210,8 @@ WIDE.editor = (function () {
       set_syntax_highlighting(env.editor, aux.file_name);
 
       aux.mark_tab_as_clean = function () {
+        modified_editors--;
+
         env.editor.textChanged.add(aux.mark_tab_as_dirty);
 
         aux.modified = false;
@@ -194,6 +221,8 @@ WIDE.editor = (function () {
       };
 
       aux.mark_tab_as_dirty = function () {
+        modified_editors++;
+
         env.editor.textChanged.remove(aux.mark_tab_as_dirty);
 
         aux.modified = true;
@@ -220,9 +249,12 @@ WIDE.editor = (function () {
         return false;
       });
 
+      aux.hide_throbber();
     };
 
     WIDE.layout.layout();
+
+    aux.show_throbber();
 
     initialize_editor(content.get(0), after_init);
 
@@ -309,16 +341,7 @@ WIDE.editor = (function () {
       }
     },
     modified_editors: function () {
-      var editor;
-      for(var i = 0; i < editors.length; ++i) {
-        editor = editors[i];
-
-        if(editor.modified === true) {
-          return true;
-        }
-      }
-
-      return false;
+      return modified_editors !== 0;
     }
   };
 }());

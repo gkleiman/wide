@@ -29,7 +29,7 @@
 $(function () {
   if($('#tabs').length > 0) {
     $('#tabs').tabs({
-      tabTemplate: '<li><a href="#{href}">#{label}</a> <span class="ui-icon ui-icon-close">Remove Tab</span></li>',
+tabTemplate: '<li><a href="#{href}">#{label}</a> <span class="ui-icon ui-icon-throbber" style="display: none;">Activity in progress...</span><span class="ui-icon ui-icon-close">Remove Tab</span></li>',
       add: function (event, ui) {
         $('#tabs').tabs('select', '#' + ui.panel.id);
       },
