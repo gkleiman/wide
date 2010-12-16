@@ -1,17 +1,36 @@
 - title "wIDE | #{current_user.email}"
 
 #projects.ui-widget-content
-  %h1
-    %span.title Projects
+  %h1.ui-widget-header
+    Projects
     = link_to 'New Project', new_project_path, :class => 'ui-icon ui-icon-circle-plus'
-  %ul
-    - @projects.each do |project|
-      - async_op_status = project.repository.async_op_status
-      %li
-        -if !async_op_status || async_op_status[:operation] != :init_or_clone || async_op_status[:status] == 'success'
-          = link_to project.name, project
-        - elsif async_op_status[:operation] == :init_or_clone && async_op_status[:status] == 'running'
-          %span= "#{project.name} (Repository being initialized)"
-        - else
-          %span= "#{project.name} (There has been a problem initializing the repository)"
-        = link_to 'Remove Project', project, :method => :delete, :confirm => 'Are you sure that you want to remove the project?', :class => 'ui-icon ui-icon-circle-minus'
+  %table
+    %thead
+      %tr.ui-widget-header
+        %th Name
+        %th Project Type
+        %th Status
+        %th
+    %tbody.ui-widget-content.ui-state-default
+      - @projects.each do |project|
+        - status = project.status
+        %tr.ui-state-default
+          %td
+            - if status == 'success'
+              = link_to project.name, project
+            - else
+              = project.name
+          %td
+            - if !project.project_type.blank?
+              = project.project_type.name
+            - else
+              \-
+          %td{:width => '20em'}
+            - if status == 'success'
+              Ready
+            - elsif status == 'initializing'
+              Initializing
+            - else
+              There has been a problem initializing the repository
+          %td{:width => '16px'}
+            = link_to 'Remove Project', project, :method => :delete, :confirm => 'Are you sure that you want to remove the project?', :class => 'ui-icon ui-icon-trash'

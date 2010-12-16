@@ -9,33 +9,30 @@
 }
 
 #projects {
-  width: 35%;
+  width: 60%;
   margin: 2em auto;
-  padding: 0 5em;
+  padding: 0 2.5%;
 }
 #projects h1 {
+  display: block;
   font-size: 1.5em;
   font-weight: bold;
-  margin: 0.6em 0 0.4em;
-}
-#projects h1 .title {
-  margin-bottom: 0.4em;
-  float: left;
-}
-#projects h1 .ui-icon-circle-plus {
-  float: left;
-  clear: right;
-}
-#projects ul {
-  display: block;
-  margin: 0px 0px 2em 0.8em;
-  font-size: 1.1em;
-}
-#projects ul li {
-  display: block;
+  margin: 12px 0 0.4em 0;
+  padding-left: 0.4em;
   clear: both;
 }
-#projects ul li a, #projects ul li span {
-  float: left;
-  margin-right: 0.4em;
+#projects h1 .ui-icon-circle-plus {
+  display: inline-block;
+}
+#projects table {
+  display: table;
+  width: 100%;
+  margin-bottom: 12px;
+}
+#projects table th {
+  font-weight: bold;
+}
+#projects table th,
+#projects table td {
+  padding: 5px;
 }

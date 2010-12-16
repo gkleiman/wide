@@ -47,6 +47,14 @@ class Project < ActiveRecord::Base
     @bin_path ||= Wide::PathUtils.secure_path_join(Settings.compilation_base, File.join(self.user.user_name, self.name))
   end
 
+  def status
+    async_op_status = repository.async_op_status
+
+    return 'success' unless async_op_status && async_op_status[:operation] == :init_or_clone && async_op_status[:status] != 'success'
+    return 'initializing' if async_op_status[:operation] == :init_or_clone && async_op_status[:status] == 'running'
+    return 'error'
+  end
+
   private
 
   def set_repository_path
