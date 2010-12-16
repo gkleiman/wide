@@ -235,7 +235,7 @@ $(function () {
           data: function (n) {
             var path = '-1';
 
-            if(n !== '-1') {
+            if(n !== -1) {
               path = get_path(n);
             }
             return {
