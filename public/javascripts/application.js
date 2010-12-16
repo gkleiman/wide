@@ -51,4 +51,8 @@ tabTemplate: '<li><a href="#{href}">#{label}</a> <span class="ui-icon ui-icon-th
       }
     });
   }
+
+  $("table").delegate("tr.ui-state-default", "hover", function (){
+    $(this).toggleClass('ui-state-hover');
+  });
 });
