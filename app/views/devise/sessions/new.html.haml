@@ -1,21 +1,11 @@
-- content_for :javascripts do
-  = javascript_include_tag 'login.js'
-
 - title 'Welcome to wIDE!', true
 
-.devise_form.ui-widget-content
-  = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
-    %fieldset
-      %legend.ui-widget-header Login
-      %p
-        = f.label :email
-        = f.text_field :email
-      %p
-        = f.label :password
-        = f.password_field :password
+.simple_form_container.ui-widget-content
+  %h1.ui-widget-header Login
+  = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+    = f.input :email, :input_html => { :class => 'ui-state-default' }
+    = f.input :password, :input_html => { :class => 'ui-state-default', :size => 50 }
     - if devise_mapping.rememberable?
-      %p#remember_me_p
-        = f.check_box :remember_me
-        = f.label :remember_me
-    %p= f.submit 'Login'
+      = f.input :remember_me, :as => :boolean
+    %p= f.button :submit, 'Login'
 = render :partial => 'devise/shared/links'

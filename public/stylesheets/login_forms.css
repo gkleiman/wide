@@ -1,55 +1,3 @@
-.devise_form {
-  display: block;
-  margin: 1.8em auto;
-  width: 45%;
-}
-.devise_form form p {
-  text-align: center;
-}
-.devise_form legend {
-  display: block;
-  text-align: center;
-  font-size: 1.2em;
-  width: 100%;
-}
-.devise_form p {
-  display: block;
-  clear: both;
-  padding-top: 0.5em;
-  margin-left: 1em;
-  margin-right: 1em;
-}
-.devise_form fieldset label {
-  float: left;
-  text-align: right;
-  font-size: 0.9em;
-  width: 25%;
-  padding-right: 1em;
-}
-.devise_form fieldset input {
-  float: left;
-  clear: right;
-  width: 60%;
-}
-#remember_me_p {
-  width: 100%;
-  text-align: center;
-}
-#remember_me_p input {
-  display: inline-block;
-  margin-right: 0.3em;
-}
-#remember_me_p label {
-  display: inline-block;
-  text-align: left;
-}
-
-#user_submit {
-  display: inline-block;
-  font-size: 0.9em;
-  margin: 0px auto 0.5em;
-}
-
 #login_shared_links {
   margin-top: 1em;
   text-align: center;
@@ -57,28 +5,4 @@
 #login_shared_links li {
   display: inline-block;
   margin-left: 1em;
-}
-
-#error_explanation {
-  display: inline-block;
-  text-align: center;
-  width: 100%;
-  margin: .7em auto;
-}
-#error_explanation div {
-  width: 75%;
-  display: inline-block;
-  text-align: left;
-  padding: 0 .7em;
-}
-#error_explanation h2 {
-  font-weight: bold;
-  margin-bottom: .5em;
-}
-#error_explanation ul {
-  padding-left: 1em;
-}
-#error_explanation li {
-  list-style-type: disc;
-  list-style-position: inside;
 }

@@ -1,15 +1,8 @@
-- content_for :javascripts do
-  = javascript_include_tag 'login.js'
-
 - title 'wIDE | Forgot your password?', true
 
-.devise_form.ui-widget-content
-  = form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f|
-    %fieldset
-      %legend.ui-widget-header Forgot your password?
-      = devise_error_messages!
-      %p
-        = f.label :email
-        = f.text_field :email
-    %p= f.submit 'Change Password'
+.simple_form_container.ui-widget-content.ui-corner-all
+  %h1.ui-widget-header Forgot your password?
+  = simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f|
+    = f.input :email, :input_html => { :class => 'ui-state-default' }
+    = f.button :submit, 'Change Password'
 = render :partial => "devise/shared/links"
