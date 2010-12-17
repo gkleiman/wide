@@ -67,4 +67,5 @@ tabTemplate: '<li><a href="#{href}">#{label}</a> <span class="ui-icon ui-icon-th
   });
   $('.simple_form .error input').addClass('ui-state-error');
   $('.simple_form .error span').addClass('ui-state-error-text');
+  $('.simple_form input[type=submit]').button();
 });
