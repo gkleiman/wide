@@ -1,11 +1,14 @@
-- title "wIDE | #{current_user.email} | New Project"
+- title "wIDE | #{current_user.email} | New Project", false
+- content_for :alternative_title do
+  %h1= raw("wIDE | #{link_to(h(current_user.email), root_path)} | New Project")
 
-.new_project.ui-widget-container.ui-widget
-  = simple_form_for @project, :class => 'ui-widget-content' do |f|
-    %h1.ui-widget-header New Project
-    = f.input :name
-    = f.input :project_type_id, :collection => ProjectType.all, :include_blank => false, :required => true
-    = simple_form_for 'project[repository_attributes]' do |repository_form|
-      = repository_form.input :scm, :collection => Wide::Scm::Scm.all_adapters, :include_blank => false
-      = repository_form.input :url, :required => false
+
+.new_project.ui-widget-content.ui-widget
+  %h1.ui-widget-header New Project
+  = simple_form_for @project do |f|
+    = f.input :name, :input_html => { :class => 'ui-state-default' }
+    = f.input :project_type_id, :collection => ProjectType.all, :include_blank => false, :required => true, :input_html => { :class => 'ui-state-default' }
+    = simple_fields_for 'project[repository_attributes]' do |repository_form|
+      = repository_form.input :scm, :collection => Wide::Scm::Scm.all_adapters, :include_blank => false, :input_html => { :class => 'ui-state-default' }
+      = repository_form.input :url, :required => false, :input_html => { :class => 'ui-state-default' }
       = f.button :submit

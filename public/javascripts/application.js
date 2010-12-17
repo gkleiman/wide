@@ -52,7 +52,19 @@ tabTemplate: '<li><a href="#{href}">#{label}</a> <span class="ui-icon ui-icon-th
     });
   }
 
-  $("table").delegate("tr.ui-state-default", "hover", function (){
+  $('table').delegate('tr.ui-state-default', 'hover', function (){
     $(this).toggleClass('ui-state-hover');
   });
+
+  $('.simple_form').delegate('.ui-state-default', 'hover', function (){
+    $(this).toggleClass('ui-state-hover');
+  });
+  $('.simple_form').delegate('.ui-state-default', 'focus', function (){
+    $(this).toggleClass('ui-state-active');
+  });
+  $('.simple_form').delegate('.ui-state-default', 'blur', function (){
+    $(this).toggleClass('ui-state-active');
+  });
+  $('.simple_form .error input').addClass('ui-state-error');
+  $('.simple_form .error span').addClass('ui-state-error-text');
 });

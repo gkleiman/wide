@@ -1,11 +1,12 @@
 .new_project {
   width: 45%;
   margin: 0px auto;
-  padding: 0 5em;
 }
 
 .new_project h1 {
   margin-bottom: 1em;
+  text-align: center;
+  width: 100%;
 }
 
 #projects {
