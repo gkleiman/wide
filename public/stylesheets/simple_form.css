@@ -1,8 +1,14 @@
-.new_project {
+.simple_form_container {
   display: block;
   margin: 1.8em auto;
-  width: 700px;
+  width: 750px;
 }
+.simple_form_container h1 {
+  margin-bottom: 1em;
+  text-align: center;
+  width: 100%;
+}
+
 .simple_form {
   display: block;
   width: 100%;
@@ -27,12 +33,17 @@
   font-size: 0.8em;
 }
 
-.simple_Form input {
+.simple_form input {
   clear: right;
 }
 .simple_form input[type='submit'] {
   margin-bottom: 1em;
 }
+.simple_form .boolean input,
 .simple_form .error span {
   margin-left: 135px;
+}
+.simple_form .boolean label {
+  float: none;
+  width: auto;
 }

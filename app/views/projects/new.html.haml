@@ -3,7 +3,7 @@
   %h1= raw("wIDE | #{link_to(h(current_user.email), root_path)} | New Project")
 
 
-.new_project.ui-widget-content.ui-widget
+.simple_form_container.ui-widget-content.ui-widget
   %h1.ui-widget-header New Project
   = simple_form_for @project do |f|
     = f.input :name, :input_html => { :class => 'ui-state-default' }
