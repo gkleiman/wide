@@ -59,7 +59,7 @@ WIDE.editor = (function () {
       return editor;
     };
 
-    $(editor).bind('ajax:beforeSend', function () {
+    $(editor).bind('ajax:before', function () {
       editor.show_throbber();
       editor.editor().readOnly = true;
 
@@ -74,7 +74,7 @@ WIDE.editor = (function () {
       return true;
     });
 
-    $(editor).bind('ajax:error', function () {
+    $(editor).bind('ajax:failure', function () {
       return fail_func();
     });
 
