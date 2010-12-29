@@ -8,9 +8,8 @@ set :deploy_to, "/home/wide/application"
 set :user, "wide"
 set :use_sudo, false
 set :scm, :git
+set :deploy_via, :remote_cache
 #set :branch, 'version-2.0.13'
-
-set :scm, :git
 
 role :web, "192.168.0.102"                          # Your HTTP server, Apache/etc
 role :app, "192.168.0.102"                          # This may be the same as your `Web` server
@@ -27,6 +26,9 @@ namespace :customs do
     CMD
     run <<-CMD
       ln -nfs #{deploy_to}/#{shared_dir}/compiled #{deploy_to}/#{current_dir}/public/compiled
+    CMD
+    run <<-CMD
+      ln -nfs #{deploy_to}/#{shared_dir}/db #{deploy_to}/#{current_dir}/db
     CMD
   end
 end
