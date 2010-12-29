@@ -154,13 +154,10 @@ class Repository < ActiveRecord::Base
   def async_operation(operation, url, delegate_to_scm_engine = true)
     status = 'error'
 
-      receiver = self
-      if(delegate_to_scm_engine)
-        receiver = scm_engine
-      end
-      if(receiver.send(operation, url))
-        status = 'success'
-      end
+    receiver = scm_engine if(delegate_to_scm_engine)
+    receiver ||= self
+
+    status = 'success' if(receiver.send(operation, url))
 
     self.async_op_status = Wide::Scm::AsyncOpStatus.new(:operation => operation, :status => status)
     self.save!
