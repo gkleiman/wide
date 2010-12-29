@@ -4,7 +4,13 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  before_create :make_inactive
+  # Ugly hack to make user registrations work with devise
+  before_validation(:on => :create) do
+    self.active = true
+  end
+  after_validation(:on => :create) do
+    self.active = false
+  end
 
   validates_presence_of :user_name
   validates_format_of :user_name, :with => /\A[A-Za-z0-9._-]+\z/, :allow_blank => true, :message => "can only contain letters, numbers and the following characters: '.' ',' '_' and '-'"
@@ -22,10 +28,5 @@ class User < ActiveRecord::Base
 
   def active?
     super && active
-  end
-
-  private
-  def make_inactive
-    self.active = false
   end
 end
