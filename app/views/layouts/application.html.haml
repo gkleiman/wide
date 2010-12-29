@@ -4,7 +4,7 @@
     %title
       = h(yield(:title) || "wIDE")
     %meta{"http-equiv"=>"Content-Type", :content=>"text/html; charset=utf-8"}/
-    = stylesheet_link_tag :all, :cache => :true
+    = stylesheet_link_tag :all, :cache => true
     = stylesheet_link_tag 'smoothness/jquery-ui-1.8.5.custom.css'
     = yield :stylesheets
 
