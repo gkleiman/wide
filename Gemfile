@@ -47,4 +47,7 @@ group :development, :test do
   gem 'autotest'
   gem 'autotest-rails'
   gem 'thin'
+  gem 'wirble'
+  gem 'hirb'
+  gem 'awesome_print'
 end
