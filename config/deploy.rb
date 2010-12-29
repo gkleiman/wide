@@ -22,13 +22,22 @@ role :db,  "192.168.0.102", :primary => true # This is where Rails migrations wi
 namespace :customs do
   task :symlinks, :roles => :app do
     run <<-CMD
+      mkdir -p #{deploy_to}/#{shared_dir}/repositories
+    CMD
+    run <<-CMD
       ln -nfs #{deploy_to}/#{shared_dir}/repositories #{deploy_to}/#{current_dir}/public/repositories
+    CMD
+    run <<-CMD
+      mkdir -p #{deploy_to}/#{shared_dir}/compiled
     CMD
     run <<-CMD
       ln -nfs #{deploy_to}/#{shared_dir}/compiled #{deploy_to}/#{current_dir}/public/compiled
     CMD
     run <<-CMD
-      ln -nfs #{deploy_to}/#{shared_dir}/db #{deploy_to}/#{current_dir}/db
+      mkdir -p #{deploy_to}/#{shared_dir}/db && touch #{deploy_to}/#{shared_dir}/db/production.sqlite3
+    CMD
+    run <<-CMD
+      ln -nfs #{deploy_to}/#{shared_dir}/db/production.sqlite3 #{deploy_to}/#{current_dir}/db/production.sqlite3
     CMD
   end
 end
