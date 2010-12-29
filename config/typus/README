@@ -34,7 +34,7 @@ common settings.
       application: Application
       description: Some text to describe the model
       options:
-        action_after_save: :index
+        action_after_save: index
         default_action_on_item: show
         end_year: 2015
         form_rows: 25

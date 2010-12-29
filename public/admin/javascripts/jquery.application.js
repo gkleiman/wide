@@ -1,6 +1,10 @@
 $(document).ready(function() {
   $("#quicksearch").searchField();
   $('.resource :input', document.myForm).bind("change", function() { setConfirmUnload(true); });
+  $("a.fancybox").fancybox({
+    'titlePosition': 'over',
+    'type': 'image'
+  });
 });
 
 function setConfirmUnload(on) {

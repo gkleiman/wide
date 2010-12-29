@@ -15,9 +15,6 @@ Typus::Resources.setup do |config|
   # Defines minute_step.
   # config.minute_step = 5
 
-  # Defines nil.
-  # config.human_nil = "nil"
-
   # Defines only_user_items.
   # config.only_user_items = false
 
