@@ -36,12 +36,19 @@
 .simple_form input {
   clear: right;
 }
+.simple_form .password input,
+.simple_form .string input {
+  width: 500px;
+}
 .simple_form input[type='submit'] {
   margin-bottom: 1em;
 }
 .simple_form .boolean input,
 .simple_form .error span {
   margin-left: 135px;
+}
+.simple_form .error span {
+  display: block;
 }
 .simple_form .boolean label {
   float: none;
