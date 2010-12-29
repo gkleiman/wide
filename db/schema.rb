@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101203184932) do
+ActiveRecord::Schema.define(:version => 20101228224638) do
 
   create_table "admin_users", :force => true do |t|
     t.string   "first_name",       :default => "",    :null => false
@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(:version => 20101203184932) do
 
   create_table "ssh_keys", :force => true do |t|
     t.integer  "user_id"
+    t.boolean  "name_base64_encoded"
     t.string   "name"
     t.string   "content"
     t.datetime "created_at"
@@ -84,15 +85,16 @@ ActiveRecord::Schema.define(:version => 20101203184932) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                               :default => "", :null => false
-    t.string   "encrypted_password",   :limit => 128, :default => "", :null => false
-    t.string   "password_salt",                       :default => "", :null => false
+    t.string   "email",                               :default => "",    :null => false
+    t.string   "encrypted_password",   :limit => 128, :default => "",    :null => false
+    t.string   "password_salt",                       :default => "",    :null => false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "user_name",                           :default => "", :null => false
+    t.string   "user_name",                           :default => "",    :null => false
+    t.boolean  "active",                              :default => false, :null => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

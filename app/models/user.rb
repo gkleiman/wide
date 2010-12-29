@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  before_create :make_inactive
+
   validates_presence_of :user_name
   validates_format_of :user_name, :with => /\A[A-Za-z0-9._-]+\z/, :allow_blank => true, :message => "can only contain letters, numbers and the following characters: '.' ',' '_' and '-'"
   validates_uniqueness_of :user_name, :allow_blank => true
@@ -16,5 +18,14 @@ class User < ActiveRecord::Base
 
   def to_label
     "#{user_name} <#{email}>"
+  end
+
+  def active?
+    super && active
+  end
+
+  private
+  def make_inactive
+    self.active = false
   end
 end

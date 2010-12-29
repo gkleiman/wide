@@ -44,11 +44,11 @@ SshKey:
 
 User:
   fields:
-    default: email, user_name
-    form: email, user_name
+    default: email, user_name, active
+    form: email, user_name, active
   order_by:
   relationships: projects, ssh_keys
-  filters:
+  filters: active
   search:
   application: wide
 
