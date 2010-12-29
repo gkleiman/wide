@@ -222,7 +222,7 @@ $(function () {
     $.jstree._themes = '/javascripts/themes/';
 
     $('#tree').jstree({
-      plugins: ['themes', 'json_data', 'ui', 'types', 'hotkeys', 'cookies', 'crrm', 'dnd', 'overlays', 'contextmenu'],
+      plugins: ['themes', 'json_data', 'ui', 'types', 'hotkeys', 'cookies', 'crrm', 'dnd', 'overlays', 'contextmenu', 'wholerow' ],
 
       // Plugin configuration
       core: {
