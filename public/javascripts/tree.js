@@ -229,6 +229,17 @@ $(function () {
         animation: 0
       },
 
+      // Open file when space is pressed
+      hotkeys: {
+        "return" : function () {
+          if(this.data.ui.hovered) {
+            this.data.ui.hovered.children("a:eq(0)").click();
+            this.data.ui.hovered.children("a:eq(0)").dblclick();
+          }
+	    return false;
+        }
+      },
+
       json_data: {
         ajax: {
           url: WIDE.repository_path() + '/ls',
