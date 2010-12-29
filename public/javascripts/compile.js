@@ -34,7 +34,7 @@ WIDE.compile = (function () {
           } else {
             setTimeout(function () {
               WIDE.compile.poll_compilator_output(timestamp)
-            }, 5000);
+            }, 1000);
           }
         });
       };
