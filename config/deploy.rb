@@ -3,6 +3,7 @@ require 'delayed/recipes'
 
 set :application, "wIDE"
 set :repository,  "https://github.com/gkleiman/wide.git"
+set :rails_env, 'production'
 
 set :deploy_to, "/home/wide/application"
 set :user, "wide"
