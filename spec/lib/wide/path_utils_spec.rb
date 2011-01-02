@@ -73,7 +73,7 @@ describe Wide::PathUtils do
       Wide::PathUtils.relative_to_base('/', '/foo/bar/test/path/').should == 'foo/bar/test/path'
     end
 
-    it 'should remove trailing spaces when returning the relative path' do
+    it 'should remove trailing slashes when returning the relative path' do
       Wide::PathUtils.relative_to_base('/foo/bar/', '/foo/bar/test/path/').should == 'test/path'
     end
 

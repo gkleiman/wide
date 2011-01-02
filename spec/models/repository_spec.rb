@@ -8,7 +8,7 @@ end
 
 describe Repository do
   context "Validating the scm name" do
-    it "should not be possible to create a repository with a non existant scm" do
+    it "should not be possible to create a repository with a non existant scm adapter" do
       repo = Repository.new do |r|
         r.scm = 'Foobar'
         r.url = 'valid'
@@ -18,7 +18,7 @@ describe Repository do
       repo.valid?.should == false
     end
 
-    it "should be possible to create a repository with an existent scm" do
+    it "should be possible to create a repository with an existent scm adapter" do
       Wide::Scm::Scm.add_adapter('Test')
       repo = Repository.new do |r|
         r.scm = 'Test'

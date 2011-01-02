@@ -6,7 +6,7 @@ module Wide
     class << self
       def with_leading_slash(path)
         path ||= ''
-        (path[0,1]!="/") ? "/#{path}" : path
+        (path[0,1] != "/") ? "/#{path}" : path
       end
 
       def with_trailing_slash(path)
@@ -25,9 +25,9 @@ module Wide
       end
 
       def secure_path_join(base, *path)
-        raise BaseDirectoryTraversalError.new("You need a base path to secure join a path") if base.blank?
+        raise BaseDirectoryTraversalError.new("You need a base path to securely join a path") if base.blank?
 
-        path = '/' if path.to_s.blank?
+        return without_trailing_slash(File.expand_path(base)) if path.to_s.blank?
 
         joined_path = File.expand_path(File.join(base.to_s, *path))
         joined_path = without_trailing_slash(joined_path)

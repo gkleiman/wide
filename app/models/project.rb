@@ -44,7 +44,7 @@ class Project < ActiveRecord::Base
 
   # Returns the path in which the compiled binaries should be stored
   def bin_path
-    @bin_path ||= Wide::PathUtils.secure_path_join(Settings.compilation_base, File.join(self.user.user_name, self.name))
+    @bin_path ||= Wide::PathUtils.secure_path_join(Settings.compilation_base, user.user_name, name)
   end
 
   def status

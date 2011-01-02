@@ -26,7 +26,9 @@ module Wide
       end
 
       def perform
-        @src_path = "#{Wide::PathUtils::with_trailing_slash(project.repository.path)}."
+        # Append '/.' to the path, in order to copy all contents of a directory
+        # instead of the directory itself
+        @src_path = "#{Wide::PathUtils::with_trailing_slash(project.repository.full_path)}."
         @dst_path = Wide::PathUtils.secure_path_join(project.bin_path, 'tmp')
 
         prepare_compilation_environment

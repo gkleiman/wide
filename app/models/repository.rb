@@ -165,6 +165,10 @@ class Repository < ActiveRecord::Base
     return status == 'success'
   end
 
+  def full_path(rel_path = '')
+    Wide::PathUtils.secure_path_join(path, rel_path)
+  end
+
   private
   def scm_engine
     @scm_engine ||= Wide::Scm::Scm.get_adapter(scm).new(path)
@@ -181,10 +185,6 @@ class Repository < ActiveRecord::Base
     else
       super
     end
-  end
-
-  def full_path(rel_path = '')
-    Wide::PathUtils.secure_path_join(path, rel_path)
   end
 
   def mark_entries(entries)
