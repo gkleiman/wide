@@ -13,7 +13,7 @@ class Project < ActiveRecord::Base
   serialize :compilation_status
 
   def to_param
-    self.name
+    name
   end
 
   def compile
@@ -22,12 +22,12 @@ class Project < ActiveRecord::Base
       return Wide::Scm::AsyncOpStatus.new(:operation => 'compile', :status => 'error')
     end
 
-    self.compilation_status = Wide::Scm::AsyncOpStatus.new(:operation => 'compile', :status => 'running')
-    self.save!
+    compilation_status = Wide::Scm::AsyncOpStatus.new(:operation => 'compile', :status => 'running')
+    save!
 
     Delayed::Job.enqueue(Wide::Jobs::CompileJob.new(id))
 
-    self.compilation_status
+    compilation_status
   end
 
   def compiler_output
@@ -58,7 +58,7 @@ class Project < ActiveRecord::Base
   private
 
   def set_repository_path
-    self.repository.path = Wide::PathUtils.secure_path_join(Settings.repositories_base, File.join(self.user.user_name, self.name)) if self.repository && self.repository.path.blank?
+    repository.path = Wide::PathUtils.secure_path_join(Settings.repositories_base, user.user_name, name) if repository && repository.path.blank?
 
     true
   end
