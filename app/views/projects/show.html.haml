@@ -13,7 +13,7 @@
 - title "wIDE | #{current_user.user_name} | #{@project.name}", false
 
 - content_for :alternative_title do
-  %h1= raw("wIDE | #{link_to(h(current_user.user_name), root_path)} | #{h(@project.name)}")
+  %h1= raw("wIDE | #{link_to("My Projects", projects_path)} | #{h(@project.name)}")
 
 .layout
   #toolbar.north

@@ -9,6 +9,13 @@ html, body, #container {
   float: right;
   margin-right: 5px;
 }
+#navbar li {
+  float: left;
+}
+#navbar li.separator {
+  margin-left: 0.25em;
+  margin-right: 0.25em;
+}
 
 #title {
   width: 100%;
