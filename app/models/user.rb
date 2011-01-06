@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   end
 
   validates_presence_of :user_name
-  validates_format_of :user_name, :with => /\A[A-Za-z0-9._-]+\z/, :allow_blank => true, :message => "can only contain letters, numbers and the following characters: '.' ',' '_' and '-'"
+  validates_format_of :user_name, :with => /\A[A-Za-z0-9_-]+[A-Za-z0-9._-]*\z/, :allow_blank => true, :message => "can only contain letters, numbers and the following characters: '.', '_' and '-'. And it can't start with a dot."
   validates_uniqueness_of :user_name, :allow_blank => true, :case_sensitive => false
 
   has_many :projects, :dependent => :destroy
