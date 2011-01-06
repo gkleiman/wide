@@ -17,7 +17,7 @@ gem 'haml'
 gem 'jquery-rails'
 
 gem 'simple_form'
-gem 'delayed_job', "2.1.0.pre2"
+gem 'delayed_job'
 gem 'settingslogic'
 gem 'typus', :git => 'https://github.com/fesplugas/typus.git'
 gem 'fastercsv', :platforms => :ruby_18
@@ -44,6 +44,8 @@ group :development, :test do
   gem 'webrat'
   gem 'rspec-rails', '>= 2.0.0.beta.22'
   gem 'factory_girl_rails'
+  gem 'redgreen'
+  gem 'ZenTest'
   gem 'autotest'
   gem 'autotest-rails'
   gem 'thin'
