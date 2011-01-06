@@ -58,7 +58,11 @@ class Project < ActiveRecord::Base
   private
 
   def set_repository_path
-    repository.path = Wide::PathUtils.secure_path_join(Settings.repositories_base, user.user_name, name) if repository && repository.path.blank?
+    if repository && repository.path.blank?
+      # Check for path traversals
+      Wide::PathUtils.secure_path_join(Settings.repositories_base, user.user_name, name)
+      repository.path = File.join(user.user_name, name)
+    end
 
     true
   end

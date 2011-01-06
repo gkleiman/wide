@@ -15,7 +15,7 @@ describe Project do
 
     p.valid?
 
-    p.repository.path.should == Wide::PathUtils.secure_path_join(Settings.repositories_base, File.join(p.user.user_name, p.name))
+    p.repository.path.should == File.join(p.user.user_name, p.name)
   end
 
   describe "testing validations" do

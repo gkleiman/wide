@@ -166,12 +166,12 @@ class Repository < ActiveRecord::Base
   end
 
   def full_path(rel_path = '')
-    Wide::PathUtils.secure_path_join(path, rel_path)
+    Wide::PathUtils.secure_path_join(absolute_repository_base_path, rel_path)
   end
 
   private
   def scm_engine
-    @scm_engine ||= Wide::Scm::Scm.get_adapter(scm).new(path)
+    @scm_engine ||= Wide::Scm::Scm.get_adapter(scm).new(full_path)
   end
 
   def method_missing(method_called, *args, &block)
@@ -228,5 +228,9 @@ class Repository < ActiveRecord::Base
     self.delay.async_operation(operation, url, delegate_to_scm_engine)
 
     self.async_op_status
+  end
+
+  def absolute_repository_base_path
+    Wide::PathUtils.secure_path_join(Settings.repositories_base, path)
   end
 end
