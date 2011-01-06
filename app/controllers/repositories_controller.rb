@@ -7,9 +7,10 @@ class RepositoriesController < ApplicationController
     :only => [ :ls, :cat, :save_file, :create_file, :create_directory, :rm,
       :add, :forget, :revert, :mark_resolved, :mark_unresolved ]
 
-  around_filter :json_failable_action, :only => [ :save_file, :create_file,
-    :create_directory, :rm, :mv, :summary, :commit, :add, :forget, :revert,
-    :mark_resolved, :mark_unresolved, :pull, :async_op_status ]
+  around_filter :json_failable_action,
+    :only => [ :save_file, :create_file, :create_directory, :rm, :mv, :summary,
+      :commit, :add, :forget, :revert, :mark_resolved, :mark_unresolved, :pull,
+      :async_op_status ]
 
   def ls
     entries = @repository.directory_entries(@path)
@@ -29,43 +30,43 @@ class RepositoriesController < ApplicationController
   def save_file
     @repository.save_file(@path, params[:content])
 
-    render :json => { :success => 1 }
+    render_success
   end
 
   def create_file
     @repository.create_file(@path)
 
-    render :json => { :success => 1 }
+    render_success
   end
 
   def create_directory
     @repository.make_dir(@path)
 
-    render :json => { :success => 1 }
+    render_success
   end
 
   def rm
     @repository.remove_file(@path)
 
-    render :json => { :success => 1 }
+    render_success
   end
 
   def add
     @repository.add(@path)
 
-    render :json => { :success => 1 }
+    render_success
   end
 
   def forget
     @repository.forget(@path)
 
-    render :json => { :success => 1 }
+    render_success
   end
 
   def revert
     @repository.revert!(@path)
 
-    render :json => { :success => 1 }
+    render_success
   end
 
   def mv
@@ -74,7 +75,7 @@ class RepositoriesController < ApplicationController
 
     @repository.move_file src_path, dest_path
 
-    render :json => { :success => 1 }
+    render_success
   end
 
   def summary
@@ -84,7 +85,7 @@ class RepositoriesController < ApplicationController
   def commit
     @repository.commit(current_user.email, params[:message])
 
-    render :json => { :success => 1 }
+    render_success
   end
 
   def status
@@ -97,23 +98,23 @@ class RepositoriesController < ApplicationController
   def mark_resolved
     @repository.mark_resolved(@path)
 
-    render :json => { :success => 1 }
+    render_success
   end
 
   def mark_unresolved
     @repository.mark_unresolved(@path)
 
-    render :json => { :success => 1 }
+    render_success
   end
 
   def pull
     op_status = @repository.pull(params[:url])
 
-    render :json => { :success => 1, :async_op_status => op_status }
+    render_success({ :async_op_status => op_status })
   end
 
   def async_op_status
-    render :json => { :success => 1, :async_op_status => @repository.async_op_status }
+    render_success({ :async_op_status => @repository.async_op_status })
   end
 
   private
@@ -154,5 +155,12 @@ class RepositoriesController < ApplicationController
       logger.error(exception.inspect + "\n" + exception.backtrace[0..5].join("\n"))
       render :json => { :success => 0 }
     end
+  end
+
+  def render_success(extra = {})
+    result = { :success => 1}
+    result.merge!(extra)
+
+    render :json => result
   end
 end
