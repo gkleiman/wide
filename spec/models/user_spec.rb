@@ -27,4 +27,12 @@ describe User do
 
     Factory.build(:user, :user_name => @user.user_name).valid?.should == false
   end
+
+  it "should not be case sensitive when validating the uniqueness of the user name" do
+    @user.save
+
+    user1 = Factory.build(:user, :user_name => @user.user_name.upcase)
+
+    user1.should_not be_valid
+  end
 end

@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
 
   validates_presence_of :user_name
   validates_format_of :user_name, :with => /\A[A-Za-z0-9._-]+\z/, :allow_blank => true, :message => "can only contain letters, numbers and the following characters: '.' ',' '_' and '-'"
-  validates_uniqueness_of :user_name, :allow_blank => true
+  validates_uniqueness_of :user_name, :allow_blank => true, :case_sensitive => false
 
   has_many :projects, :dependent => :destroy
   has_many :ssh_keys, :dependent => :destroy
@@ -28,5 +28,10 @@ class User < ActiveRecord::Base
 
   def active?
     super && active
+  end
+
+  # Make user name case insensitive for login
+  def self.find_for_database_authentication(conditions = {})
+    self.where("LOWER(user_name) = LOWER(?)", conditions[:user_name]).first || super
   end
 end

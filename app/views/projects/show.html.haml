@@ -10,10 +10,10 @@
   %link(id='bespin_base' href='/bespin')
   = javascript_include_tag '/bespin/BespinEmbedded.js'
 
-- title "wIDE | #{current_user.email} | #{@project.name}", false
+- title "wIDE | #{current_user.user_name} | #{@project.name}", false
 
 - content_for :alternative_title do
-  %h1= raw("wIDE | #{link_to(h(current_user.email), root_path)} | #{h(@project.name)}")
+  %h1= raw("wIDE | #{link_to(h(current_user.user_name), root_path)} | #{h(@project.name)}")
 
 .layout
   #toolbar.north
@@ -31,7 +31,6 @@
     #tabs.center
       %ul
     = render 'compiler_output'
-
 
 = render :partial => 'commit_dialog', :project => @project
 = render :partial => 'pull_dialog', :project => @project
