@@ -6,9 +6,10 @@
 .simple_form_container.ui-widget-content.ui-widget
   %h1.ui-widget-header New Project
   = simple_form_for @project do |f|
-    = f.input :name, :input_html => { :class => 'ui-state-default' }
-    = f.input :project_type_id, :collection => ProjectType.all, :include_blank => false, :required => true, :input_html => { :class => 'ui-state-default' }
+    = f.input :name
+    = f.input :project_type_id, :collection => ProjectType.all, :include_blank => false, :required => true
     = simple_fields_for 'project[repository_attributes]' do |repository_form|
-      = repository_form.input :scm, :collection => Wide::Scm::Scm.all_adapters, :include_blank => false, :input_html => { :class => 'ui-state-default' }
-      = repository_form.input :url, :required => false, :input_html => { :class => 'ui-state-default' }
+      = repository_form.input :scm, :collection => Wide::Scm::Scm.all_adapters, :include_blank => false
+      %span.clone_instructions Enter a URL below only if you want to clone an external repository.
+      = repository_form.input :url, :required => false, :label => 'Repository URL:'
       = f.button :submit

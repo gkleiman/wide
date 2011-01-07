@@ -26,3 +26,8 @@
 #projects table td {
   padding: 5px;
 }
+
+.clone_instructions {
+  display: block;
+  margin-bottom: 1em;
+}

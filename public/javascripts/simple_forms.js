@@ -17,6 +17,7 @@ $(function ($) {
   // Add ui-state-default to all the text input boxes
   $('.simple_form .string input').addClass('ui-state-default');
   $('.simple_form .password input').addClass('ui-state-default');
+  $('.simple_form .select input').addClass('ui-state-default');
 
   // Highlight errors
   $('.simple_form .error input').addClass('ui-state-error');
