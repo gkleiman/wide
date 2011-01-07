@@ -197,7 +197,7 @@ class Repository < ActiveRecord::Base
 
   def prepare_init_or_clone
     # Create the directory tree
-    FileUtils.mkdir_p(path)
+    FileUtils.mkdir_p(full_path)
 
     # Queue initialization/cloning
     queue_async_operation(:init_or_clone, self.url, false)
