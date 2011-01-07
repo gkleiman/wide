@@ -150,7 +150,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  ZenTest
   autotest
   autotest-rails
   awesome_print

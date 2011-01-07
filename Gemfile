@@ -45,7 +45,6 @@ group :development, :test do
   gem 'rspec-rails', '>= 2.0.0.beta.22'
   gem 'factory_girl_rails'
   gem 'redgreen'
-  gem 'ZenTest'
   gem 'autotest'
   gem 'autotest-rails'
   gem 'thin'
