@@ -4,11 +4,11 @@
 
 Project:
   fields:
-    default: user, name, project_type
-    form: user, name, project_type
-  order_by:
+    default: name, user, project_type
+    form: name, user, project_type
+  order_by: user_id
   relationships: project_type, repository, user
-  filters:
+  filters: user
   search: name
   application: wide
 
@@ -44,11 +44,11 @@ SshKey:
 
 User:
   fields:
-    default: email, user_name, active
-    form: email, user_name, active
+    default: user_name, active, email
+    form: user_name, active, email
   order_by:
   relationships: projects, ssh_keys
   filters: active
-  search:
+  search: user_name, email
   application: wide
 
