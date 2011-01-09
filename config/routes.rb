@@ -3,7 +3,7 @@ Wide::Application.routes.draw do
 
   root :to => "projects#index"
 
-  resources :projects, :except => [ :edit, :update ] do
+  resources :projects do
     member do
       post 'compile'
       get 'compiler_output'

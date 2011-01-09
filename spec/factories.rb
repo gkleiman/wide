@@ -18,3 +18,9 @@ end
 Factory.define :ssh_key do |s|
   s.association :user
 end
+
+Factory.define :constant do |c|
+  c.association :project
+  c.sequence(:name) { |n| "name#{n}" }
+  c.sequence(:value) { |n| "value#{n}" }
+end

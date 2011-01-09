@@ -15,8 +15,7 @@
     = csrf_meta_tag
 
   %body
-    #container.ui-widget-content
-
+    #container{:class => ".ui-widget-content #{params[:action]} #{params[:controller]}"}
       #title.ui-widget-header
         - if show_title?
           %h1=h yield(:title)
@@ -25,6 +24,9 @@
           %ul#navbar
             %li.username= current_user.user_name
             %li.separator= "|"
+            - unless current_project.blank? || current_project.new_record?
+              %li= link_to 'Project Settings', edit_project_path(current_project)
+              %li.separator= "|"
             %li= link_to 'Sign out', destroy_user_session_path
 
       - notification_class = 'ui-state-error' if flash[:alert]

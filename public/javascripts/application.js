@@ -1,3 +1,9 @@
+function add_fields(link, association, content) {
+  var new_id = new Date().getTime();
+  var regexp = new RegExp("new_" + association, "g");
+  $(link).parent().before(content.replace(regexp, new_id));
+}
+
 (function ($) {
   var show_placeholder_if_blank = function (o, text) {
     if(o.val() === '') {
@@ -55,5 +61,13 @@ tabTemplate: '<li><a href="#{href}">#{label}</a> <span class="ui-icon ui-icon-th
   $('table').delegate('tr.ui-state-default', 'hover', function (){
     $(this).toggleClass('ui-state-hover');
     return true;
+  });
+
+
+  $('.remove_link').live('click', function () {
+    $(this).prev("input[type=hidden]").val("1");
+    $(this).closest(".fields").hide();
+
+    return false;
   });
 });

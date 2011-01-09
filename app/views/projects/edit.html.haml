@@ -1,0 +1,14 @@
+- title "wIDE | #{@project.name} | Project Settings", false
+- content_for :alternative_title do
+  %h1= raw("wIDE | #{link_to("My Projects", projects_path)} | #{link_to(h(@project.name), @project)} | Project Settings")
+
+.simple_form_container.ui-widget-content.ui-widget
+  %h1.ui-widget-header Project Settings
+  = simple_form_for @project do |f|
+    = f.input :project_type_id, :collection => ProjectType.all, :include_blank => false, :required => true
+    %h1.ui-widget-header Constants
+    = f.simple_fields_for :constants do |builder|
+      = render 'constant_fields', :f => builder
+    %p
+      = link_to_add_fields('Add a new constant', f, :constants)
+    = f.button :submit

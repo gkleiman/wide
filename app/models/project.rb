@@ -2,13 +2,18 @@ class Project < ActiveRecord::Base
   belongs_to :user
   belongs_to :project_type
 
+  has_many :constants, :dependent => :destroy
   has_one :repository, :dependent => :destroy
 
   accepts_nested_attributes_for :repository, :update_only => true
+  accepts_nested_attributes_for :constants, :allow_destroy => true
 
   validates :name, :presence => true, :format => { :with => /\A[\w\- ]+\z/ }, :uniqueness => { :scope => :user_id }
 
   before_validation :set_repository_path
+
+  attr_accessible_on_create :name, :repository_attributes
+  attr_accessible :project_type_id, :constants_attributes
 
   serialize :compilation_status
 

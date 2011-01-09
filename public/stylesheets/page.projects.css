@@ -27,7 +27,19 @@
   padding: 5px;
 }
 
+div#container.projects.edit {
+  overflow-y: scroll;
+}
+#add_link,
 .clone_instructions {
   display: block;
   margin-bottom: 1em;
+}
+.remove_link {
+  display: block;
+  text-align: center;
+  margin-bottom: 0.5em;
+}
+.fields {
+  padding-top: 0.5em;
 }

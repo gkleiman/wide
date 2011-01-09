@@ -10,6 +10,8 @@ class ProjectsController < ApplicationController
 
   def new
     @project = current_user.projects.new
+
+    @project.build_repository
   end
 
   def create
@@ -23,6 +25,18 @@ class ProjectsController < ApplicationController
   end
 
   def show
+  end
+
+  def edit
+  end
+
+  def update
+    if @project.update_attributes(params[:project])
+      flash[:notice] = 'The project was successfully updated.'
+      redirect_to :back
+    else
+      render :action => "edit"
+    end
   end
 
   def compile
@@ -47,9 +61,11 @@ class ProjectsController < ApplicationController
 
   private
   def load_project
-    @project = current_user.projects.find_by_name params[:id]
+    @project ||= current_project
 
     raise ActiveRecord::RecordNotFound unless @project
+
+    @project
   end
 
 end

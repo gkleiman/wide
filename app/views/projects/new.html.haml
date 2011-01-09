@@ -1,6 +1,6 @@
-- title "wIDE | #{current_user.email} | New Project", false
+- title "wIDE | #{current_user.user_name} | New Project", false
 - content_for :alternative_title do
-  %h1= raw("wIDE | #{link_to(h(current_user.email), root_path)} | New Project")
+  %h1= raw("wIDE | #{link_to("My Projects", projects_path)} | New Project")
 
 
 .simple_form_container.ui-widget-content.ui-widget
@@ -8,7 +8,7 @@
   = simple_form_for @project do |f|
     = f.input :name
     = f.input :project_type_id, :collection => ProjectType.all, :include_blank => false, :required => true
-    = simple_fields_for 'project[repository_attributes]' do |repository_form|
+    = f.simple_fields_for :repository do |repository_form|
       = repository_form.input :scm, :collection => Wide::Scm::Scm.all_adapters, :include_blank => false
       %span.clone_instructions Enter a URL below only if you want to clone an external repository.
       = repository_form.input :url, :required => false, :label => 'Repository URL:'
