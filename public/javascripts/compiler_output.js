@@ -1,4 +1,4 @@
-WIDE.compilator_output = (function () {
+WIDE.compiler_output = (function () {
   var row_tmpl = '<tr class="ui-state-default"><td class="col0"><span class="ui-icon ui-icon-${icon_name}"></span></td><td class="col1">${description}</td><td class="col2">${resource}</td><td class="col3">${line}</td></tr>';
 
   return {
@@ -28,13 +28,13 @@ WIDE.compilator_output = (function () {
         return false;
       });
       row.click(function () {
-        $('tr', '#compilator_output_rows').removeClass('ui-state-focus');
+        $('tr', '#compiler_output_rows').removeClass('ui-state-focus');
         $(this).toggleClass('ui-state-focus');
 
         return false;
       });
       row.dblclick(function () {
-        $('tr', '#compilator_output_rows').removeClass('ui-state-focus');
+        $('tr', '#compiler_output_rows').removeClass('ui-state-focus');
         $(this).toggleClass('ui-state-focus');
 
         if($(this).attr('line_number') && $(this).attr('line_number') >= 0) {
@@ -43,20 +43,20 @@ WIDE.compilator_output = (function () {
 
         return false;
       });
-      row.appendTo($('#compilator_output_rows'));
+      row.appendTo($('#compiler_output_rows'));
     },
     clear: function () {
-      $('#compilator_output_rows').html('');
+      $('#compiler_output_rows').html('');
     }
   };
 }());
 
 /*
 $(function() {
-    var element = $('#compilator_output_table');
+    var element = $('#compiler_output_table');
     var make_column_resizeable = function (column_number) {
       $(".th" + column_number, element).resizable({
-              alsoResize: '#compilator_output_table .header-container',
+              alsoResize: '#compiler_output_table .header-container',
               stop: function(event, ui) {
                       var width1 = $(".th" + column_number, element).width();
                       $('.col' + column_number, element).width(width1);

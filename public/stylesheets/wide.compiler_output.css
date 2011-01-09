@@ -1,0 +1,44 @@
+#compiler_output_table {
+  height: 15%;
+  width: 100%;
+  padding-top: 3px;
+  font-size: 0.8em;
+}
+#compiler_output_table table {
+  table-layout: fixed;
+}
+#compiler_output_table .header-container {
+  height: 5%;
+  width: 100%;
+}
+#compiler_output_table .y-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 90%;
+  width: 100%;
+}
+#compiler_output_table table, #compiler_output_table tr {
+  width: 100%;
+}
+#compiler_output_table .th0, #compiler_output_table .col0 {
+  width: 2%;
+  text-align: center;
+  padding: 0;
+}
+#compiler_output_table .col0 span {
+  display: inline-block;
+}
+#compiler_output_table .th1, #compiler_output_table .col1 {
+  width: 60%
+}
+#compiler_output_table .th2, #compiler_output_table .col2 {
+  width: 35%;
+}
+#compiler_output_table .th3, #compiler_output_table .col3 {
+  width: 4%;
+}
+#compiler_output_table th, #compiler_output_table td {
+  border-right: 1px solid;
+  padding-left: 0.5%;
+  overflow: hidden;
+}

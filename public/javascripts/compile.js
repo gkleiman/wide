@@ -2,7 +2,7 @@ WIDE.compile = (function () {
   var compilation_in_progress = false;
 
   return {
-    poll_compilator_output: function (timestamp) {
+    poll_compiler_output: function (timestamp) {
       var perform_poll = function () {
         $.getJSON(WIDE.base_path() + '/compiler_output', function (response) {
           if(!response || !response.success) {
@@ -19,21 +19,21 @@ WIDE.compile = (function () {
             $('#compile_button').button('option', 'disabled', false);
             WIDE.notifications.success('Compilation finished.');
 
-            WIDE.compilator_output.clear();
+            WIDE.compiler_output.clear();
             for(var i = 0; i < response.compile_status.output.length; ++i) {
-              WIDE.compilator_output.add_output(response.compile_status.output[i]);
+              WIDE.compiler_output.add_output(response.compile_status.output[i]);
             }
 
             if(response.compile_status.status === 'success') {
               document.location.href = encodeURI(WIDE.base_path() + '/download_binary');
-              WIDE.compilator_output.add_output({
+              WIDE.compiler_output.add_output({
                 type: 'info',
                 description: 'Compilation successfull, downloading the binary file.'
               });
             }
           } else {
             setTimeout(function () {
-              WIDE.compile.poll_compilator_output(timestamp)
+              WIDE.compile.poll_compiler_output(timestamp)
             }, 1000);
           }
         });
@@ -51,7 +51,7 @@ WIDE.compile = (function () {
       };
 
       $('#compile_button').button('option', 'disabled', true).mouseout().blur();
-      WIDE.compilator_output.clear();
+      WIDE.compiler_output.clear();
       WIDE.notifications.activity_started('Compiling ...');
 
       $.ajax({
@@ -64,7 +64,7 @@ WIDE.compile = (function () {
 
             return false;
           } else {
-            WIDE.compile.poll_compilator_output(response.compile_status.updated_at);
+            WIDE.compile.poll_compiler_output(response.compile_status.updated_at);
           }
         },
         error: error_handler
