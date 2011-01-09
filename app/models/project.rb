@@ -8,7 +8,7 @@ class Project < ActiveRecord::Base
   accepts_nested_attributes_for :repository, :update_only => true
   accepts_nested_attributes_for :constants, :allow_destroy => true
 
-  validates :name, :presence => true, :format => { :with => /\A[\w\- ]+\z/ }, :uniqueness => { :scope => :user_id }
+  validates :name, :presence => true, :format => { :with => /\A[\w\- ]+\z/ }, :uniqueness => { :scope => :user_id, :case_sensitive => false }
 
   before_validation :set_repository_path
 
