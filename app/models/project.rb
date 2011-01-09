@@ -23,12 +23,12 @@ class Project < ActiveRecord::Base
 
   def compile
     # Make sure that the project is not being compiled
-    if(compilation_status && compilation_status[:status] == 'running')
+    if(!compilation_status.blank? && compilation_status[:status] == 'running')
       return Wide::Scm::AsyncOpStatus.new(:operation => 'compile', :status => 'error')
     end
 
-    compilation_status = Wide::Scm::AsyncOpStatus.new(:operation => 'compile', :status => 'running')
-    save!
+    self.compilation_status = Wide::Scm::AsyncOpStatus.new(:operation => 'compile', :status => 'running')
+    self.save!
 
     Delayed::Job.enqueue(Wide::Jobs::CompileJob.new(id))
 
