@@ -141,6 +141,13 @@ class Repository < ActiveRecord::Base
     begin
       if url.blank?
         scm_engine.init
+
+        project_type = project.project_type
+
+        # Untar the repository layout into the repository.
+        if project_type && !project_type.repository_template.blank?
+          shellout(Escape.shell_command(['tar', '-zxkpf', project_type.repository_template.path, '-C', full_path]))
+        end
       else
         scm_engine.clone(url)
       end
@@ -232,5 +239,23 @@ class Repository < ActiveRecord::Base
 
   def absolute_repository_base_path
     Wide::PathUtils.secure_path_join(Settings.repositories_base, path)
+  end
+
+  def shellout(cmd, &block)
+    cmd = cmd.to_s
+
+    logger.debug "Shelling out: #{cmd}" if logger && logger.debug?
+
+    begin
+      IO.popen(cmd, "r+") do |io|
+        io.close_write
+        block.call(io) if block_given?
+      end
+    rescue Errno::ENOENT => e
+      msg = e.message
+      # The command failed, log it and re-raise
+      logger.error("Compilation command failed with: #{msg}")
+      raise CommandFailed.new(msg)
+    end
   end
 end

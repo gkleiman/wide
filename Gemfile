@@ -19,8 +19,12 @@ gem 'jquery-rails'
 gem 'simple_form'
 gem 'delayed_job'
 gem 'settingslogic'
+gem "paperclip", "~> 2.3"
+
+# Typus
 gem 'typus', :git => 'https://github.com/fesplugas/typus.git'
 gem 'fastercsv', :platforms => :ruby_18
+
 
 # Use unicorn as the web server
 # gem 'unicorn'

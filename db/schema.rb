@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110107220827) do
+ActiveRecord::Schema.define(:version => 20110109192535) do
 
   create_table "admin_users", :force => true do |t|
     t.string   "first_name",       :default => "",    :null => false
@@ -57,6 +57,10 @@ ActiveRecord::Schema.define(:version => 20110107220827) do
     t.text     "makefile_template"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "repository_template_file_name"
+    t.string   "repository_template_content_type"
+    t.integer  "repository_template_file_size"
+    t.datetime "repository_template_updated_at"
   end
 
   create_table "projects", :force => true do |t|
