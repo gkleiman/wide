@@ -5,6 +5,12 @@ WIDE.tree = (function () {
     },
     select_node: function (node) {
       $('#tree').jstree('select_node', node);
+    },
+    focus: function () {
+      $('#tree').jstree('set_focus');
+    },
+    unset_focus: function () {
+      $('#tree').jstree('unset_focus');
     }
   };
 }());

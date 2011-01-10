@@ -35,6 +35,9 @@ WIDE.layout = (function () {
     $('.bespin:visible', '.ui-tabs-panel').height(tabs_h - navbar_h - height_difference - 5).width(form_w + 1);
 
     WIDE.editor.dimensions_changed();
+
+    // And now some magic to make the compiler output table look good
+    $('.header_container table').width($('.y-scroll table').outerWidth());
   };
 
   return {
