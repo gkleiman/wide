@@ -242,7 +242,7 @@ $(function () {
             this.data.ui.hovered.children("a:eq(0)").click();
             this.data.ui.hovered.children("a:eq(0)").dblclick();
           }
-	    return false;
+          return false;
         }
       },
 
