@@ -9,7 +9,8 @@
     = yield :stylesheets
 
     = javascript_include_tag :defaults
-    = javascript_include_tag 'wide.js', 'notifications.js', 'simple_forms.js', :cache => 'base';
+    = javascript_include_tag 'wide.js', 'wide.notifications.js',
+      'wide.simple_forms.js', :cache => 'base'
     = yield :javascripts
 
     = csrf_meta_tag
