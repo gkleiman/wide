@@ -20,6 +20,9 @@
 #compiler_output_table table, #compiler_output_table tr {
   width: 100%;
 }
+#compiler_output_table tbody tr {
+  cursor: pointer;
+}
 #compiler_output_table .th0, #compiler_output_table .col0 {
   width: 2%;
   text-align: center;
