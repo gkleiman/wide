@@ -25,7 +25,7 @@ ProjectType:
 Repository:
   fields:
     default: project, path, scm
-    form: project, path, url, scm
+    form: project, path, scm
   order_by:
   relationships: project
   filters:

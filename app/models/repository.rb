@@ -4,7 +4,7 @@ class Repository < ActiveRecord::Base
   cattr_accessor :supported_actions
   self.supported_actions = %w(add commit history forget mark_resolved mark_unresolved pull merge)
 
-  attr_accessor :entries_status
+  attr_accessor :entries_status, :url
 
   serialize :async_op_status
 
