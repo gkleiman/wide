@@ -2,6 +2,11 @@ $(function () {
   var pull_button = $('#pull_button');
   var pull_dialog = $('#pull_dialog');
 
+  var report_pull_error = function () {
+    WIDE.notifications.error('Pull from ' + $('input[name=url]', pull_dialog).val() + ' failed.');
+    pull_button.button('option', 'disabled', false);
+  };
+
   // Pull dialog
   pull_dialog.dialog({
     title: 'Pull changes',
@@ -33,17 +38,25 @@ $(function () {
   });
 
 
-  pull_dialog.bind('ajax:success', function (data, result, xhr) {
-    var report_pull_error = function () {
-      WIDE.notifications.error('Pull from ' + $('input[name=url]', pull_dialog).val() + ' failed.');
-    };
+  $('form', pull_dialog).bind('ajax:beforeSend', function () {
+    if ($('#url', pull_dialog).val().length === 0) {
+      WIDE.notifications.error('A URL is needed to pull from another repository');
+      pull_button.button('option', 'disabled', false);
+      pull_dialog.dialog('close');
 
-    result = $.parseJSON(result);
+      return false;
+    }
 
+    pull_dialog.dialog('close');
+    return true;
+  }).bind('ajax:error', function (data, result, xhr) {
+    report_pull_error();
+  }).bind('ajax:success', function (data, result, xhr) {
     if(!result.success || result.async_op_status.status === 'error') {
       report_pull_error();
 
       WIDE.toolbar.update_scm_buttons();
+
       return false;
     }
 
