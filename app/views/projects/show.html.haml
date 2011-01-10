@@ -7,7 +7,7 @@
     'wide.compiler_output.js', 'wide.toolbar.js', 'wide.compile.js',
     'wide.editor.js', 'wide.layout.js', 'wide.async_op.js', :cache => 'wide'
   = javascript_include_tag 'page.project.commit_dialog.js',
-    'page.project.pull_dialog.js', :cache => :project
+    'page.project.pull_dialog.js', 'page.project.js', :cache => :project
 
   %meta{:name => 'project_id', :content => @project.to_param}
   %link(id='bespin_base' href='/bespin')

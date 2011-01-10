@@ -26,6 +26,12 @@
 #projects table td {
   padding: 5px;
 }
+#projects table a {
+  text-decoration: underline;
+}
+#projects tbody tr {
+  cursor: pointer;
+}
 
 div#container.projects.edit {
   overflow-y: scroll;
