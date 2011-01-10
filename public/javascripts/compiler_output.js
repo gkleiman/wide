@@ -87,7 +87,11 @@ WIDE.compiler_output = (function () {
       row.attr('line_number', row_data.line);
 
       row.hover(function () {
-        $(this).toggleClass('ui-state-hover');
+        $(this).removeClass('ui-state-hover');
+
+        return true;
+      }, function () {
+        $(this).addClass('ui-state-hover');
 
         return true;
       }).click(function () {
