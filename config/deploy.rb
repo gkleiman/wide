@@ -10,11 +10,11 @@ set :user, "wide"
 set :use_sudo, false
 set :scm, :git
 set :deploy_via, :remote_cache
-#set :branch, 'version-2.0.13'
+set :branch, 'v1.0'
 
 role :web, "192.168.0.102"                          # Your HTTP server, Apache/etc
 role :app, "192.168.0.102"                          # This may be the same as your `Web` server
-role :db,  "192.168.0.102", :primary => true # This is where Rails migrations will run
+role :db,  "192.168.0.102", :primary => true        # This is where Rails migrations will run
 
 namespace :customs do
   task :setup, :except => { :no_release => true } do
