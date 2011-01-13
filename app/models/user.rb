@@ -17,7 +17,6 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :user_name, :allow_blank => true, :case_sensitive => false
 
   has_many :projects, :dependent => :destroy
-  has_many :ssh_keys, :dependent => :destroy
 
   attr_accessible_on_create :user_name
   attr_accessible :email, :password, :password_confirmation, :remember_me

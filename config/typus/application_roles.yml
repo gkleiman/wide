@@ -6,5 +6,4 @@ admin:
   Project: create, read, update, delete
   ProjectType: create, read, update, delete
   Repository: create, read, update, delete
-  SshKey: create, read, update, delete
   User: create, read, update, delete

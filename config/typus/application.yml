@@ -32,22 +32,12 @@ Repository:
   search:
   application: wide
 
-SshKey:
-  fields:
-    default: user, name_base64_encoded, name, content
-    form: user, name_base64_encoded, name, content
-  order_by:
-  relationships: user
-  filters:
-  search: name
-  application: wide
-
 User:
   fields:
     default: user_name, active, email
     form: user_name, active, email
   order_by:
-  relationships: projects, ssh_keys
+  relationships: projects
   filters: active
   search: user_name, email
   application: wide

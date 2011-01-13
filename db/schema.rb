@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110110214940) do
+ActiveRecord::Schema.define(:version => 20110113233221) do
 
   create_table "admin_users", :force => true do |t|
     t.string   "first_name",       :default => "",    :null => false
@@ -85,14 +85,6 @@ ActiveRecord::Schema.define(:version => 20110110214940) do
   end
 
   add_index "repositories", ["project_id"], :name => "index_repositories_on_project_id", :unique => true
-
-  create_table "ssh_keys", :force => true do |t|
-    t.integer  "user_id"
-    t.string   "name"
-    t.string   "content"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "",    :null => false
