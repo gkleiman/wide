@@ -363,7 +363,4 @@ ul.predefined_filters li {
   height: 1em;
 }
 
-tr .hidden { display: none; }
-tr:hover .hidden { display: block; }
-
 /* @end */

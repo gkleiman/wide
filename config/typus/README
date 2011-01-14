@@ -1,8 +1,8 @@
 # Models
 
-This is an example of a **Typus** enabled model with all available options. You
-can use this example to customize your YAML files which only have set the most
-common settings.
+This is an example of a **Typus** enabled model with all available options.
+You can use this example to customize your YAML files which only have set the
+most common settings.
 
     Post:
       fields:
@@ -48,8 +48,8 @@ Note: To define namespace models use :: as a separator. (i.e. Delayed::Job)
 
 # Roles
 
-In this file you can configure the actions available for each of your models on
-the application. You can also use the 'all' shortcut to allow the user the
+In this file you can configure the actions available for each of your models
+on the application. You can also use the 'all' shortcut to allow the user the
 access to all actions.
 
     admin:
