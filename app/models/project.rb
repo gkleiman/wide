@@ -4,6 +4,8 @@ class Project < ActiveRecord::Base
 
   has_many :constants, :dependent => :destroy
   has_one :repository, :dependent => :destroy
+  has_many :project_collaborators, :dependent => :destroy
+  has_many :collaborators, :through => :project_collaborators, :source => :user
 
   accepts_nested_attributes_for :repository, :update_only => true
   accepts_nested_attributes_for :constants, :allow_destroy => true

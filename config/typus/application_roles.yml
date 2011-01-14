@@ -7,3 +7,4 @@ admin:
   ProjectType: create, read, update, delete
   Repository: create, read, update, delete
   User: create, read, update, delete
+  ProjectCollaborator: all

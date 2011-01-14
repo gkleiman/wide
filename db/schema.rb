@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110113233221) do
+ActiveRecord::Schema.define(:version => 20110114001158) do
 
   create_table "admin_users", :force => true do |t|
     t.string   "first_name",       :default => "",    :null => false
@@ -51,6 +51,15 @@ ActiveRecord::Schema.define(:version => 20110113233221) do
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
+  create_table "project_collaborators", :force => true do |t|
+    t.integer  "project_id", :null => false
+    t.integer  "user_id",    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "project_collaborators", ["project_id", "user_id"], :name => "index_project_collaborators_on_project_id_and_user_id", :unique => true
+
   create_table "project_types", :force => true do |t|
     t.string   "name"
     t.string   "description"
@@ -70,6 +79,7 @@ ActiveRecord::Schema.define(:version => 20110113233221) do
     t.datetime "updated_at"
     t.string   "compilation_status"
     t.integer  "project_type_id"
+    t.boolean  "public",             :default => false, :null => false
   end
 
   add_index "projects", ["name"], :name => "index_projects_on_name"

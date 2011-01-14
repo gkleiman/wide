@@ -4,11 +4,11 @@
 
 Project:
   fields:
-    default: name, user, project_type
-    form: name, user, project_type
+    default: name, user, project_type, public
+    form: name, user, project_type, public
   order_by: user_id
-  relationships: project_type, repository, user
-  filters: user
+  relationships: repository, project_collaborators
+  filters: user, public
   search: name
   application: wide
 
@@ -41,4 +41,13 @@ User:
   filters: active
   search: user_name, email
   application: wide
+
+ProjectCollaborator:
+  fields:
+    default: user
+    form: user, project
+  order_by:
+  relationships: project, user
+  filters: project, user
+  search:
 
