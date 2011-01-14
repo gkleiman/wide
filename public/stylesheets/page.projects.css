@@ -29,7 +29,7 @@
 #projects table a {
   text-decoration: underline;
 }
-#projects tbody tr {
+#projects tbody tr.success {
   cursor: pointer;
 }
 

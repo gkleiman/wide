@@ -19,7 +19,7 @@
     %tbody.ui-widget-content.ui-state-default
       - @projects.each do |project|
         - status = project.status
-        %tr.ui-state-default
+        %tr{:class => ['ui-state-default', status]}
           %td
             - if status == 'success'
               = link_to project.name, project

@@ -36,7 +36,7 @@ tabTemplate: '<li><a href="#{href}">#{label}</a> <span class="ui-icon ui-icon-th
     return true;
   });
 
-  $('#projects table tbody tr').click(function (event) {
+  $('#projects table tbody tr.success').click(function (event) {
     if (event.target.nodeName === 'A') {
       return true;
     }
