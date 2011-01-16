@@ -9,6 +9,7 @@
   %h1.ui-widget-header Project Settings
   = simple_form_for @project do |f|
     = f.input :project_type_id, :collection => ProjectType.all, :include_blank => false, :required => true
+    = f.input :public
     %h1.ui-widget-header Constants
     = f.simple_fields_for :constants do |builder|
       = render 'constant_fields', :f => builder

@@ -15,7 +15,7 @@ class Project < ActiveRecord::Base
   before_validation :set_repository_path
 
   attr_accessible_on_create :name, :repository_attributes
-  attr_accessible :project_type_id, :constants_attributes
+  attr_accessible :project_type_id, :constants_attributes, :public
 
   serialize :compilation_status
 
