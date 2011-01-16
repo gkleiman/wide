@@ -7,10 +7,10 @@ Project:
     default: name, user, project_type, public
     form: name, user, project_type, public
   order_by: user_id
-  relationships: repository, project_collaborators
+  relationships: repository, collaborators
   filters: user, public
   search: name
-  application: wide
+  application: wIDE
 
 ProjectType:
   fields:
@@ -20,7 +20,7 @@ ProjectType:
   relationships:
   filters:
   search: name
-  application: wide
+  application: wIDE
 
 Repository:
   fields:
@@ -30,7 +30,7 @@ Repository:
   relationships: project
   filters:
   search:
-  application: wide
+  application: wIDE
 
 User:
   fields:
@@ -40,7 +40,7 @@ User:
   relationships: projects
   filters: active
   search: user_name, email
-  application: wide
+  application: wIDE
 
 ProjectCollaborator:
   fields:
@@ -50,4 +50,3 @@ ProjectCollaborator:
   relationships: project, user
   filters: project, user
   search:
-
