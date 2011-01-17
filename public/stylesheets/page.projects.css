@@ -44,8 +44,41 @@ div#container.projects.edit {
 .remove_link {
   display: block;
   text-align: center;
-  margin-bottom: 0.5em;
+}
+
+.constants p {
+  text-align: center;
 }
 .fields {
   padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+.constants,
+.collaborators {
+  padding-top: 0.5em;
+  font-size: 0.75em;
+}
+.collaborators {
+  width: 450px;
+  text-align: center;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+ul.token-input-list p {
+  padding-left: 0.2em;
+  display: inline-block;
+}
+ul.token-input-list span {
+  float: right;
+}
+ul.token-input-list li input {
+  border: 0;
+  width: 350px;
+  padding: 3px 8px;
+  background-color: white;
+}
+.autocomplete-dropdown {
+  z-index: 99999;
 }

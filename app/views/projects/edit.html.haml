@@ -3,7 +3,10 @@
   %h1= raw("wIDE | #{link_to("My Projects", projects_path)} | #{link_to(h(@project.name), @project)} | Project Settings")
 
 - content_for :javascripts do
-  = javascript_include_tag 'page.project.js'
+  = javascript_include_tag 'page.project.js', 'jquery.tmpl.min.js', 'jquery.tokeninput.js'
+
+:javascript
+  var collaborators_ids = #{@project.collaborators.map { |collaborator| {:name => collaborator.user_name, :id => collaborator.id} }.to_json};
 
 .simple_form_container.ui-widget-content.ui-widget
   %h1.ui-widget-header Project Settings
@@ -11,8 +14,12 @@
     = f.input :project_type_id, :collection => ProjectType.all, :include_blank => false, :required => true
     = f.input :public
     %h1.ui-widget-header Constants
-    = f.simple_fields_for :constants do |builder|
-      = render 'constant_fields', :f => builder
-    %p
-      = link_to_add_fields('Add a new constant', f, :constants)
+    .constants
+      = f.simple_fields_for :constants do |builder|
+        = render 'constant_fields', :f => builder
+      %p
+        = link_to_add_fields('Add a new constant', f, :constants)
+    %h1.ui-widget-header Collaborators
+    .collaborators
+      = text_field_tag 'project[collaborator_ids]', '', :id => 'collaborator_ids'
     = f.button :submit

@@ -31,6 +31,9 @@ class ProjectsController < ApplicationController
   end
 
   def update
+    params[:project][:collaborator_ids] ||= []
+    params[:project][:collaborator_ids] = params[:project][:collaborator_ids].split(',')
+
     if @project.update_attributes(params[:project])
       flash[:notice] = 'The project was successfully updated.'
       redirect_to :back

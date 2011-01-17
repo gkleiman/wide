@@ -3,6 +3,8 @@ Wide::Application.routes.draw do
 
   root :to => "projects#index"
 
+  resources :users, :only => [ :index ]
+
   resources :projects do
     member do
       post 'compile'

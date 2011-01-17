@@ -35,7 +35,7 @@ Repository:
 User:
   fields:
     default: user_name, active, email
-    form: user_name, active, email
+    form: user_name, active, email, password, password_confirmation
   order_by:
   relationships: projects
   filters: active

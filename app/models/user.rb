@@ -17,7 +17,8 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :user_name, :allow_blank => true, :case_sensitive => false
 
   has_many :projects, :dependent => :destroy
-  has_many :third_party_projects, :through => :project_collaborators, :dependent => :destroy
+  has_many :project_collaborators, :dependent => :destroy
+  has_many :third_party_projects, :through => :project_collaborators
 
   attr_accessible_on_create :user_name
   attr_accessible :email, :password, :password_confirmation, :remember_me
@@ -28,6 +29,10 @@ class User < ActiveRecord::Base
 
   def active?
     super && active
+  end
+
+  def self.active
+    where('active = ?', true)
   end
 
   # Make user name case insensitive for login
