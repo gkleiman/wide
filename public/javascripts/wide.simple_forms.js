@@ -1,15 +1,15 @@
 $(function ($) {
   var first_error = $('.simple_form .error input').first();
 
-  $('.simple_form').delegate('.ui-state-default', 'hover', function (){
+  $('.simple_form').delegate('.ui-state-default', 'hover', function () {
     $(this).toggleClass('ui-state-hover');
     return true;
   });
-  $('.simple_form').delegate('.ui-state-default', 'focus', function (){
+  $('.simple_form').delegate('.ui-state-default', 'focus', function () {
     $(this).addClass('ui-state-active');
     return true;
   });
-  $('.simple_form').delegate('.ui-state-default', 'blur', function (){
+  $('.simple_form').delegate('.ui-state-default', 'blur', function () {
     $(this).removeClass('ui-state-active');
     return true;
   });
