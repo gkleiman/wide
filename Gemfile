@@ -26,8 +26,8 @@ gem 'typus', :git => 'https://github.com/fesplugas/typus.git'
 gem 'fastercsv', :platforms => :ruby_18
 
 
-# Use unicorn as the web server
-# gem 'unicorn'
+# For syntax highlighting
+gem 'coderay'
 
 # Deploy with Capistrano
 gem 'capistrano'
@@ -36,7 +36,6 @@ gem 'capistrano'
 # gem 'ruby-debug'
 
 # Bundle the extra gems:
-# gem 'bj'
 # gem 'nokogiri'
 # gem 'sqlite3-ruby', :require => 'sqlite3'
 # gem 'aws-s3', :require => 'aws/s3'
