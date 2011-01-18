@@ -10,11 +10,12 @@
               = rel_path
             %a.view-diff(href = "#") (View diff)
         %td.diffstat
-          %span.diffstat-summary= file[:number_of_changes]
+          %span.diffstat-summary= file[:binary] ? 'Bin' : file[:number_of_changes]
           %span.diffstat-bar
-            - file[:insertions].times do
-              %span.plus +
-            - file[:deletions].times do
-              %span.minus -
+            - unless file[:binary]
+              - file[:insertions].times do
+                %span.plus +
+              - file[:deletions].times do
+                %span.minus -
         %td.checkbox
           = check_box_tag 'files[]', rel_path, true

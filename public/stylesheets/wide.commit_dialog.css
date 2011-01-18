@@ -73,10 +73,11 @@
 }
 #diffstat-table .diffstat-bar {
   display: inline-block;
-  width: 80px;
+  width: 88px;
   text-align: left;
   text-decoration: none;
   padding-right: 5px;
+  font-size: 0.75em;
 }
 #diffstat-table .diffstat-summary {
   font-weight: bold;

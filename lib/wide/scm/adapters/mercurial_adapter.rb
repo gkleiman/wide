@@ -64,7 +64,7 @@ module Wide
         def diff(entry, revision = '')
           rel_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
 
-          cmd = cmd_prefix.push('diff', "path:#{rel_path}")
+          cmd = cmd_prefix.push('diff', '--git', "path:#{rel_path}")
 
           cmd.push('-r', revision) unless revision.blank?
 
@@ -81,12 +81,13 @@ module Wide
         def diff_stat(revision = nil)
           # path | number_of_changes +++---
           # For example: librabbitmq/amqp_connection.c    |  12 +++
+          bin_file_stats_regexp = /\A\s*([^|\s]+)\s*\|\s*Bin\s*\z/
           file_stats_regexp = /\A\s*([^|\s]+)\s*\|\s*(\d+)\s*([^-]*)(-*)\z/
           summary_regexp = /\A\s*(\d+) files changed, (\d+) insertions\(\+\), (\d+) deletions\(-\)\z/
 
           stats = { :files_changed => 0, :insertions => 0, :deletions => 0, :files => [] }
 
-          cmd = cmd_prefix.push('diff', '--stat')
+          cmd = cmd_prefix.push('diff', '--git', '--stat')
           unless revision.blank?
             cmd << '-r'
             cmd << "#{revision.to_s}"
@@ -105,10 +106,19 @@ module Wide
                   :path => Wide::PathUtils.secure_path_join(base_path, $1),
                   :number_of_changes => $2.to_i,
                   :insertions => $3.length,
-                  :deletions => $4.length
+                  :deletions => $4.length,
+                  :binary => false
                 }
               elsif(summary_regexp.match(line))
                 stats.merge!({:files_changed => $1.to_i, :insertions => $2.to_i, :deletions  => $3.to_i})
+              elsif(bin_file_stats_regexp.match(line))
+                stats[:files] << {
+                  :path => Wide::PathUtils.secure_path_join(base_path, $1),
+                  :number_of_changes => 0,
+                  :insertions => 0,
+                  :deletions => 0,
+                  :binary => true
+                }
               end
             end
           end
