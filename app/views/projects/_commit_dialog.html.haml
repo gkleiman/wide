@@ -1,6 +1,6 @@
 #commit_dialog.ui-helper-hidden
   = form_tag commit_project_repository_path(@project), :remote => true do
-    %pre.description
+    #commit-summary
     .message
       = label_tag :message, 'Commit message:'
       = text_area_tag :message, nil, :rows => 5

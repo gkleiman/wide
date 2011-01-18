@@ -2,7 +2,7 @@ class Repository < ActiveRecord::Base
   include ActiveModel::Validations
 
   cattr_accessor :supported_actions
-  self.supported_actions = %w(add commit history forget mark_resolved mark_unresolved pull merge)
+  self.supported_actions = %w(add commit history forget mark_resolved mark_unresolved pull merge diff_stat)
 
   attr_accessor :entries_status, :url
 
@@ -108,14 +108,17 @@ class Repository < ActiveRecord::Base
     scm_engine.mark_unresolved(entry)
   end
 
-  def commit(user, message)
-    scm_engine.commit(user, message)
+  def commit(user, message, files = [])
+    scm_engine.commit(user, message, files)
   end
 
   def summary
     scm_engine ? scm_engine.summary : {}
   end
 
+  def diff_stat(revision = nil)
+    scm_engine ? scm_engine.diff_stat(revision) : {}
+  end
   def clean?
     scm_engine ? scm_engine.clean? : true
   end

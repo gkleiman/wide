@@ -83,7 +83,11 @@ class RepositoriesController < ApplicationController
   end
 
   def commit
-    @repository.commit(current_user.email, params[:message])
+    params[:files] ||= []
+
+    raise "Can't commit no files" if params[:files].empty?
+
+    @repository.commit(current_user.email, params[:message], params[:files])
 
     render_success
   end
@@ -91,8 +95,10 @@ class RepositoriesController < ApplicationController
   def status
     @repository.update_entries_status
 
-    message = "<pre>#{@repository.entries_status.to_s}</pre>"
-    render :text => message
+    @status = @repository.entries_status
+    @diffstat = @repository.diff_stat
+
+    render :status, :layout => false
   end
 
   def mark_resolved

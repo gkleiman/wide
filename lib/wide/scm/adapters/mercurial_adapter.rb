@@ -61,6 +61,47 @@ module Wide
           status_hash
         end
 
+        def diff_stat(revision = nil)
+          # path | number_of_changes +++---
+          # For example: librabbitmq/amqp_connection.c    |  12 +++
+          file_stats_regexp = /\A\s*([^|\s]+)\s*\|\s*(\d+)\s*([^-]*)(-*)\z/
+          summary_regexp = /\A\s*(\d+) files changed, (\d+) insertions\(\+\), (\d+) deletions\(-\)\z/
+
+          stats = { :files_changed => 0, :insertions => 0, :deletions => 0, :files => [] }
+
+          cmd = cmd_prefix.push('diff', '--stat')
+          unless revision.blank?
+            cmd << '-r'
+            cmd << "#{revision.to_s}"
+          end
+
+          old_columns = ENV['COLUMNS']
+          ENV['COLUMNS'] = '10'
+          shellout(Escape.shell_command(cmd)) do |io|
+            io.each_line do |line|
+              # HG uses antislashs as separator on Windows
+              line = line.gsub(/\\/, "/")
+              line.chomp!
+
+              if(file_stats_regexp.match(line))
+                stats[:files] << {
+                  :path => Wide::PathUtils.secure_path_join(base_path, $1),
+                  :number_of_changes => $2.to_i,
+                  :insertions => $3.length,
+                  :deletions => $4.length
+                }
+              elsif(summary_regexp.match(line))
+                stats.merge!({:files_changed => $1.to_i, :insertions => $2.to_i, :deletions  => $3.to_i})
+              end
+            end
+          end
+          ENV['COLUMNS'] = old_columns
+
+          raise CommandFailed.new("Failed to get the diffstat for #{base_path}:#{revision}") if $? && $?.exitstatus != 0
+
+          stats
+        end
+
         # dest_path must be a full expanded path
         def move!(entry, dest_path)
           src_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
@@ -115,8 +156,8 @@ module Wide
           raise CommandFailed.new("Failed to revert file #{src_path} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
         end
 
-        def commit(user, message)
-          cmd = cmd_prefix.push('commit', '-u', user.to_s, '-m', message.to_s)
+        def commit(user, message, files = [])
+          cmd = cmd_prefix.push('commit', '-u', user.to_s, '-m', message.to_s, *files)
           shellout(Escape.shell_command(cmd))
 
           raise CommandFailed.new("Failed to commit the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
