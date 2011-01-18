@@ -2,7 +2,7 @@ class Repository < ActiveRecord::Base
   include ActiveModel::Validations
 
   cattr_accessor :supported_actions
-  self.supported_actions = %w(add commit history forget mark_resolved mark_unresolved pull merge diff_stat)
+  self.supported_actions = %w(add commit history forget mark_resolved mark_unresolved pull merge diff_stat diff)
 
   attr_accessor :entries_status, :url
 
@@ -119,6 +119,12 @@ class Repository < ActiveRecord::Base
   def diff_stat(revision = nil)
     scm_engine ? scm_engine.diff_stat(revision) : {}
   end
+
+  def diff(rel_path)
+    entry = DirectoryEntry.new(full_path(rel_path))
+    scm_engine.diff(entry)
+  end
+
   def clean?
     scm_engine ? scm_engine.clean? : true
   end

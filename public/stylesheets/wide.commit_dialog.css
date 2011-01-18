@@ -29,6 +29,12 @@
   padding: 0.4em 5px;
 }
 
+#diffstat-table td.path a {
+  text-decoration: none;
+  border-bottom: 1px dotted;
+  font-size: 0.85em;
+}
+
 #diffstat-table td.status {
   padding-left: 0px;
   width: 20px;
@@ -88,4 +94,9 @@
 #diffstat-table .checkbox {
   max-width: 0.25em;
   padding: 0.4em 5px 0 0;
+}
+
+#diffstat-table .loading {
+  background: no-repeat url('../images/throbber.gif');
+  padding-left: 20px;
 }

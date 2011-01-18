@@ -119,6 +119,14 @@ WIDE.file = function (path, is_directory, file_name) {
         fail: fail
       });
     },
+    diff: function (success, fail) {
+      perform_action({
+        method: 'get',
+        action: 'diff',
+        success: success,
+        fail: fail
+      });
+    },
     file_name: function () {
       return file_name;
     }

@@ -5,7 +5,7 @@ class RepositoriesController < ApplicationController
   before_filter :load_repository
   before_filter lambda { @path = extract_path_from_param(:path) },
     :only => [ :ls, :cat, :save_file, :create_file, :create_directory, :rm,
-      :add, :forget, :revert, :mark_resolved, :mark_unresolved ]
+      :add, :forget, :revert, :mark_resolved, :mark_unresolved, :diff ]
 
   around_filter :json_failable_action,
     :only => [ :save_file, :create_file, :create_directory, :rm, :mv, :summary,
@@ -25,6 +25,10 @@ class RepositoriesController < ApplicationController
 
   def cat
     render :text => @repository.file_contents(@path)
+  end
+
+  def diff
+    render :text => CodeRay.scan(@repository.diff(@path), 'diff').html(:css => :class)
   end
 
   def save_file

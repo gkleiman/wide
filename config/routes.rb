@@ -22,6 +22,7 @@ Wide::Application.routes.draw do
       # SCM
       get 'summary'
       get 'status'
+      get 'diff'
       get 'async_op_status'
 
       post 'add'

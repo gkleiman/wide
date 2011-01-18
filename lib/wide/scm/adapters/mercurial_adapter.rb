@@ -61,6 +61,23 @@ module Wide
           status_hash
         end
 
+        def diff(entry, revision = '')
+          rel_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
+
+          cmd = cmd_prefix.push('diff', "path:#{rel_path}")
+
+          cmd.push('-r', revision) unless revision.blank?
+
+          lines = ''
+          shellout(Escape.shell_command(cmd)) do |io|
+            lines = io.read
+          end
+
+          raise CommandFailed.new("Failed to diff file #{rel_path}:#{revision} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
+
+          lines
+        end
+
         def diff_stat(revision = nil)
           # path | number_of_changes +++---
           # For example: librabbitmq/amqp_connection.c    |  12 +++
