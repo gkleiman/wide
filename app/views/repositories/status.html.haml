@@ -1,0 +1,20 @@
+%table#diffstat-table
+  %tbody
+    - @diffstat[:files].each do |file|
+      - rel_path = Wide::PathUtils.relative_to_base(@project.repository.full_path, file[:path])
+      %tr{'data-path' => rel_path}
+        %td{:class => [ :status, @status[file[:path]] ] }
+          %span{:class => [ 'ui-icon', :status, @status[file[:path]] ] }
+          %td.path
+            %span.path
+              = rel_path
+            %a.view-diff(href = "#") (View diff)
+        %td.diffstat
+          %span.diffstat-summary= file[:number_of_changes]
+          %span.diffstat-bar
+            - file[:insertions].times do
+              %span.plus +
+            - file[:deletions].times do
+              %span.minus -
+        %td.checkbox
+          = check_box_tag 'files[]', rel_path, true
