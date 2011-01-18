@@ -140,19 +140,19 @@ WIDE.editor = (function () {
 
     WIDE.notifications.success('Loading ' + path + ' ...');
     file.cat(
+      function (data) {
+        WIDE.notifications.hide();
+        new_editor({
+          path: path,
+          file_name: file.file_name(),
+          data: data,
+          line_number: line_number
+        });
+      },
+      function (data) {
+        WIDE.notifications.error('Error opening: ' + path);
 
-    function (data) {
-      WIDE.notifications.hide();
-      new_editor({
-        path: path,
-        file_name: file.file_name(),
-        data: data,
-        line_number: line_number
-      });
-    }, function (data) {
-      WIDE.notifications.error('Error opening: ' + path);
-
-      return false;
+        return false;
     });
   };
 

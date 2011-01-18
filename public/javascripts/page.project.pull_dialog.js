@@ -24,6 +24,8 @@ $(function () {
         pull_button.button('option', 'disabled', false);
       }
     }
+  }).bind('dialogclose', function (event, ui) {
+    pull_button.mouseout().blur();
   });
 
   pull_button.click(function () {
@@ -32,11 +34,6 @@ $(function () {
 
     return false;
   });
-
-  pull_dialog.bind('dialogclose', function (event, ui) {
-    pull_button.mouseout().blur();
-  });
-
 
   $('form', pull_dialog).bind('ajax:beforeSend', function () {
     if ($('#url', pull_dialog).val().length === 0) {
