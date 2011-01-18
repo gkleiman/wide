@@ -100,3 +100,6 @@
   background: no-repeat url('../images/throbber.gif');
   padding-left: 20px;
 }
+#diffstat-table .CodeRay {
+  border: 0px;
+}
