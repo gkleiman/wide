@@ -70,7 +70,8 @@ module Wide
         FileUtils.chdir(@dst_path)
         cmd = %w(make)
         cmd = cmd.push('-s', '-f', makefile_path)
-        cmd = Escape.shell_command(cmd).to_s + " 2>>#{Wide::PathUtils.secure_path_join(project.bin_path, 'messages')}"
+        cmd = Escape.shell_command(cmd).to_s + " 2>>#{Escape.shell_single_word(Wide::PathUtils.secure_path_join(project.bin_path, 'messages')).to_s}"
+
         shellout(cmd)
 
         if $? && $?.exitstatus != 0
