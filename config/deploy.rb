@@ -10,7 +10,7 @@ set :user, "wide"
 set :use_sudo, false
 set :scm, :git
 set :deploy_via, :remote_cache
-set :branch, 'v1.0'
+set :branch, 'v1.1'
 
 role :web, "192.168.0.102"                          # Your HTTP server, Apache/etc
 role :app, "192.168.0.102"                          # This may be the same as your `Web` server
