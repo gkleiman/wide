@@ -240,7 +240,6 @@ $(function () {
         "return" : function () {
           if(this.data.ui.hovered) {
             this.data.ui.hovered.children("a:eq(0)").click();
-            this.data.ui.hovered.children("a:eq(0)").dblclick();
           }
           return false;
         }
@@ -309,7 +308,7 @@ $(function () {
         items: context_menu_options,
         select_node: true
       }
-    }).bind('dblclick.jstree', function (e) {
+    }).bind('click.jstree', function (e) {
       var node = $('#tree').jstree('get_selected');
       var path, file_name;
 
