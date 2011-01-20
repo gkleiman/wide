@@ -10,8 +10,6 @@
     'page.project.pull_dialog.js', 'page.project.js', :cache => 'project'
 
   %meta{:name => 'project_id', :content => @project.to_param}
-  %link(id='bespin_base' href='/bespin')
-  = javascript_include_tag '/bespin/BespinEmbedded.js'
 
 - title "wIDE | #{current_user.user_name} | #{@project.name}", false
 
