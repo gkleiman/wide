@@ -4,7 +4,7 @@ $(function () {
     return true;
   });
 
-  $('#projects table tbody tr.success').click(function (event) {
+  $('#projects table tbody tr.success').live('click', function (event) {
     if (event.target.nodeName === 'A') {
       return true;
     }
