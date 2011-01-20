@@ -1,4 +1,16 @@
 WIDE.toolbar = (function () {
+  var setConfirmUnload = function (on) {
+    if (on) {
+      window.onbeforeunload = unloadMessage;
+    } else {
+      window.onbeforeunload = null;
+    }
+  }
+
+  var unloadMessage = function () {
+    return "You have modified a file. If you navigate away from this page without first saving it, the changes will be lost.";
+  }
+
   return {
     update_scm_buttons: function () {
       var pull_button = $('#pull_button');
@@ -42,9 +54,6 @@ WIDE.toolbar = (function () {
       if(current_editor !== undefined) {
         if(current_editor.modified === true) {
           save_button.button('option', 'disabled', false).mouseout().blur();
-          save_all_button.button('option', 'disabled', false).mouseout().blur();
-
-          return;
         } else {
           save_button.button('option', 'disabled', true).mouseout().blur();
         }
@@ -54,8 +63,10 @@ WIDE.toolbar = (function () {
 
       if(WIDE.editor.modified_editors() === true) {
         save_all_button.button('option', 'disabled', false).mouseout().blur();
+        setConfirmUnload(true);
       } else {
         save_all_button.button('option', 'disabled', true).mouseout().blur();
+        setConfirmUnload(false);
       }
     }
   };

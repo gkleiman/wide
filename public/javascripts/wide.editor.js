@@ -210,23 +210,22 @@ WIDE.editor = (function () {
       set_syntax_highlighting(env.editor, aux.file_name);
 
       aux.mark_tab_as_clean = function () {
-        modified_editors--;
-
         env.editor.textChanged.add(aux.mark_tab_as_dirty);
 
         aux.modified = false;
         aux.tab_title.text(aux.file_name);
+        aux.containing_tab.removeClass('modified');
 
         WIDE.toolbar.update_save_buttons();
       };
 
       aux.mark_tab_as_dirty = function () {
-        modified_editors++;
 
         env.editor.textChanged.remove(aux.mark_tab_as_dirty);
 
         aux.modified = true;
         aux.tab_title.text(aux.file_name + ' +');
+        aux.containing_tab.addClass('modified');
 
         WIDE.toolbar.update_save_buttons();
       };
@@ -313,7 +312,41 @@ WIDE.editor = (function () {
       }
     },
     remove_editor: function (index) {
-      editors.splice(index, 1);
+      var editor = editors[index];
+
+      var _remove_editor = function () {
+        editors.splice(index, 1);
+        WIDE.toolbar.update_save_buttons();
+
+        $('#tabs').tabs('remove', index);
+        if($('#tabs li').children().length === 0) {
+          $('#tabs').hide();
+        }
+      }
+
+      if (editor.modified) {
+        $('<div />').dialog({
+          title: "Save '" + editor.file_name + "'?",
+          modal: true,
+          resizable: false,
+          buttons: {
+            Yes: function () {
+              $(this).dialog('close');
+              editor.save();
+              _remove_editor();
+            },
+            No: function () {
+              $(this).dialog('close');
+              _remove_editor();
+            },
+            Cancel: function () {
+              $(this).dialog('close');
+            }
+          }
+        });
+      } else {
+        _remove_editor();
+      }
     },
     get_current_editor: function () {
       var href = $('a', '.ui-tabs-selected', '#tabs').attr('href');
@@ -341,12 +374,32 @@ WIDE.editor = (function () {
       }
     },
     modified_editors: function () {
-      return modified_editors !== 0;
+      return $('#tabs .modified').length !== 0;
     }
   };
 }());
 
 $(function () {
+  if($('#tabs').length > 0) {
+    $('#tabs').tabs({
+      tabTemplate: '<li><a href="#{href}">#{label}</a> <span class="ui-icon ui-icon-throbber" style="display: none;">Activity in progress...</span><span class="ui-icon ui-icon-close">Remove Tab</span></li>',
+      add: function (event, ui) {
+        $('#tabs').tabs('select', '#' + ui.panel.id);
+      },
+      show: function (event, ui) {
+        WIDE.editor.dimensions_changed();
+        WIDE.toolbar.update_save_buttons();
+        WIDE.editor.focus();
+      }
+    }).hide();
+
+    $('#tabs span.ui-icon-close').live('click', function () {
+      var index = $('#tabs li').index($(this).parent());
+
+      WIDE.editor.remove_editor(index);
+    });
+  }
+
   $(document).bind('keydown', 'Ctrl+s', function () {
     WIDE.editor.save_current();
 
