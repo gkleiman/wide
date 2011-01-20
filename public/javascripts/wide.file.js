@@ -8,10 +8,14 @@ WIDE.file = function (path, is_directory, file_name) {
 
   var perform_action = function (options) {
     var action = options.action;
-    var method;
-    var data;
+    var data, dataType;
+    var fail_func = function (r) {
+      if(typeof(options.fail) === 'function') {
+        options.fail.call(this, r);
+      }
+    };
 
-    if(options.dest_path !== undefined) {
+    if (options.dest_path !== undefined) {
       data = {
         src_path: path,
         dest_path: options.dest_path
@@ -19,26 +23,30 @@ WIDE.file = function (path, is_directory, file_name) {
     } else {
       data = {
         path: path
-      };
-    }
-
-    if(options.method === 'get') {
-      method = $.get;
-    } else if(options.method === 'post') {
-      method = $.post;
-    }
-
-    method(
-    WIDE.repository_path() + '/' + action, data, function (r) {
-      if(r.success === undefined || r.success === 1) {
-        if(typeof(options.success) === 'function') {
-          options.success.call(this, r);
-        }
-      } else {
-        if(typeof(options.fail) === 'function') {
-          options.fail.call(this, r);
-        }
       }
+    };
+
+    if (options.method == 'GET') {
+      dataType = 'text';
+    } else {
+      dataType = 'json';
+    }
+
+    $.ajax({
+      type: options.method,
+      url: WIDE.repository_path() + '/' + action,
+      data: data,
+      success: function (r) {
+        if(r.success === undefined || r.success === 1) {
+          if(typeof(options.success) === 'function') {
+            options.success.call(this, r);
+          }
+        } else {
+          fail_func(r);
+        }
+      },
+      error: fail_func,
+      dataType: dataType
     });
   };
 
@@ -46,7 +54,7 @@ WIDE.file = function (path, is_directory, file_name) {
     // SCM functions
     add: function (success, fail) {
       perform_action({
-        method: 'post',
+        method: 'POST',
         action: 'add',
         success: success,
         fail: fail
@@ -54,7 +62,7 @@ WIDE.file = function (path, is_directory, file_name) {
     },
     forget: function (success, fail) {
       perform_action({
-        method: 'post',
+        method: 'POST',
         action: 'forget',
         success: success,
         fail: fail
@@ -62,7 +70,7 @@ WIDE.file = function (path, is_directory, file_name) {
     },
     revert: function (success, fail) {
       perform_action({
-        method: 'post',
+        method: 'POST',
         action: 'revert',
         success: success,
         fail: fail
@@ -70,7 +78,7 @@ WIDE.file = function (path, is_directory, file_name) {
     },
     mark_resolved: function (success, fail) {
       perform_action({
-        method: 'post',
+        method: 'POST',
         action: 'mark_resolved',
         success: success,
         fail: fail
@@ -78,7 +86,7 @@ WIDE.file = function (path, is_directory, file_name) {
     },
     mark_unresolved: function (success, fail) {
       perform_action({
-        method: 'post',
+        method: 'POST',
         action: 'mark_unresolved',
         success: success,
         fail: fail
@@ -88,7 +96,7 @@ WIDE.file = function (path, is_directory, file_name) {
     create: function (success, fail) {
       var action = 'create_' + (is_directory ? 'directory' : 'file');
       perform_action({
-        method: 'post',
+        method: 'POST',
         action: action,
         success: success,
         fail: fail
@@ -96,7 +104,7 @@ WIDE.file = function (path, is_directory, file_name) {
     },
     mv: function (dest_path, success, fail) {
       perform_action({
-        method: 'post',
+        method: 'POST',
         action: 'mv',
         dest_path: dest_path,
         success: success,
@@ -105,7 +113,7 @@ WIDE.file = function (path, is_directory, file_name) {
     },
     cat: function (success, fail) {
       perform_action({
-        method: 'get',
+        method: 'GET',
         action: 'cat',
         success: success,
         fail: fail
@@ -113,7 +121,7 @@ WIDE.file = function (path, is_directory, file_name) {
     },
     rm: function (success, fail) {
       perform_action({
-        method: 'post',
+        method: 'POST',
         action: 'rm',
         success: success,
         fail: fail
@@ -121,7 +129,7 @@ WIDE.file = function (path, is_directory, file_name) {
     },
     diff: function (success, fail) {
       perform_action({
-        method: 'get',
+        method: 'GET',
         action: 'diff',
         success: success,
         fail: fail
