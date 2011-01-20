@@ -129,6 +129,9 @@ WIDE.file = function (path, is_directory, file_name) {
     },
     file_name: function () {
       return file_name;
+    },
+    path: function () {
+      return path;
     }
   };
 };
