@@ -62,8 +62,23 @@ WIDE.compile = (function () {
     is_compilation_in_progress: function () {
       return compilation_in_progress === true;
     },
-    compile: function () {
-      $('#compile_button').button('option', 'disabled', true).mouseout().blur();
+    compile: function (save_files_if_modified) {
+      if (WIDE.editor.modified_editors()) {
+        if (save_files_if_modified) {
+          WIDE.notifications.activity_started('Saving all files before running the compiler...');
+          WIDE.editor.save_all();
+          compilation_start_time = new Date().getTime();
+        }
+
+        if ((new Date().getTime() - compilation_start_time) > 30000) {
+          error_handler();
+        } else {
+          setTimeout(function () { WIDE.compile.compile(false); }, 1000);
+        }
+
+        return false;
+      }
+
       WIDE.compiler_output.clear();
       WIDE.notifications.activity_started('Compiling ...');
 
@@ -82,6 +97,8 @@ WIDE.compile = (function () {
         },
         error: error_handler
       });
+
+      return true;
     }
   };
 }());
@@ -92,6 +109,7 @@ $(function () {
       primary: 'ui-icon-gear'
     }
   }).click(function () {
-    WIDE.compile.compile();
+    $('#compile_button').button('option', 'disabled', true).mouseout().blur();
+    WIDE.compile.compile(true);
   });
 });
