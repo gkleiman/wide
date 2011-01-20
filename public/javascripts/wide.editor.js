@@ -412,7 +412,7 @@ $(function () {
         $('#tabs').tabs('select', '#' + ui.panel.id);
       },
       show: function (event, ui) {
-        WIDE.editor.dimensions_changed();
+        WIDE.layout.layout();
         WIDE.toolbar.update_save_buttons();
         WIDE.editor.focus();
       }
