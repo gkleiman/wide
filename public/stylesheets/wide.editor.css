@@ -10,10 +10,6 @@
   cursor: pointer;
 }
 
-#tabs li .ui-icon-throbber {
-  background-image: url('../images/throbber.gif');
-}
-
 #central_pane form {
   height: 100%;
   width: 100%;

@@ -1,0 +1,31 @@
+%thead
+  %tr.ui-widget-header
+    %th Name
+    %th Project Type
+    %th Status
+    %th
+%tbody.ui-widget-content.ui-state-default
+  - @projects.each do |project|
+    - status = project.status
+    %tr{:class => ['ui-state-default', status]}
+      %td
+        - if status == 'success'
+          = link_to project.name, project
+        - else
+          = project.name
+      %td
+        - if !project.project_type.blank?
+          = project.project_type.name
+        - else
+          \-
+      %td.status
+        - if status == 'success'
+          Ready
+        - elsif status == 'initializing'
+          Initializing
+          %span.ui-icon.ui-icon-throbber
+            Initializing ...
+        - else
+          There has been a problem initializing the repository
+      %td.delete
+        = link_to 'Remove Project', project, :method => :delete, :confirm => 'Are you sure that you want to remove the project?', :class => 'ui-icon ui-icon-trash'

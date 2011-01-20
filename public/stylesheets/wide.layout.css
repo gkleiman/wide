@@ -30,3 +30,7 @@
 #toolbar, #central_pane, #tree_pane {
   display: inline-block;
 }
+
+.ui-icon-throbber {
+  background-image: url('../images/throbber.gif') !important;
+}

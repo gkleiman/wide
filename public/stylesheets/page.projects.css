@@ -32,6 +32,16 @@
 #projects tbody tr.success {
   cursor: pointer;
 }
+#projects table td.status {
+  width: 6em;
+}
+#projects table td.delete {
+  width: 16px;
+}
+#projects table tr.initializing td.status span.ui-icon-throbber {
+  float: right;
+  margin-right: 0.5em;
+}
 
 div#container.projects.edit {
   overflow-y: scroll;
