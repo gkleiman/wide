@@ -44,7 +44,7 @@ WIDE.editor = (function () {
 
   var prepare_save = function (editor) {
     var fail_func = function (data, result, xhr) {
-      WIDE.notifications.error('Error saving: ' + editor.path);
+      WIDE.notifications.error('Error saving: ' + editor.path.value);
 
       WIDE.toolbar.update_save_buttons();
 
@@ -71,6 +71,8 @@ WIDE.editor = (function () {
       return true;
     }).bind('ajax:error', function () {
       return fail_func();
+
+      return true;
     }).bind('ajax:success', function (xhr, result, status) {
       if(result.success) {
         editor.mark_tab_as_clean();
@@ -126,13 +128,13 @@ WIDE.editor = (function () {
 
   var edit_file = function (path, line_number) {
     var file = WIDE.file(path);
-    var file_names, editor_index, editor;
+    var paths, editor_index, editor;
 
     // If there's already an editor for the given filename, then select its tab.
-    file_names = $.map(editors, function (value, index) {
-      return value.file_name;
+    paths = $.map(editors, function (value, index) {
+      return value.path.value;
     });
-    editor_index = $.inArray(file.file_name(), file_names);
+    editor_index = $.inArray(file.path(), paths);
     if(editor_index !== -1) {
       editor = editors[editor_index];
 
@@ -309,7 +311,7 @@ WIDE.editor = (function () {
       function (data) {
         var index = $('#tabs li').index(editor.tab_title.parent());
 
-        WIDE.notifications.error('Error opening: ' + path);
+        WIDE.notifications.error('Error opening: ' + file.path());
 
         WIDE.editor.remove_editor(editor_index);
 
