@@ -1,6 +1,14 @@
 defaults: &defaults
   repositories_base: <%= Rails.root.join('public', 'repositories') %>
   compilation_base: <%= Rails.root.join('public', 'compiled') %>
+  ace_themes:
+    - ["TextMate", "ace/theme/textmate"]
+    - ["Eclipse", "ace/theme/eclipse"]
+    - ["Dawn", "ace/theme/dawn"]
+    - ["idleFingers", "ace/theme/idle_fingers"]
+    - ["Pastel on dark", "ace/theme/pastel_on_dark"]
+    - ["Twilight", "ace/theme/twilight"]
+  default_ace_theme: ace/theme/textmate
 
 development:
   <<: *defaults
