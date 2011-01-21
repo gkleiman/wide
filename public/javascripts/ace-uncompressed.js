@@ -5074,6 +5074,2074 @@ exports.globalsLoaded = true;
  * for the specific language governing rights and limitations under the
  * License.
  *
+ * The Original Code is Ajax.org Code Editor (ACE).
+ *
+ * The Initial Developer of the Original Code is
+ * Ajax.org B.V.
+ * Portions created by the Initial Developer are Copyright (C) 2010
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *      Fabian Jakobs <fabian AT ajax DOT org>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+define('ace/theme/idle_fingers', function(require, exports, module) {
+
+    var dom = require("pilot/dom");
+
+    var cssText = ".ace-idle-fingers .ace_editor {\
+  border: 2px solid rgb(159, 159, 159);\
+}\
+\
+.ace-idle-fingers .ace_editor.ace_focus {\
+  border: 2px solid #327fbd;\
+}\
+\
+.ace-idle-fingers .ace_gutter {\
+  width: 50px;\
+  background: #e8e8e8;\
+  color: #333;\
+  overflow : hidden;\
+}\
+\
+.ace-idle-fingers .ace_gutter-layer {\
+  width: 100%;\
+  text-align: right;\
+}\
+\
+.ace-idle-fingers .ace_gutter-layer .ace_gutter-cell {\
+  padding-right: 6px;\
+}\
+\
+.ace-idle-fingers .ace_print_margin {\
+  width: 1px;\
+  background: #e8e8e8;\
+}\
+\
+.ace-idle-fingers .ace_scroller {\
+  background-color: #323232;\
+}\
+\
+.ace-idle-fingers .ace_text-layer {\
+  cursor: text;\
+  color: #FFFFFF;\
+}\
+\
+.ace-idle-fingers .ace_cursor {\
+  border-left: 2px solid #91FF00;\
+}\
+\
+.ace-idle-fingers .ace_cursor.ace_overwrite {\
+  border-left: 0px;\
+  border-bottom: 1px solid #91FF00;\
+}\
+ \
+.ace-idle-fingers .ace_marker-layer .ace_selection {\
+  background: rgba(90, 100, 126, 0.88);\
+}\
+\
+.ace-idle-fingers .ace_marker-layer .ace_step {\
+  background: rgb(198, 219, 174);\
+}\
+\
+.ace-idle-fingers .ace_marker-layer .ace_bracket {\
+  margin: -1px 0 0 -1px;\
+  border: 1px solid #404040;\
+}\
+\
+.ace-idle-fingers .ace_marker-layer .ace_active_line {\
+  background: #353637;\
+}\
+\
+       \
+.ace-idle-fingers .ace_invisible {\
+  color: #404040;\
+}\
+\
+.ace-idle-fingers .ace_keyword {\
+  color:#CC7833;\
+}\
+\
+.ace-idle-fingers .ace_keyword.ace_operator {\
+  \
+}\
+\
+.ace-idle-fingers .ace_constant {\
+  color:#6C99BB;\
+}\
+\
+.ace-idle-fingers .ace_constant.ace_language {\
+  \
+}\
+\
+.ace-idle-fingers .ace_constant.ace_library {\
+  \
+}\
+\
+.ace-idle-fingers .ace_constant.ace_numeric {\
+  \
+}\
+\
+.ace-idle-fingers .ace_invalid {\
+  color:#FFFFFF;\
+background-color:#FF0000;\
+}\
+\
+.ace-idle-fingers .ace_invalid.ace_illegal {\
+  \
+}\
+\
+.ace-idle-fingers .ace_invalid.ace_deprecated {\
+  \
+}\
+\
+.ace-idle-fingers .ace_support {\
+  color:#bc9458;\
+}\
+\
+.ace-idle-fingers .ace_support.ace_function {\
+  color:#B83426;\
+}\
+\
+.ace-idle-fingers .ace_function.ace_buildin {\
+  \
+}\
+\
+.ace-idle-fingers .ace_string {\
+  color:#A5C261;\
+}\
+\
+.ace-idle-fingers .ace_string.ace_regexp {\
+  color:#CCCC33;\
+}\
+\
+.ace-idle-fingers .ace_comment {\
+  font-style:italic;\
+  color:#BC9458;\
+}\
+\
+.ace-idle-fingers .ace_comment.ace_doc {\
+  \
+}\
+\
+.ace-idle-fingers .ace_comment.ace_doc.ace_tag {\
+  \
+}\
+\
+.ace-idle-fingers .ace_variable {\
+  color:#b7dff8;\
+}\
+\
+.ace-idle-fingers .ace_variable.ace_language {\
+  color:#b7dff8;\
+}\
+\
+.ace-idle-fingers .ace_xml_pe {\
+  \
+}";
+
+    // import CSS once
+    dom.importCssString(cssText);
+
+    exports.cssClass = "ace-idle-fingers";
+});
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Ajax.org Code Editor (ACE).
+ *
+ * The Initial Developer of the Original Code is
+ * Ajax.org B.V.
+ * Portions created by the Initial Developer are Copyright (C) 2010
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *      Fabian Jakobs <fabian AT ajax DOT org>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+define('ace/theme/monokai', function(require, exports, module) {
+
+    var dom = require("pilot/dom");
+
+    var cssText = ".ace-monokai .ace_editor {\
+  border: 2px solid rgb(159, 159, 159);\
+}\
+\
+.ace-monokai .ace_editor.ace_focus {\
+  border: 2px solid #327fbd;\
+}\
+\
+.ace-monokai .ace_gutter {\
+  width: 50px;\
+  background: #e8e8e8;\
+  color: #333;\
+  overflow : hidden;\
+}\
+\
+.ace-monokai .ace_gutter-layer {\
+  width: 100%;\
+  text-align: right;\
+}\
+\
+.ace-monokai .ace_gutter-layer .ace_gutter-cell {\
+  padding-right: 6px;\
+}\
+\
+.ace-monokai .ace_print_margin {\
+  width: 1px;\
+  background: #e8e8e8;\
+}\
+\
+.ace-monokai .ace_scroller {\
+  background-color: #272822;\
+}\
+\
+.ace-monokai .ace_text-layer {\
+  cursor: text;\
+  color: #F8F8F2;\
+}\
+\
+.ace-monokai .ace_cursor {\
+  border-left: 2px solid #F8F8F0;\
+}\
+\
+.ace-monokai .ace_cursor.ace_overwrite {\
+  border-left: 0px;\
+  border-bottom: 1px solid #F8F8F0;\
+}\
+ \
+.ace-monokai .ace_marker-layer .ace_selection {\
+  background: #49483E;\
+}\
+\
+.ace-monokai .ace_marker-layer .ace_step {\
+  background: rgb(198, 219, 174);\
+}\
+\
+.ace-monokai .ace_marker-layer .ace_bracket {\
+  margin: -1px 0 0 -1px;\
+  border: 1px solid #49483E;\
+}\
+\
+.ace-monokai .ace_marker-layer .ace_active_line {\
+  background: #49483E;\
+}\
+\
+       \
+.ace-monokai .ace_invisible {\
+  color: #49483E;\
+}\
+\
+.ace-monokai .ace_keyword {\
+  color:#F92672;\
+}\
+\
+.ace-monokai .ace_keyword.ace_operator {\
+  \
+}\
+\
+.ace-monokai .ace_constant {\
+  \
+}\
+\
+.ace-monokai .ace_constant.ace_language {\
+  color:#AE81FF;\
+}\
+\
+.ace-monokai .ace_constant.ace_library {\
+  \
+}\
+\
+.ace-monokai .ace_constant.ace_numeric {\
+  color:#AE81FF;\
+}\
+\
+.ace-monokai .ace_invalid {\
+  color:#F8F8F0;\
+background-color:#F92672;\
+}\
+\
+.ace-monokai .ace_invalid.ace_illegal {\
+  \
+}\
+\
+.ace-monokai .ace_invalid.ace_deprecated {\
+  color:#F8F8F0;\
+background-color:#AE81FF;\
+}\
+\
+.ace-monokai .ace_support {\
+  \
+}\
+\
+.ace-monokai .ace_support.ace_function {\
+  color:#66D9EF;\
+}\
+\
+.ace-monokai .ace_function.ace_buildin {\
+  \
+}\
+\
+.ace-monokai .ace_string {\
+  color:#E6DB74;\
+}\
+\
+.ace-monokai .ace_string.ace_regexp {\
+  \
+}\
+\
+.ace-monokai .ace_comment {\
+  color:#75715E;\
+}\
+\
+.ace-monokai .ace_comment.ace_doc {\
+  \
+}\
+\
+.ace-monokai .ace_comment.ace_doc.ace_tag {\
+  \
+}\
+\
+.ace-monokai .ace_variable {\
+  \
+}\
+\
+.ace-monokai .ace_variable.ace_language {\
+  \
+}\
+\
+.ace-monokai .ace_xml_pe {\
+  \
+}";
+
+    // import CSS once
+    dom.importCssString(cssText);
+
+    exports.cssClass = "ace-monokai";
+});
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Ajax.org Code Editor (ACE).
+ *
+ * The Initial Developer of the Original Code is
+ * Ajax.org B.V.
+ * Portions created by the Initial Developer are Copyright (C) 2010
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *      Fabian Jakobs <fabian AT ajax DOT org>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+define('ace/theme/twilight', function(require, exports, module) {
+
+    var dom = require("pilot/dom");
+
+    var cssText = ".ace-twilight .ace_editor {\
+  border: 2px solid rgb(159, 159, 159);\
+}\
+\
+.ace-twilight .ace_editor.ace_focus {\
+  border: 2px solid #327fbd;\
+}\
+\
+.ace-twilight .ace_gutter {\
+  width: 50px;\
+  background: #e8e8e8;\
+  color: #333;\
+  overflow : hidden;\
+}\
+\
+.ace-twilight .ace_gutter-layer {\
+  width: 100%;\
+  text-align: right;\
+}\
+\
+.ace-twilight .ace_gutter-layer .ace_gutter-cell {\
+  padding-right: 6px;\
+}\
+\
+.ace-twilight .ace_print_margin {\
+  width: 1px;\
+  background: #e8e8e8;\
+}\
+\
+.ace-twilight .ace_scroller {\
+  background-color: #141414;\
+}\
+\
+.ace-twilight .ace_text-layer {\
+  cursor: text;\
+  color: #F8F8F8;\
+}\
+\
+.ace-twilight .ace_cursor {\
+  border-left: 2px solid #A7A7A7;\
+}\
+\
+.ace-twilight .ace_cursor.ace_overwrite {\
+  border-left: 0px;\
+  border-bottom: 1px solid #A7A7A7;\
+}\
+ \
+.ace-twilight .ace_marker-layer .ace_selection {\
+  background: rgba(221, 240, 255, 0.20);\
+}\
+\
+.ace-twilight .ace_marker-layer .ace_step {\
+  background: rgb(198, 219, 174);\
+}\
+\
+.ace-twilight .ace_marker-layer .ace_bracket {\
+  margin: -1px 0 0 -1px;\
+  border: 1px solid rgba(255, 255, 255, 0.25);\
+}\
+\
+.ace-twilight .ace_marker-layer .ace_active_line {\
+  background: rgba(255, 255, 255, 0.031);\
+}\
+\
+       \
+.ace-twilight .ace_invisible {\
+  color: rgba(255, 255, 255, 0.25);\
+}\
+\
+.ace-twilight .ace_keyword {\
+  color:#CDA869;\
+}\
+\
+.ace-twilight .ace_keyword.ace_operator {\
+  \
+}\
+\
+.ace-twilight .ace_constant {\
+  color:#CF6A4C;\
+}\
+\
+.ace-twilight .ace_constant.ace_language {\
+  \
+}\
+\
+.ace-twilight .ace_constant.ace_library {\
+  \
+}\
+\
+.ace-twilight .ace_constant.ace_numeric {\
+  \
+}\
+\
+.ace-twilight .ace_invalid {\
+  \
+}\
+\
+.ace-twilight .ace_invalid.ace_illegal {\
+  color:#F8F8F8;\
+background-color:rgba(86, 45, 86, 0.75);\
+}\
+\
+.ace-twilight .ace_invalid.ace_deprecated {\
+  text-decoration:underline;\
+font-style:italic;\
+color:#D2A8A1;\
+}\
+\
+.ace-twilight .ace_support {\
+  color:#9B859D;\
+}\
+\
+.ace-twilight .ace_support.ace_function {\
+  color:#DAD085;\
+}\
+\
+.ace-twilight .ace_function.ace_buildin {\
+  \
+}\
+\
+.ace-twilight .ace_string {\
+  color:#8F9D6A;\
+}\
+\
+.ace-twilight .ace_string.ace_regexp {\
+  color:#E9C062;\
+}\
+\
+.ace-twilight .ace_comment {\
+  font-style:italic;\
+color:#5F5A60;\
+}\
+\
+.ace-twilight .ace_comment.ace_doc {\
+  \
+}\
+\
+.ace-twilight .ace_comment.ace_doc.ace_tag {\
+  \
+}\
+\
+.ace-twilight .ace_variable {\
+  color:#7587A6;\
+}\
+\
+.ace-twilight .ace_variable.ace_language {\
+  \
+}\
+\
+.ace-twilight .ace_xml_pe {\
+  color:#494949;\
+}";
+
+    // import CSS once
+    dom.importCssString(cssText);
+
+    exports.cssClass = "ace-twilight";
+});
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Ajax.org Code Editor (ACE).
+ *
+ * The Initial Developer of the Original Code is
+ * Ajax.org B.V.
+ * Portions created by the Initial Developer are Copyright (C) 2010
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *      Fabian Jakobs <fabian AT ajax DOT org>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+define('ace/theme/mono_industrial', function(require, exports, module) {
+
+    var dom = require("pilot/dom");
+
+    var cssText = ".ace-mono-industrial .ace_editor {\
+  border: 2px solid rgb(159, 159, 159);\
+}\
+\
+.ace-mono-industrial .ace_editor.ace_focus {\
+  border: 2px solid #327fbd;\
+}\
+\
+.ace-mono-industrial .ace_gutter {\
+  width: 50px;\
+  background: #e8e8e8;\
+  color: #333;\
+  overflow : hidden;\
+}\
+\
+.ace-mono-industrial .ace_gutter-layer {\
+  width: 100%;\
+  text-align: right;\
+}\
+\
+.ace-mono-industrial .ace_gutter-layer .ace_gutter-cell {\
+  padding-right: 6px;\
+}\
+\
+.ace-mono-industrial .ace_print_margin {\
+  width: 1px;\
+  background: #e8e8e8;\
+}\
+\
+.ace-mono-industrial .ace_scroller {\
+  background-color: #222C28;\
+}\
+\
+.ace-mono-industrial .ace_text-layer {\
+  cursor: text;\
+  color: #FFFFFF;\
+}\
+\
+.ace-mono-industrial .ace_cursor {\
+  border-left: 2px solid #FFFFFF;\
+}\
+\
+.ace-mono-industrial .ace_cursor.ace_overwrite {\
+  border-left: 0px;\
+  border-bottom: 1px solid #FFFFFF;\
+}\
+ \
+.ace-mono-industrial .ace_marker-layer .ace_selection {\
+  background: rgba(145, 153, 148, 0.40);\
+}\
+\
+.ace-mono-industrial .ace_marker-layer .ace_step {\
+  background: rgb(198, 219, 174);\
+}\
+\
+.ace-mono-industrial .ace_marker-layer .ace_bracket {\
+  margin: -1px 0 0 -1px;\
+  border: 1px solid rgba(102, 108, 104, 0.50);\
+}\
+\
+.ace-mono-industrial .ace_marker-layer .ace_active_line {\
+  background: rgba(12, 13, 12, 0.25);\
+}\
+\
+       \
+.ace-mono-industrial .ace_invisible {\
+  color: rgba(102, 108, 104, 0.50);\
+}\
+\
+.ace-mono-industrial .ace_keyword {\
+  color:#A39E64;\
+}\
+\
+.ace-mono-industrial .ace_keyword.ace_operator {\
+  color:#A8B3AB;\
+}\
+\
+.ace-mono-industrial .ace_constant {\
+  color:#E98800;\
+}\
+\
+.ace-mono-industrial .ace_constant.ace_language {\
+  \
+}\
+\
+.ace-mono-industrial .ace_constant.ace_library {\
+  \
+}\
+\
+.ace-mono-industrial .ace_constant.ace_numeric {\
+  color:#E98800;\
+}\
+\
+.ace-mono-industrial .ace_invalid {\
+  color:#FFFFFF;\
+background-color:rgba(153, 0, 0, 0.68);\
+}\
+\
+.ace-mono-industrial .ace_invalid.ace_illegal {\
+  \
+}\
+\
+.ace-mono-industrial .ace_invalid.ace_deprecated {\
+  \
+}\
+\
+.ace-mono-industrial .ace_support {\
+  \
+}\
+\
+.ace-mono-industrial .ace_support.ace_function {\
+  color:#588E60;\
+}\
+\
+.ace-mono-industrial .ace_function.ace_buildin {\
+  \
+}\
+\
+.ace-mono-industrial .ace_string {\
+  \
+}\
+\
+.ace-mono-industrial .ace_string.ace_regexp {\
+  \
+}\
+\
+.ace-mono-industrial .ace_comment {\
+  color:#666C68;\
+background-color:#151C19;\
+}\
+\
+.ace-mono-industrial .ace_comment.ace_doc {\
+  \
+}\
+\
+.ace-mono-industrial .ace_comment.ace_doc.ace_tag {\
+  \
+}\
+\
+.ace-mono-industrial .ace_variable {\
+  \
+}\
+\
+.ace-mono-industrial .ace_variable.ace_language {\
+  color:#648BD2;\
+}\
+\
+.ace-mono-industrial .ace_xml_pe {\
+  \
+}";
+
+    // import CSS once
+    dom.importCssString(cssText);
+
+    exports.cssClass = "ace-mono-industrial";
+});
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Ajax.org Code Editor (ACE).
+ *
+ * The Initial Developer of the Original Code is
+ * Ajax.org B.V.
+ * Portions created by the Initial Developer are Copyright (C) 2010
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *      Fabian Jakobs <fabian AT ajax DOT org>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+define('ace/theme/cobalt', function(require, exports, module) {
+
+    var dom = require("pilot/dom");
+
+    var cssText = ".ace-cobalt .ace_editor {\
+  border: 2px solid rgb(159, 159, 159);\
+}\
+\
+.ace-cobalt .ace_editor.ace_focus {\
+  border: 2px solid #327fbd;\
+}\
+\
+.ace-cobalt .ace_gutter {\
+  width: 50px;\
+  background: #e8e8e8;\
+  color: #333;\
+  overflow : hidden;\
+}\
+\
+.ace-cobalt .ace_gutter-layer {\
+  width: 100%;\
+  text-align: right;\
+}\
+\
+.ace-cobalt .ace_gutter-layer .ace_gutter-cell {\
+  padding-right: 6px;\
+}\
+\
+.ace-cobalt .ace_print_margin {\
+  width: 1px;\
+  background: #e8e8e8;\
+}\
+\
+.ace-cobalt .ace_scroller {\
+  background-color: #002240;\
+}\
+\
+.ace-cobalt .ace_text-layer {\
+  cursor: text;\
+  color: #FFFFFF;\
+}\
+\
+.ace-cobalt .ace_cursor {\
+  border-left: 2px solid #FFFFFF;\
+}\
+\
+.ace-cobalt .ace_cursor.ace_overwrite {\
+  border-left: 0px;\
+  border-bottom: 1px solid #FFFFFF;\
+}\
+ \
+.ace-cobalt .ace_marker-layer .ace_selection {\
+  background: rgba(179, 101, 57, 0.75);\
+}\
+\
+.ace-cobalt .ace_marker-layer .ace_step {\
+  background: rgb(198, 219, 174);\
+}\
+\
+.ace-cobalt .ace_marker-layer .ace_bracket {\
+  margin: -1px 0 0 -1px;\
+  border: 1px solid rgba(255, 255, 255, 0.15);\
+}\
+\
+.ace-cobalt .ace_marker-layer .ace_active_line {\
+  background: rgba(0, 0, 0, 0.35);\
+}\
+\
+       \
+.ace-cobalt .ace_invisible {\
+  color: rgba(255, 255, 255, 0.15);\
+}\
+\
+.ace-cobalt .ace_keyword {\
+  color:#FF9D00;\
+}\
+\
+.ace-cobalt .ace_keyword.ace_operator {\
+  \
+}\
+\
+.ace-cobalt .ace_constant {\
+  color:#FF628C;\
+}\
+\
+.ace-cobalt .ace_constant.ace_language {\
+  \
+}\
+\
+.ace-cobalt .ace_constant.ace_library {\
+  \
+}\
+\
+.ace-cobalt .ace_constant.ace_numeric {\
+  \
+}\
+\
+.ace-cobalt .ace_invalid {\
+  color:#F8F8F8;\
+background-color:#800F00;\
+}\
+\
+.ace-cobalt .ace_invalid.ace_illegal {\
+  \
+}\
+\
+.ace-cobalt .ace_invalid.ace_deprecated {\
+  \
+}\
+\
+.ace-cobalt .ace_support {\
+  color:#80FFBB;\
+}\
+\
+.ace-cobalt .ace_support.ace_function {\
+  color:#FFB054;\
+}\
+\
+.ace-cobalt .ace_function.ace_buildin {\
+  \
+}\
+\
+.ace-cobalt .ace_string {\
+  \
+}\
+\
+.ace-cobalt .ace_string.ace_regexp {\
+  color:#80FFC2;\
+}\
+\
+.ace-cobalt .ace_comment {\
+  font-style:italic;\
+color:#0088FF;\
+}\
+\
+.ace-cobalt .ace_comment.ace_doc {\
+  \
+}\
+\
+.ace-cobalt .ace_comment.ace_doc.ace_tag {\
+  \
+}\
+\
+.ace-cobalt .ace_variable {\
+  color:#CCCCCC;\
+}\
+\
+.ace-cobalt .ace_variable.ace_language {\
+  color:#FF80E1;\
+}\
+\
+.ace-cobalt .ace_xml_pe {\
+  \
+}";
+
+    // import CSS once
+    dom.importCssString(cssText);
+
+    exports.cssClass = "ace-cobalt";
+});
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Ajax.org Code Editor (ACE).
+ *
+ * The Initial Developer of the Original Code is
+ * Ajax.org B.V.
+ * Portions created by the Initial Developer are Copyright (C) 2010
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *      Fabian Jakobs <fabian AT ajax DOT org>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+define('ace/theme/eclipse', function(require, exports, module) {
+
+    var dom = require("pilot/dom");
+    var cssText = require("text!ace/theme/eclipse.css");
+
+    // import CSS once
+    dom.importCssString(cssText);
+
+    exports.cssClass = "ace-eclipse";
+});
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Ajax.org Code Editor (ACE).
+ *
+ * The Initial Developer of the Original Code is
+ * Ajax.org B.V.
+ * Portions created by the Initial Developer are Copyright (C) 2010
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *      Fabian Jakobs <fabian AT ajax DOT org>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+define('ace/theme/clouds_midnight', function(require, exports, module) {
+
+    var dom = require("pilot/dom");
+
+    var cssText = ".ace-clouds-midnight .ace_editor {\
+  border: 2px solid rgb(159, 159, 159);\
+}\
+\
+.ace-clouds-midnight .ace_editor.ace_focus {\
+  border: 2px solid #327fbd;\
+}\
+\
+.ace-clouds-midnight .ace_gutter {\
+  width: 50px;\
+  background: #e8e8e8;\
+  color: #333;\
+  overflow : hidden;\
+}\
+\
+.ace-clouds-midnight .ace_gutter-layer {\
+  width: 100%;\
+  text-align: right;\
+}\
+\
+.ace-clouds-midnight .ace_gutter-layer .ace_gutter-cell {\
+  padding-right: 6px;\
+}\
+\
+.ace-clouds-midnight .ace_print_margin {\
+  width: 1px;\
+  background: #e8e8e8;\
+}\
+\
+.ace-clouds-midnight .ace_scroller {\
+  background-color: #191919;\
+}\
+\
+.ace-clouds-midnight .ace_text-layer {\
+  cursor: text;\
+  color: #929292;\
+}\
+\
+.ace-clouds-midnight .ace_cursor {\
+  border-left: 2px solid #7DA5DC;\
+}\
+\
+.ace-clouds-midnight .ace_cursor.ace_overwrite {\
+  border-left: 0px;\
+  border-bottom: 1px solid #7DA5DC;\
+}\
+ \
+.ace-clouds-midnight .ace_marker-layer .ace_selection {\
+  background: #000000;\
+}\
+\
+.ace-clouds-midnight .ace_marker-layer .ace_step {\
+  background: rgb(198, 219, 174);\
+}\
+\
+.ace-clouds-midnight .ace_marker-layer .ace_bracket {\
+  margin: -1px 0 0 -1px;\
+  border: 1px solid #BFBFBF;\
+}\
+\
+.ace-clouds-midnight .ace_marker-layer .ace_active_line {\
+  background: rgba(215, 215, 215, 0.031);\
+}\
+\
+       \
+.ace-clouds-midnight .ace_invisible {\
+  color: #BFBFBF;\
+}\
+\
+.ace-clouds-midnight .ace_keyword {\
+  color:#927C5D;\
+}\
+\
+.ace-clouds-midnight .ace_keyword.ace_operator {\
+  color:#4B4B4B;\
+}\
+\
+.ace-clouds-midnight .ace_constant {\
+  \
+}\
+\
+.ace-clouds-midnight .ace_constant.ace_language {\
+  color:#39946A;\
+}\
+\
+.ace-clouds-midnight .ace_constant.ace_library {\
+  \
+}\
+\
+.ace-clouds-midnight .ace_constant.ace_numeric {\
+  color:#46A609;\
+}\
+\
+.ace-clouds-midnight .ace_invalid {\
+  color:#FFFFFF;\
+background-color:#E92E2E;\
+}\
+\
+.ace-clouds-midnight .ace_invalid.ace_illegal {\
+  \
+}\
+\
+.ace-clouds-midnight .ace_invalid.ace_deprecated {\
+  \
+}\
+\
+.ace-clouds-midnight .ace_support {\
+  \
+}\
+\
+.ace-clouds-midnight .ace_support.ace_function {\
+  color:#E92E2E;\
+}\
+\
+.ace-clouds-midnight .ace_function.ace_buildin {\
+  \
+}\
+\
+.ace-clouds-midnight .ace_string {\
+  color:#5D90CD;\
+}\
+\
+.ace-clouds-midnight .ace_string.ace_regexp {\
+  \
+}\
+\
+.ace-clouds-midnight .ace_comment {\
+  color:#3C403B;\
+}\
+\
+.ace-clouds-midnight .ace_comment.ace_doc {\
+  \
+}\
+\
+.ace-clouds-midnight .ace_comment.ace_doc.ace_tag {\
+  \
+}\
+\
+.ace-clouds-midnight .ace_variable {\
+  \
+}\
+\
+.ace-clouds-midnight .ace_variable.ace_language {\
+  \
+}\
+\
+.ace-clouds-midnight .ace_xml_pe {\
+  \
+}";
+
+    // import CSS once
+    dom.importCssString(cssText);
+
+    exports.cssClass = "ace-clouds-midnight";
+});
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Ajax.org Code Editor (ACE).
+ *
+ * The Initial Developer of the Original Code is
+ * Ajax.org B.V.
+ * Portions created by the Initial Developer are Copyright (C) 2010
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *      Fabian Jakobs <fabian AT ajax DOT org>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+define('ace/theme/kr_theme', function(require, exports, module) {
+
+    var dom = require("pilot/dom");
+
+    var cssText = ".ace-kr-theme .ace_editor {\
+  border: 2px solid rgb(159, 159, 159);\
+}\
+\
+.ace-kr-theme .ace_editor.ace_focus {\
+  border: 2px solid #327fbd;\
+}\
+\
+.ace-kr-theme .ace_gutter {\
+  width: 50px;\
+  background: #e8e8e8;\
+  color: #333;\
+  overflow : hidden;\
+}\
+\
+.ace-kr-theme .ace_gutter-layer {\
+  width: 100%;\
+  text-align: right;\
+}\
+\
+.ace-kr-theme .ace_gutter-layer .ace_gutter-cell {\
+  padding-right: 6px;\
+}\
+\
+.ace-kr-theme .ace_print_margin {\
+  width: 1px;\
+  background: #e8e8e8;\
+}\
+\
+.ace-kr-theme .ace_scroller {\
+  background-color: #0B0A09;\
+}\
+\
+.ace-kr-theme .ace_text-layer {\
+  cursor: text;\
+  color: #FCFFE0;\
+}\
+\
+.ace-kr-theme .ace_cursor {\
+  border-left: 2px solid #FF9900;\
+}\
+\
+.ace-kr-theme .ace_cursor.ace_overwrite {\
+  border-left: 0px;\
+  border-bottom: 1px solid #FF9900;\
+}\
+ \
+.ace-kr-theme .ace_marker-layer .ace_selection {\
+  background: rgba(170, 0, 255, 0.45);\
+}\
+\
+.ace-kr-theme .ace_marker-layer .ace_step {\
+  background: rgb(198, 219, 174);\
+}\
+\
+.ace-kr-theme .ace_marker-layer .ace_bracket {\
+  margin: -1px 0 0 -1px;\
+  border: 1px solid rgba(255, 177, 111, 0.32);\
+}\
+\
+.ace-kr-theme .ace_marker-layer .ace_active_line {\
+  background: #38403D;\
+}\
+\
+       \
+.ace-kr-theme .ace_invisible {\
+  color: rgba(255, 177, 111, 0.32);\
+}\
+\
+.ace-kr-theme .ace_keyword {\
+  color:#949C8B;\
+}\
+\
+.ace-kr-theme .ace_keyword.ace_operator {\
+  \
+}\
+\
+.ace-kr-theme .ace_constant {\
+  color:rgba(210, 117, 24, 0.76);\
+}\
+\
+.ace-kr-theme .ace_constant.ace_language {\
+  \
+}\
+\
+.ace-kr-theme .ace_constant.ace_library {\
+  \
+}\
+\
+.ace-kr-theme .ace_constant.ace_numeric {\
+  \
+}\
+\
+.ace-kr-theme .ace_invalid {\
+  color:#F8F8F8;\
+background-color:#A41300;\
+}\
+\
+.ace-kr-theme .ace_invalid.ace_illegal {\
+  \
+}\
+\
+.ace-kr-theme .ace_invalid.ace_deprecated {\
+  \
+}\
+\
+.ace-kr-theme .ace_support {\
+  color:#9FC28A;\
+}\
+\
+.ace-kr-theme .ace_support.ace_function {\
+  color:#85873A;\
+}\
+\
+.ace-kr-theme .ace_function.ace_buildin {\
+  \
+}\
+\
+.ace-kr-theme .ace_string {\
+  \
+}\
+\
+.ace-kr-theme .ace_string.ace_regexp {\
+  color:rgba(125, 255, 192, 0.65);\
+}\
+\
+.ace-kr-theme .ace_comment {\
+  font-style:italic;\
+color:#706D5B;\
+}\
+\
+.ace-kr-theme .ace_comment.ace_doc {\
+  \
+}\
+\
+.ace-kr-theme .ace_comment.ace_doc.ace_tag {\
+  \
+}\
+\
+.ace-kr-theme .ace_variable {\
+  color:#D1A796;\
+}\
+\
+.ace-kr-theme .ace_variable.ace_language {\
+  color:#FF80E1;\
+}\
+\
+.ace-kr-theme .ace_xml_pe {\
+  \
+}";
+
+    // import CSS once
+    dom.importCssString(cssText);
+
+    exports.cssClass = "ace-kr-theme";
+});
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Ajax.org Code Editor (ACE).
+ *
+ * The Initial Developer of the Original Code is
+ * Ajax.org B.V.
+ * Portions created by the Initial Developer are Copyright (C) 2010
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *      Fabian Jakobs <fabian AT ajax DOT org>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+define('ace/theme/clouds', function(require, exports, module) {
+
+    var dom = require("pilot/dom");
+
+    var cssText = ".ace-clouds .ace_editor {\
+  border: 2px solid rgb(159, 159, 159);\
+}\
+\
+.ace-clouds .ace_editor.ace_focus {\
+  border: 2px solid #327fbd;\
+}\
+\
+.ace-clouds .ace_gutter {\
+  width: 50px;\
+  background: #e8e8e8;\
+  color: #333;\
+  overflow : hidden;\
+}\
+\
+.ace-clouds .ace_gutter-layer {\
+  width: 100%;\
+  text-align: right;\
+}\
+\
+.ace-clouds .ace_gutter-layer .ace_gutter-cell {\
+  padding-right: 6px;\
+}\
+\
+.ace-clouds .ace_print_margin {\
+  width: 1px;\
+  background: #e8e8e8;\
+}\
+\
+.ace-clouds .ace_scroller {\
+  background-color: #FFFFFF;\
+}\
+\
+.ace-clouds .ace_text-layer {\
+  cursor: text;\
+  color: #000000;\
+}\
+\
+.ace-clouds .ace_cursor {\
+  border-left: 2px solid #000000;\
+}\
+\
+.ace-clouds .ace_cursor.ace_overwrite {\
+  border-left: 0px;\
+  border-bottom: 1px solid #000000;\
+}\
+ \
+.ace-clouds .ace_marker-layer .ace_selection {\
+  background: #BDD5FC;\
+}\
+\
+.ace-clouds .ace_marker-layer .ace_step {\
+  background: rgb(198, 219, 174);\
+}\
+\
+.ace-clouds .ace_marker-layer .ace_bracket {\
+  margin: -1px 0 0 -1px;\
+  border: 1px solid #BFBFBF;\
+}\
+\
+.ace-clouds .ace_marker-layer .ace_active_line {\
+  background: #FFFBD1;\
+}\
+\
+       \
+.ace-clouds .ace_invisible {\
+  color: #BFBFBF;\
+}\
+\
+.ace-clouds .ace_keyword {\
+  color:#AF956F;\
+}\
+\
+.ace-clouds .ace_keyword.ace_operator {\
+  color:#484848;\
+}\
+\
+.ace-clouds .ace_constant {\
+  \
+}\
+\
+.ace-clouds .ace_constant.ace_language {\
+  color:#39946A;\
+}\
+\
+.ace-clouds .ace_constant.ace_library {\
+  \
+}\
+\
+.ace-clouds .ace_constant.ace_numeric {\
+  color:#46A609;\
+}\
+\
+.ace-clouds .ace_invalid {\
+  background-color:#FF002A;\
+}\
+\
+.ace-clouds .ace_invalid.ace_illegal {\
+  \
+}\
+\
+.ace-clouds .ace_invalid.ace_deprecated {\
+  \
+}\
+\
+.ace-clouds .ace_support {\
+  \
+}\
+\
+.ace-clouds .ace_support.ace_function {\
+  color:#C52727;\
+}\
+\
+.ace-clouds .ace_function.ace_buildin {\
+  \
+}\
+\
+.ace-clouds .ace_string {\
+  color:#5D90CD;\
+}\
+\
+.ace-clouds .ace_string.ace_regexp {\
+  \
+}\
+\
+.ace-clouds .ace_comment {\
+  color:#BCC8BA;\
+}\
+\
+.ace-clouds .ace_comment.ace_doc {\
+  \
+}\
+\
+.ace-clouds .ace_comment.ace_doc.ace_tag {\
+  \
+}\
+\
+.ace-clouds .ace_variable {\
+  \
+}\
+\
+.ace-clouds .ace_variable.ace_language {\
+  \
+}\
+\
+.ace-clouds .ace_xml_pe {\
+  \
+}";
+
+    // import CSS once
+    dom.importCssString(cssText);
+
+    exports.cssClass = "ace-clouds";
+});
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Ajax.org Code Editor (ACE).
+ *
+ * The Initial Developer of the Original Code is
+ * Ajax.org B.V.
+ * Portions created by the Initial Developer are Copyright (C) 2010
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *      Fabian Jakobs <fabian AT ajax DOT org>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+define('ace/theme/dawn', function(require, exports, module) {
+
+    var dom = require("pilot/dom");
+
+    var cssText = ".ace-dawn .ace_editor {\
+  border: 2px solid rgb(159, 159, 159);\
+}\
+\
+.ace-dawn .ace_editor.ace_focus {\
+  border: 2px solid #327fbd;\
+}\
+\
+.ace-dawn .ace_gutter {\
+  width: 50px;\
+  background: #e8e8e8;\
+  color: #333;\
+  overflow : hidden;\
+}\
+\
+.ace-dawn .ace_gutter-layer {\
+  width: 100%;\
+  text-align: right;\
+}\
+\
+.ace-dawn .ace_gutter-layer .ace_gutter-cell {\
+  padding-right: 6px;\
+}\
+\
+.ace-dawn .ace_print_margin {\
+  width: 1px;\
+  background: #e8e8e8;\
+}\
+\
+.ace-dawn .ace_scroller {\
+  background-color: #F9F9F9;\
+}\
+\
+.ace-dawn .ace_text-layer {\
+  cursor: text;\
+  color: #080808;\
+}\
+\
+.ace-dawn .ace_cursor {\
+  border-left: 2px solid #000000;\
+}\
+\
+.ace-dawn .ace_cursor.ace_overwrite {\
+  border-left: 0px;\
+  border-bottom: 1px solid #000000;\
+}\
+ \
+.ace-dawn .ace_marker-layer .ace_selection {\
+  background: rgba(39, 95, 255, 0.30);\
+}\
+\
+.ace-dawn .ace_marker-layer .ace_step {\
+  background: rgb(198, 219, 174);\
+}\
+\
+.ace-dawn .ace_marker-layer .ace_bracket {\
+  margin: -1px 0 0 -1px;\
+  border: 1px solid rgba(75, 75, 126, 0.50);\
+}\
+\
+.ace-dawn .ace_marker-layer .ace_active_line {\
+  background: rgba(36, 99, 180, 0.12);\
+}\
+\
+       \
+.ace-dawn .ace_invisible {\
+  color: rgba(75, 75, 126, 0.50);\
+}\
+\
+.ace-dawn .ace_keyword {\
+  color:#794938;\
+}\
+\
+.ace-dawn .ace_keyword.ace_operator {\
+  \
+}\
+\
+.ace-dawn .ace_constant {\
+  color:#811F24;\
+}\
+\
+.ace-dawn .ace_constant.ace_language {\
+  \
+}\
+\
+.ace-dawn .ace_constant.ace_library {\
+  \
+}\
+\
+.ace-dawn .ace_constant.ace_numeric {\
+  \
+}\
+\
+.ace-dawn .ace_invalid {\
+  \
+}\
+\
+.ace-dawn .ace_invalid.ace_illegal {\
+  text-decoration:underline;\
+font-style:italic;\
+color:#F8F8F8;\
+background-color:#B52A1D;\
+}\
+\
+.ace-dawn .ace_invalid.ace_deprecated {\
+  text-decoration:underline;\
+font-style:italic;\
+color:#B52A1D;\
+}\
+\
+.ace-dawn .ace_support {\
+  color:#691C97;\
+}\
+\
+.ace-dawn .ace_support.ace_function {\
+  color:#693A17;\
+}\
+\
+.ace-dawn .ace_function.ace_buildin {\
+  \
+}\
+\
+.ace-dawn .ace_string {\
+  color:#0B6125;\
+}\
+\
+.ace-dawn .ace_string.ace_regexp {\
+  color:#CF5628;\
+}\
+\
+.ace-dawn .ace_comment {\
+  font-style:italic;\
+color:#5A525F;\
+}\
+\
+.ace-dawn .ace_comment.ace_doc {\
+  \
+}\
+\
+.ace-dawn .ace_comment.ace_doc.ace_tag {\
+  \
+}\
+\
+.ace-dawn .ace_variable {\
+  color:#234A97;\
+}\
+\
+.ace-dawn .ace_variable.ace_language {\
+  \
+}\
+\
+.ace-dawn .ace_xml_pe {\
+  \
+}";
+
+    // import CSS once
+    dom.importCssString(cssText);
+
+    exports.cssClass = "ace-dawn";
+});
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Ajax.org Code Editor (ACE).
+ *
+ * The Initial Developer of the Original Code is
+ * Ajax.org B.V.
+ * Portions created by the Initial Developer are Copyright (C) 2010
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *      André Fiedler <fiedler dot andre a t gmail dot com>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+define('ace/theme/pastel_on_dark', function(require, exports, module) {
+
+    var dom = require("pilot/dom");
+
+    var cssText = ".ace-pastel-on-dark .ace_editor {\
+  border: 2px solid rgb(159, 159, 159);\
+}\
+\
+.ace-pastel-on-dark .ace_editor.ace_focus {\
+  border: 2px solid #327fbd;\
+}\
+\
+.ace-pastel-on-dark .ace_gutter {\
+  width: 50px;\
+  background: #e8e8e8;\
+  color: #333;\
+  overflow : hidden;\
+}\
+\
+.ace-pastel-on-dark .ace_gutter-layer {\
+  width: 100%;\
+  text-align: right;\
+}\
+\
+.ace-pastel-on-dark .ace_gutter-layer .ace_gutter-cell {\
+  padding-right: 6px;\
+}\
+\
+.ace-pastel-on-dark .ace_print_margin {\
+  width: 1px;\
+  background: #e8e8e8;\
+}\
+\
+.ace-pastel-on-dark .ace_scroller {\
+  background-color: #2c2828;\
+}\
+\
+.ace-pastel-on-dark .ace_text-layer {\
+  cursor: text;\
+  color: #8f938f;\
+}\
+\
+.ace-pastel-on-dark .ace_cursor {\
+  border-left: 2px solid #A7A7A7;\
+}\
+\
+.ace-pastel-on-dark .ace_cursor.ace_overwrite {\
+  border-left: 0px;\
+  border-bottom: 1px solid #A7A7A7;\
+}\
+ \
+.ace-pastel-on-dark .ace_marker-layer .ace_selection {\
+  background: rgba(221, 240, 255, 0.20);\
+}\
+\
+.ace-pastel-on-dark .ace_marker-layer .ace_step {\
+  background: rgb(198, 219, 174);\
+}\
+\
+.ace-pastel-on-dark .ace_marker-layer .ace_bracket {\
+  margin: -1px 0 0 -1px;\
+  border: 1px solid rgba(255, 255, 255, 0.25);\
+}\
+\
+.ace-pastel-on-dark .ace_marker-layer .ace_active_line {\
+  background: rgba(255, 255, 255, 0.031);\
+}\
+\
+       \
+.ace-pastel-on-dark .ace_invisible {\
+  color: rgba(255, 255, 255, 0.25);\
+}\
+\
+.ace-pastel-on-dark .ace_keyword {\
+  color:#757ad8;\
+}\
+\
+.ace-pastel-on-dark .ace_keyword.ace_operator {\
+  color:#797878;\
+}\
+\
+.ace-pastel-on-dark .ace_constant {\
+  color:#4fb7c5;\
+}\
+\
+.ace-pastel-on-dark .ace_constant.ace_language {\
+  \
+}\
+\
+.ace-pastel-on-dark .ace_constant.ace_library {\
+  \
+}\
+\
+.ace-pastel-on-dark .ace_constant.ace_numeric {\
+  \
+}\
+\
+.ace-pastel-on-dark .ace_invalid {\
+  \
+}\
+\
+.ace-pastel-on-dark .ace_invalid.ace_illegal {\
+  color:#F8F8F8;\
+background-color:rgba(86, 45, 86, 0.75);\
+}\
+\
+.ace-pastel-on-dark .ace_invalid.ace_deprecated {\
+  text-decoration:underline;\
+font-style:italic;\
+color:#D2A8A1;\
+}\
+\
+.ace-pastel-on-dark .ace_support {\
+  color:#9a9a9a;\
+}\
+\
+.ace-pastel-on-dark .ace_support.ace_function {\
+  color:#aeb2f8;\
+}\
+\
+.ace-pastel-on-dark .ace_function.ace_buildin {\
+  \
+}\
+\
+.ace-pastel-on-dark .ace_string {\
+  color:#66a968;\
+}\
+\
+.ace-pastel-on-dark .ace_string.ace_regexp {\
+  color:#E9C062;\
+}\
+\
+.ace-pastel-on-dark .ace_comment {\
+  color:#656865;\
+}\
+\
+.ace-pastel-on-dark .ace_comment.ace_doc {\
+  color:A6C6FF;\
+}\
+\
+.ace-pastel-on-dark .ace_comment.ace_doc.ace_tag {\
+  color:A6C6FF;\
+}\
+\
+.ace-pastel-on-dark .ace_variable {\
+  color:#bebf55;\
+}\
+\
+.ace-pastel-on-dark .ace_variable.ace_language {\
+  color:#bebf55;\
+}\
+\
+.ace-pastel-on-dark .ace_xml_pe {\
+  color:#494949;\
+}";
+
+    // import CSS once
+    dom.importCssString(cssText);
+
+    exports.cssClass = "ace-pastel-on-dark";
+});
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Ajax.org Code Editor (ACE).
+ *
+ * The Initial Developer of the Original Code is
+ * Ajax.org B.V.
+ * Portions created by the Initial Developer are Copyright (C) 2010
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *      Fabian Jakobs <fabian AT ajax DOT org>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+define('ace/theme/textmate', function(require, exports, module) {
+
+    var dom = require("pilot/dom");
+    var cssText = require("text!ace/theme/tm.css");
+
+    // import CSS once
+    dom.importCssString(cssText);
+
+    exports.cssClass = "ace-tm";
+});
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
  * The Original Code is Mozilla Skywriter.
  *
  * The Initial Developer of the Original Code is
@@ -14014,53 +16082,6 @@ var VirtualRenderer = function(container, theme) {
 
 exports.VirtualRenderer = VirtualRenderer;
 });
-/* ***** BEGIN LICENSE BLOCK *****
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * The contents of this file are subject to the Mozilla Public License Version
- * 1.1 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
- * for the specific language governing rights and limitations under the
- * License.
- *
- * The Original Code is Ajax.org Code Editor (ACE).
- *
- * The Initial Developer of the Original Code is
- * Ajax.org B.V.
- * Portions created by the Initial Developer are Copyright (C) 2010
- * the Initial Developer. All Rights Reserved.
- *
- * Contributor(s):
- *      Fabian Jakobs <fabian AT ajax DOT org>
- *
- * Alternatively, the contents of this file may be used under the terms of
- * either the GNU General Public License Version 2 or later (the "GPL"), or
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
- * in which case the provisions of the GPL or the LGPL are applicable instead
- * of those above. If you wish to allow use of your version of this file only
- * under the terms of either the GPL or the LGPL, and not to allow others to
- * use your version of this file under the terms of the MPL, indicate your
- * decision by deleting the provisions above and replace them with the notice
- * and other provisions required by the GPL or the LGPL. If you do not delete
- * the provisions above, a recipient may use your version of this file under
- * the terms of any one of the MPL, the GPL or the LGPL.
- *
- * ***** END LICENSE BLOCK ***** */
-
-define('ace/theme/textmate', function(require, exports, module) {
-
-    var dom = require("pilot/dom");
-    var cssText = require("text!ace/theme/tm.css");
-
-    // import CSS once
-    dom.importCssString(cssText);
-
-    exports.cssClass = "ace-tm";
-});
 define("text!ace/theme/tm.css", ".ace-tm .ace_editor {" +
   "  border: 2px solid rgb(159, 159, 159);" +
   "}" +
@@ -14196,6 +16217,90 @@ define("text!ace/theme/tm.css", ".ace-tm .ace_editor {" +
   "" +
   ".ace-tm .ace_string.ace_regex {" +
   "  color: rgb(255, 0, 0)   " +
+  "}");
+
+define("text!ace/theme/eclipse.css", ".ace-eclipse .ace_editor {" +
+  "  border: 2px solid rgb(159, 159, 159);" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_editor.ace_focus {" +
+  "  border: 2px solid #327fbd;" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_gutter {" +
+  "  width: 40px;" +
+  "  background: rgb(227, 227, 227);" +
+  "  border-right: 1px solid rgb(159, 159, 159);	 " +
+  "  color: rgb(136, 136, 136);" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_gutter-layer {" +
+  "  right: 10px;" +
+  "  text-align: right;" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_text-layer {" +
+  "  cursor: text;" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_cursor {" +
+  "  border-left: 1px solid black;" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_line .ace_keyword, .ace-eclipse .ace_line .ace_variable {" +
+  "  color: rgb(127, 0, 85);" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_line .ace_constant.ace_buildin {" +
+  "  color: rgb(88, 72, 246);" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_line .ace_constant.ace_library {" +
+  "  color: rgb(6, 150, 14);" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_line .ace_function {" +
+  "  color: rgb(60, 76, 114);" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_line .ace_string {" +
+  "  color: rgb(42, 0, 255);" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_line .ace_comment {" +
+  "  color: rgb(63, 127, 95);" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_line .ace_comment.ace_doc {" +
+  "  color: rgb(63, 95, 191);" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_line .ace_comment.ace_doc.ace_tag {" +
+  "  color: rgb(127, 159, 191);" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_line .ace_constant.ace_numeric {" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_line .ace_tag {" +
+  "	color: rgb(63, 127, 127);" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_line .ace_xml_pe {" +
+  "  color: rgb(104, 104, 91);" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_marker-layer .ace_selection {" +
+  "  background: rgb(181, 213, 255);" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_marker-layer .ace_bracket {" +
+  "  margin: -1px 0 0 -1px;" +
+  "  border: 1px solid rgb(192, 192, 192);" +
+  "}" +
+  "" +
+  ".ace-eclipse .ace_marker-layer .ace_active_line {" +
+  "  background: rgb(232, 242, 254);" +
   "}");
 
 define("text!ace/css/editor.css", ".ace_editor {" +
