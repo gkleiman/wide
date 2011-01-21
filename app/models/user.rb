@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   has_many :third_party_projects, :through => :project_collaborators
 
   attr_accessible_on_create :user_name
-  attr_accessible :email, :password, :password_confirmation, :remember_me
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :current_password
 
   def to_label
     "#{user_name} <#{email}>"

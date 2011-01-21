@@ -28,6 +28,8 @@
             - unless current_project.blank? || current_project.new_record?
               %li= link_to 'Project Settings', edit_project_path(current_project)
               %li.separator= "|"
+            %li= link_to 'Account Settings', edit_user_registration_path
+            %li.separator= "|"
             %li= link_to 'Sign out', destroy_user_session_path
 
       - notification_class = 'ui-state-error' if flash[:alert]

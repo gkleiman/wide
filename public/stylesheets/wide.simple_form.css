@@ -43,10 +43,12 @@
 .simple_form input[type='submit'] {
   margin-bottom: 1em;
 }
+.simple_form span.hint,
 .simple_form .boolean input,
 .simple_form .error span {
   margin-left: 135px;
 }
+.simple_form span.hint,
 .simple_form .error span {
   display: block;
 }
