@@ -16,6 +16,9 @@
 - content_for :alternative_title do
   %h1= raw("wIDE | #{link_to("My Projects", projects_path)} | #{h(@project.name)}")
 
+:javascript
+  var ace_theme = #{(current_user.ace_theme || Settings.default_ace_theme).to_json};
+
 .layout
   #toolbar.north
     - if @project.repository.supports_commit?

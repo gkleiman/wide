@@ -12,7 +12,7 @@ WIDE.editor = (function () {
       var UndoManager = require("ace/undomanager").UndoManager;
       var Editor = require("ace/editor").Editor;
       var Renderer = require("ace/virtual_renderer").VirtualRenderer;
-      var theme = require("ace/theme/textmate");
+      var theme = require(ace_theme);
 
       var Mode = load_editor_mode(node);
 

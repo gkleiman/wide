@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   # Ugly hack to make user registrations work with devise
   before_validation(:on => :create) do
     self.active = true
+    self.ace_theme ||= Settings.default_ace_theme
   end
   after_validation(:on => :create) do
     self.active = false
@@ -21,7 +22,8 @@ class User < ActiveRecord::Base
   has_many :third_party_projects, :through => :project_collaborators
 
   attr_accessible_on_create :user_name
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :current_password
+  attr_accessible :email, :password, :password_confirmation, :remember_me,
+    :current_password, :ace_theme
 
   def to_label
     "#{user_name} <#{email}>"
