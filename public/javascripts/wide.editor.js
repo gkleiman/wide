@@ -67,7 +67,7 @@ WIDE.editor = (function () {
       return true;
     }).bind('ajax:success', function (xhr, result, status) {
       if(result.success) {
-        editor.mark_tab_as_clean();
+        editor.mark_as_clean();
 
         WIDE.toolbar.update_scm_buttons();
       } else {
@@ -116,8 +116,10 @@ WIDE.editor = (function () {
   };
 
   var _remove_editor = function (index) {
-    editors.splice(index, 1);
+    editors[index].mark_as_clean();
     WIDE.toolbar.update_save_buttons();
+
+    editors.splice(index, 1);
 
     $('#tabs').tabs('remove', index);
     if($('#tabs li').children().length === 0) {
@@ -212,7 +214,7 @@ WIDE.editor = (function () {
     var after_init = function () {
       var env = editor.env;
 
-      editor.mark_tab_as_clean = function () {
+      editor.mark_as_clean = function () {
         editor.modified = false;
         editor.tab_title.text(editor.file_name);
         editor.containing_tab.removeClass('modified');
@@ -222,7 +224,7 @@ WIDE.editor = (function () {
         return true;
       };
 
-      editor.mark_tab_as_dirty = function () {
+      editor.mark_as_dirty = function () {
         editor.modified = true;
         editor.tab_title.text(editor.file_name + ' +');
         editor.containing_tab.addClass('modified');
@@ -270,9 +272,7 @@ WIDE.editor = (function () {
       env.editor.resize();
       env.editor.focus();
 
-      // TODO
-      //set_syntax_highlighting(env.editor, editor.file_name);
-      env.editor.getSession().doc.on('change', editor.mark_tab_as_dirty);
+      env.editor.getSession().doc.on('change', editor.mark_as_dirty);
 
       if(options.line_number !== undefined) {
         editor.go_to_line(options.line_number);
