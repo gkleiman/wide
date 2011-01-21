@@ -1,50 +1,40 @@
 WIDE.editor = (function () {
-  var edit_form_tmpl = '<p class="loading">Retrieving file...</p><form accept-charset="UTF-8" action="${WIDE.repository_path()}/save_file" data-remote="true" data-type="json" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input name="${csrf_param}" type="hidden" value="${csrf_token}" /><input name="project_id" type="hidden" value="${project_id}" /><input name="path" type="hidden" value="${path}" /><textarea name="content"></textarea></form>';
+  var edit_form_tmpl = '<p class="loading">Retrieving file...</p><form accept-charset="UTF-8" action="${WIDE.repository_path()}/save_file" data-remote="true" data-type="json" method="post" style="display: none;"><input name="utf8" type="hidden" value="&#x2713;" /><input name="${csrf_param}" type="hidden" value="${csrf_token}" /><input name="project_id" type="hidden" value="${project_id}" /><input name="path" type="hidden" value="${path}" /><textarea style="display: none;" name="content"></textarea></form><div class="editor"> </div>';
 
   var editors = [], id_count = 0;
 
-  var initialize_skywriter = function (node, after_init) {
-    var firstWindowOnBespinLoad;
+  var initialize_ace = function (node, data, after_init) {
+    var env = require("pilot/environment").create();
+    var catalog = require("pilot/plugin_manager").catalog;
 
-    function init() {
-      bespin.useBespin(node, {
-        stealFocus: true
-      }).then(function (env) {
-        // Get the editor.
-        node.bespin = env;
-        if(after_init !== undefined) {
-          after_init.call();
-        }
-      }, function (error) {
-        throw new Error("Launch failed: " + error);
-      });
-    }
+    catalog.startupPlugins({ env: env }).then(function() {
+      var EditSession = require("ace/edit_session").EditSession;
+      var UndoManager = require("ace/undomanager").UndoManager;
+      var Editor = require("ace/editor").Editor;
+      var Renderer = require("ace/virtual_renderer").VirtualRenderer;
+      var theme = require("ace/theme/textmate");
 
-    // Check if Bespin is already loaded or currently loading. In this case,
-    // bind the init function to the `load` promise.
-    if(typeof bespin !== 'undefined' && typeof bespin.loaded !== 'undefined') {
-      bespin.loaded.then(init);
-    } else if(typeof window.onBespinLoad === 'undefined') {
-      // If the `window.onBespinLoad` function is undefined, we can set the init
-      // function so that it is called when Bespin is loaded.
-      window.onBespinLoad = function () {
-        init(after_init);
-      };
-    } else {
-      // If there is already a function listening to the `window.onBespinLoad`
-      // function, then create a new function that calls the old
-      // `window.onBespinLoad` function first and the `init` function later.
-      firstWindowOnBespinLoad = window.onBespinLoad;
-      window.onBespinLoad = function () {
-        firstWindowOnBespinLoad();
-        init(after_init);
-      };
-    }
+      var Mode = load_editor_mode(node);
+
+      var doc = new EditSession(data);
+      doc.setMode(new Mode());
+      doc.setUndoManager(new UndoManager());
+      env.document = doc;
+      env.editor = new Editor(new Renderer($(node).siblings('.editor')[0], theme));
+      env.editor.setSession(doc);
+
+      node.env = env;
+      WIDE.layout.layout();
+
+      after_init();
+    });
   };
 
   var prepare_save = function (editor) {
     var fail_func = function (data, result, xhr) {
       WIDE.notifications.error('Error saving: ' + editor.path.value);
+
+      editor.editor().setReadOnly(false);
 
       WIDE.toolbar.update_save_buttons();
 
@@ -59,14 +49,16 @@ WIDE.editor = (function () {
       return editor;
     };
 
-    $(editor).bind('ajax:beforeSend', function () {
+    $(editor).submit(function () {
       editor.show_throbber();
-      editor.editor().readOnly = true;
+      editor.editor().setReadOnly(true);
+
+      $('textarea', editor).val(editor.editor().getSession().doc.getValue());
 
       return true;
     }).bind('ajax:complete', function () {
       editor.hide_throbber();
-      editor.editor().readOnly = false;
+      editor.editor().setReadOnly(false);
 
       return true;
     }).bind('ajax:error', function () {
@@ -92,28 +84,35 @@ WIDE.editor = (function () {
       .bind('keydown', 'Meta+s', WIDE.editor.save_shortcut_handler);
   };
 
-  var set_syntax_highlighting = function (editor, file_name) {
+  var load_editor_mode = function (editor) {
+    var file_name = editor.file_name;
     var extension = file_name.substr(file_name.lastIndexOf(".") + 1);
-    var syntax;
 
     switch (extension) {
       case 'h':
       case 'hpp':
       case 'c':
       case 'cpp':
-        syntax = 'c_cpp';
+        return require('ace/mode/c_cpp').Mode;
         break;
       case 'js':
-        syntax = 'js';
+        return require('ace/mode/javascript').Mode;
         break;
       case 'html':
-        syntax = 'html';
+        return require('ace/mode/html').Mode;
+        break;
+      case 'css':
+        return require('ace/mode/css').Mode;
+        break;
+      case 'php':
+        return require('ace/mode/php').Mode;
+        break;
+      case 'py':
+        return require('ace/mode/python').Mode;
         break;
     }
 
-    if(syntax) {
-      editor.syntax = syntax;
-    }
+    return require('ace/mode/text').Mode;
   };
 
   var _remove_editor = function (index) {
@@ -204,48 +203,37 @@ WIDE.editor = (function () {
     return editor;
   };
 
-  var load_skywriter_into_editor = function (options) {
+  var load_ace_into_editor = function (options) {
     var editor = options.editor, content = $('textarea', options.editor);
 
     // Set the content of the editor
     content.val(options.data);
 
     var after_init = function () {
-      var env = content.get(0).bespin;
-
-      // Add the env as an easy to access attr of the editor.
-      editor.env = env;
-
-      env.dimensionsChanged();
-      env.editor.focus = true;
-
-      set_syntax_highlighting(env.editor, editor.file_name);
+      var env = editor.env;
 
       editor.mark_tab_as_clean = function () {
-        env.editor.textChanged.add(editor.mark_tab_as_dirty);
-
         editor.modified = false;
         editor.tab_title.text(editor.file_name);
         editor.containing_tab.removeClass('modified');
 
         WIDE.toolbar.update_save_buttons();
+
+        return true;
       };
 
       editor.mark_tab_as_dirty = function () {
-        env.editor.textChanged.remove(editor.mark_tab_as_dirty);
-
         editor.modified = true;
         editor.tab_title.text(editor.file_name + ' +');
         editor.containing_tab.addClass('modified');
 
         WIDE.toolbar.update_save_buttons();
+
+        return true;
       };
 
-      editor.editor_env = function () {
-        return this.env;
-      };
       editor.editor = function () {
-        var env = this.editor_env();
+        var env = this.env;
         if(env === undefined) {
           return undefined;
         }
@@ -253,31 +241,47 @@ WIDE.editor = (function () {
       };
 
       editor.dimensions_changed = function () {
-        var env = this.editor_env();
-        if(env !== undefined) {
-          env.dimensionsChanged();
+        var editor = this.editor();
+        if(editor !== undefined) {
+          editor.resize();
         }
       };
 
       editor.go_to_line = function (line_number) {
         var editor = this.editor();
-        editor.setLineNumber(line_number);
-        editor.focus = true;
+
+        if (editor !== undefined) {
+          editor.gotoLine(line_number);
+          editor.focus();
+        }
       }
 
-      env.editor.textChanged.add(editor.mark_tab_as_dirty);
+      editor.focus = function () {
+        var editor = this.editor();
+
+        if (editor !== undefined) {
+          editor.focus();
+        }
+      };
+
+      $('textarea', editor).bind('keydown', 'Ctrl+s', WIDE.editor.save_shortcut_handler)
+        .bind('keydown', 'Meta+s', WIDE.editor.save_shortcut_handler);
+
+      env.editor.resize();
+      env.editor.focus();
+
+      // TODO
+      //set_syntax_highlighting(env.editor, editor.file_name);
+      env.editor.getSession().doc.on('change', editor.mark_tab_as_dirty);
 
       if(options.line_number !== undefined) {
         editor.go_to_line(options.line_number);
       }
 
       editor.hide_throbber();
-
-      $('textarea', editor).bind('keydown', 'Ctrl+s', WIDE.editor.save_shortcut_handler)
-        .bind('keydown', 'Meta+s', WIDE.editor.save_shortcut_handler);
     };
 
-    initialize_skywriter(content.get(0), after_init);
+    initialize_ace(editor, options.data, after_init);
 
     return editor;
   };
@@ -300,9 +304,9 @@ WIDE.editor = (function () {
         WIDE.notifications.hide();
 
         $(editor).siblings('p').hide();
-        $(editor).show();
+        $(editor).siblings('.editor').show();
 
-        load_skywriter_into_editor({
+        load_ace_into_editor({
           data: data,
           line_number: line_number,
           editor: editor
@@ -338,7 +342,7 @@ WIDE.editor = (function () {
       var editor = WIDE.editor.get_current_editor();
 
       if(editor !== undefined && editor.editor() !== undefined) {
-        editor.editor().focus = true;
+        editor.focus();
 
         return editor;
       }
@@ -383,7 +387,7 @@ WIDE.editor = (function () {
       var editor = WIDE.editor.get_current_editor();
 
       if(editor !== undefined) {
-        editor.save().editor().focus = true;
+        editor.save().focus();
       }
     },
     save_all: function () {

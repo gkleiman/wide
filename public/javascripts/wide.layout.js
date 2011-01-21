@@ -3,7 +3,7 @@ WIDE.layout = (function () {
     var container = $('.layout');
     var central_layout = $('#central_pane');
     var tab_panel = $('.ui-tabs-panel');
-    var height_difference, tabs_h, navbar_h, form_w, tab_panel_border, tab_panel_padding;
+    var height_difference, tabs_h, navbar_h, tab_w, tab_panel_border, tab_panel_padding;
 
     container.layout({
       resize: false,
@@ -20,7 +20,7 @@ WIDE.layout = (function () {
     // Some dark magic to make the editor resize
     tabs_h = $('#tabs').height();
     navbar_h = $('.ui-tabs-nav').outerHeight();
-    form_w = $('form:visible', '.ui-tabs-panel').width();
+    tab_w = $('.ui-tabs-panel:visible').width();
 
     tab_panel.height(tabs_h - navbar_h);
 
@@ -30,9 +30,7 @@ WIDE.layout = (function () {
     height_difference = tab_panel_border.bottom + tab_panel_border.top + tab_panel_padding.bottom + tab_panel_padding.top;
 
     $('.ui-tabs-panel').height(tabs_h - navbar_h - height_difference);
-    $('form', '.ui-tabs-panel').height(tabs_h - navbar_h - height_difference);
-    $('textarea:visible', '.ui-tabs-panel').height(tabs_h - navbar_h - height_difference - 5).width(form_w + 1);
-    $('.bespin:visible', '.ui-tabs-panel').height(tabs_h - navbar_h - height_difference - 5).width(form_w + 1);
+    $('.editor:visible', '.ui-tabs-panel').height(tabs_h - navbar_h - height_difference).width(tab_w);
 
     WIDE.editor.dimensions_changed();
 
