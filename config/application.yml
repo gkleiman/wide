@@ -18,3 +18,5 @@ test:
 
 production:
   <<: *defaults
+  repositories_base: <%= Rails.root.join('repositories') %>
+  compilation_base: <%= Rails.root.join('compiled') %>
