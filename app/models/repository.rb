@@ -147,24 +147,18 @@ class Repository < ActiveRecord::Base
   end
 
   def init_or_clone(url)
-    begin
-      if url.blank?
-        scm_engine.init
+    if url.blank?
+      scm_engine.init
 
-        project_type = project.project_type
+      project_type = project.project_type
 
-        # Untar the repository layout into the repository.
-        if project_type && !project_type.repository_template.blank?
-          shellout(Escape.shell_command(['tar', '-zxkpf', project_type.repository_template.path, '-C', full_path]))
-        end
-      else
-        scm_engine.clone(url)
+      # Untar the repository layout into the repository.
+      if project_type && !project_type.repository_template.blank?
+        shellout(Escape.shell_command(['tar', '-zxkpf', project_type.repository_template.path, '-C', full_path]))
       end
-    rescue
-      false
+    else
+      scm_engine.clone(url)
     end
-
-    true
   end
 
   def async_operation(operation, url, delegate_to_scm_engine = true)
