@@ -27,6 +27,7 @@ namespace :customs do
     run "ln -nfs #{deploy_to}/#{shared_dir}/repositories #{deploy_to}/#{current_dir}/public/repositories"
     run "ln -nfs #{deploy_to}/#{shared_dir}/compiled #{deploy_to}/#{current_dir}/public/compiled"
     run "ln -nfs #{deploy_to}/#{shared_dir}/db/production.sqlite3 #{deploy_to}/#{current_dir}/db/production.sqlite3"
+    run "ln -nfs #{deploy_to}/#{current_dir}/extra #{deploy_to}/../hgwide"
   end
 end
 
