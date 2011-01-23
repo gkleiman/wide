@@ -29,9 +29,6 @@ gem 'fastercsv', :platforms => :ruby_18
 # For syntax highlighting
 gem 'coderay'
 
-# Deploy with Capistrano
-gem 'capistrano'
-
 # To use debugger
 # gem 'ruby-debug'
 
@@ -50,8 +47,9 @@ group :development, :test do
   gem 'redgreen'
   gem 'autotest'
   gem 'autotest-rails'
-  gem 'thin'
   gem 'wirble'
   gem 'hirb'
   gem 'awesome_print'
+  # Deploy with Capistrano
+  gem 'capistrano'
 end
