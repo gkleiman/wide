@@ -59,7 +59,12 @@ class ProjectsController < ApplicationController
   def download_binary
     raise ActiveRecord::RecordNotFound unless @project.compiler_output[:status] == 'success'
 
-    send_file("#{@project.bin_path}/binary", :filename => @project.name)
+    filename = @project.name
+
+    # Add the project type extension
+    filename << ".#{@project.project_type.binary_extension}" unless @project.project_type.binary_extension.blank?
+
+    send_file("#{@project.bin_path}/binary", :filename => filename)
   end
 
   private

@@ -15,7 +15,7 @@ Project:
 ProjectType:
   fields:
     default: name, description
-    form: name, description, makefile_template, repository_template
+    form: name, description, binary_extension, makefile_template, repository_template
   order_by:
   relationships:
   filters:

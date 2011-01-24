@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110121065453) do
+ActiveRecord::Schema.define(:version => 20110124210919) do
 
   create_table "admin_users", :force => true do |t|
     t.string   "first_name",       :default => "",    :null => false
@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(:version => 20110121065453) do
     t.string   "repository_template_content_type"
     t.integer  "repository_template_file_size"
     t.datetime "repository_template_updated_at"
+    t.string   "binary_extension"
   end
 
   create_table "projects", :force => true do |t|

@@ -8,5 +8,5 @@ class ProjectType < ActiveRecord::Base
   validates :name, :presence => true
   validates :makefile_template, :presence => true
 
-  attr_accessible :name, :makefile_template, :description, :repository_template
+  attr_accessible :name, :makefile_template, :description, :repository_template, :binary_extension
 end
