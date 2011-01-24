@@ -234,9 +234,11 @@ $.TokenList = function (input, settings) {
         li_data = settings.prePopulate;
         if (li_data && li_data.length) {
             for(var i in li_data) {
-                var this_token = $("<li><p>"+li_data[i].name+"</p> </li>")
+                var this_token = $("<li><p></p> </li>")
                     .addClass(settings.classes.token)
-                    .insertBefore(input_token);
+                    .insertBefore(input_token)
+                    .find('p')
+                    .text(li_data[i].name);
 
                 $("<span>x</span>")
                     .addClass(settings.classes.tokenDelete)
@@ -428,6 +430,7 @@ $.TokenList = function (input, settings) {
 
     // Highlight the query part of the search term
     function highlight_term(value, term) {
+        value = value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         return value.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<b>$1</b>");
     }
 
@@ -454,7 +457,7 @@ $.TokenList = function (input, settings) {
             for(var i in results) {
                 if (results.hasOwnProperty(i)) {
                   if (jQuery.inArray('' + results[i].id, hidden_input.val().split(',')) == -1 ) {
-                      var this_li = $("<li>"+highlight_term(results[i].name, query)+"</li>")
+                      var this_li = $("<li>" + highlight_term(results[i].name, query) + "</li>")
                                         .appendTo(dropdown_ul);
 
                       if (i % 2) {
