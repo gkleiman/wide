@@ -26,9 +26,9 @@
             %li.username= current_user.user_name
             %li.separator= "|"
             - unless current_project.blank? || current_project.new_record?
-              %li= link_to 'Project Settings', edit_project_path(current_project)
+              %li= link_to_unless_current 'Project Settings', edit_project_path(current_project)
               %li.separator= "|"
-            %li= link_to 'Account Settings', edit_user_registration_path
+            %li= link_to_unless_current 'Account Settings', edit_user_registration_path
             %li.separator= "|"
             %li= link_to 'Sign out', destroy_user_session_path
 
