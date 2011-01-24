@@ -1,4 +1,6 @@
-- title 'wIDE | My Account', true
+- title 'wIDE | #{current_user.name} | My Account', false
+- content_for :alternative_title do
+  %h1= raw("wIDE | #{link_to("My Projects", projects_path)} | My Account")
 
 .simple_form_container.ui-widget-content.ui-corner-all
   %h1.ui-widget-header Account Information
