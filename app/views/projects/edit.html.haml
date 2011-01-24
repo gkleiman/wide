@@ -1,4 +1,4 @@
-- title "wIDE | #{current_user.name} | #{@project.name} | Project Settings", false
+- title "wIDE | #{current_user.user_name} | #{@project.name} | Project Settings", false
 - content_for :alternative_title do
   %h1= raw("wIDE | #{link_to("My Projects", projects_path)} | #{link_to(h(@project.name), @project)} | Project Settings")
 
