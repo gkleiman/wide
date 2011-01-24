@@ -3,8 +3,8 @@
 .simple_form_container.ui-widget-content
   %h1.ui-widget-header Login
   = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
-    = f.input :user_name
-    = f.input :password, :input_html => { :size => 50 }
+    = f.input :user_name, :required => false
+    = f.input :password, :input_html => { :size => 50 }, :required => false
     - if devise_mapping.rememberable?
       = f.input :remember_me, :as => :boolean
     %p= f.button :submit, 'Login'
