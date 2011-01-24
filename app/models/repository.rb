@@ -147,6 +147,10 @@ class Repository < ActiveRecord::Base
   end
 
   def init_or_clone(url)
+    # Create the directory tree
+    FileUtils.rm_rf(full_path)
+    FileUtils.mkdir_p(full_path)
+
     if url.blank?
       scm_engine.init
 
@@ -159,6 +163,8 @@ class Repository < ActiveRecord::Base
     else
       scm_engine.clone(url)
     end
+
+    true
   end
 
   def async_operation(operation, url, delegate_to_scm_engine = true)
@@ -208,9 +214,6 @@ class Repository < ActiveRecord::Base
   end
 
   def prepare_init_or_clone
-    # Create the directory tree
-    FileUtils.mkdir_p(full_path)
-
     # Queue initialization/cloning
     queue_async_operation(:init_or_clone, self.url, false)
 
