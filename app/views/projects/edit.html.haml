@@ -6,7 +6,7 @@
   = javascript_include_tag 'page.project.js', 'page.project.edit.js', 'jquery.tokeninput.js'
 
 :javascript
-  var collaborators_ids = #{@project.collaborators.map { |collaborator| {:name => collaborator.user_name, :id => collaborator.id} }.to_json};
+  var collaborators_ids = #{@project.collaborators.map { |collaborator| {:name => "#{collaborator.user_name} <#{collaborator.email}>", :id => collaborator.id} }.to_json};
 
 .simple_form_container.ui-widget-content.ui-widget
   %h1.ui-widget-header Project Settings
