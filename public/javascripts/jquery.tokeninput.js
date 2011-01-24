@@ -293,9 +293,11 @@ $.TokenList = function (input, settings) {
 
     // Inner function to a token to the list
     function insert_token(id, value) {
-      var this_token = $("<li><p>"+ value +"</p> </li>")
-      .addClass(settings.classes.token)
-      .insertBefore(input_token);
+      var this_token = $("<li><p></p> </li>")
+          .addClass(settings.classes.token)
+          .insertBefore(input_token)
+          .find('p')
+          .text(value);
 
       // The 'delete token' button
       $("<span>x</span>")
@@ -383,7 +385,7 @@ $.TokenList = function (input, settings) {
         var token_data = $.data(token.get(0), "tokeninput");
 
         // Delete the token
-        token.remove();
+        token.parent().remove();
         selected_token = null;
 
         // Show the input box and give it focus again

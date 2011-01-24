@@ -92,3 +92,7 @@ ul.token-input-list li input {
 .autocomplete-dropdown {
   z-index: 99999;
 }
+
+.collaborators .token-input-list p {
+  display: block;
+}
