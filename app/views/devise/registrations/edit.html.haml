@@ -1,4 +1,4 @@
-- title 'wIDE | #{current_user.name} | My Account', false
+- title "wIDE | #{current_user.user_name} | My Account", false
 - content_for :alternative_title do
   %h1= raw("wIDE | #{link_to("My Projects", projects_path)} | My Account")
 
@@ -8,7 +8,7 @@
     = f.input :user_name, :disabled => true
     = f.input :email
     = f.input :ace_theme, :collection => Settings.ace_themes, :include_blank => false
-    = f.input :password, :hint => "Leave blank if you don't want to change it."
+    = f.input :password, :hint => "Leave blank if you don't want to change it.", :required => false
     = f.input :password_confirmation
-    = f.input :current_password, :hint => "We need your current password to confirm your changes."
+    = f.input :current_password, :hint => "We need your current password to confirm your changes.", :required => true
     = f.button :submit
