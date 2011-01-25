@@ -33,7 +33,7 @@
   cursor: pointer;
 }
 #projects table td.status {
-  width: 6em;
+  width: 7em;
 }
 #projects table td.delete {
   width: 16px;

@@ -157,7 +157,7 @@ class Repository < ActiveRecord::Base
       project_type = project.project_type
 
       # Untar the repository layout into the repository.
-      if project_type && !project_type.repository_template.blank?
+      if project_type && project_type.repository_template && !project_type.repository_template.path.blank?
         shellout(Escape.shell_command(['tar', '-zxkpf', project_type.repository_template.path, '-C', full_path]))
       end
     else
