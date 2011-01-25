@@ -5,9 +5,12 @@
     :cache => 'external'
   = javascript_include_tag 'wide.file.js','wide.tree.js',
     'wide.compiler_output.js', 'wide.toolbar.js', 'wide.compile.js',
-    'wide.editor.js', 'wide.layout.js', 'wide.async_op.js', :cache => 'wide_framework'
+    'wide.editor.js', 'wide.layout.js', 'wide.async_op.js',
+    :cache => 'wide_framework'
   = javascript_include_tag 'page.project.commit_dialog.js',
-    'page.project.pull_dialog.js', 'page.project.js', :cache => 'project'
+    'page.project.pull_dialog.js', 'page.project.js',
+    'page.project.revert_dialog.js', 'page.project.diffstat.js',
+    :cache => 'project'
 
   %meta{:name => 'project_id', :content => @project.to_param}
 
@@ -23,6 +26,7 @@
   #toolbar.north
     - if @project.repository.supports_commit?
       %button#commit_button Commit
+      %button#revert_button Revert
     - if @project.repository.supports_pull?
       %button#pull_button Pull
     %button#compile_button Compile
@@ -37,6 +41,7 @@
     = render 'compiler_output'
 
 = render :partial => 'commit_dialog', :project => @project
+= render :partial => 'revert_dialog', :project => @project
 = render :partial => 'pull_dialog', :project => @project
 
 = javascript_include_tag 'ace-uncompressed.js'

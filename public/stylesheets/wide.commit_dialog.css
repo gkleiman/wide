@@ -17,25 +17,25 @@
   font-size: 0.75em;
 }
 
-#diffstat-table {
+.diffstat-table {
   border-spacing: 0px 0px;
   border-top: 1px solid #DDD;
   margin: 10px 0px;
   padding: 0px;
   width: 100%;
 }
-#diffstat-table td {
+.diffstat-table td {
   border-bottom: 1px solid #DDD;
   padding: 0.4em 5px;
 }
 
-#diffstat-table td.path a {
+.diffstat-table td.path a {
   text-decoration: none;
   border-bottom: 1px dotted;
   font-size: 0.85em;
 }
 
-#diffstat-table td.status {
+.diffstat-table td.status {
   padding-left: 0px;
   width: 20px;
   white-space: nowrap;
@@ -65,13 +65,13 @@
   background-image: url('../images/overlays/deleted.gif');
 }
 
-#diffstat-table .diffstat {
+.diffstat-table .diffstat {
   text-align: right;
   white-space: nowrap;
   padding-right: 0px;
   vertical-align: center;
 }
-#diffstat-table .diffstat-bar {
+.diffstat-table .diffstat-bar {
   display: inline-block;
   width: 88px;
   text-align: left;
@@ -79,28 +79,28 @@
   padding-right: 5px;
   font-size: 0.75em;
 }
-#diffstat-table .diffstat-summary {
+.diffstat-table .diffstat-summary {
   font-weight: bold;
   text-align: right;
 }
-#diffstat-table .diffstat .plus {
+.diffstat-table .diffstat .plus {
   color: green;
   float: left;
 }
-#diffstat-table .diffstat .minus {
+.diffstat-table .diffstat .minus {
   float: left;
   color: red;
 }
 
-#diffstat-table .checkbox {
+.diffstat-table .checkbox {
   max-width: 0.25em;
   padding: 0.4em 5px 0 0;
 }
 
-#diffstat-table .loading {
+.diffstat-table .loading {
   background: no-repeat url('../images/throbber.gif');
   padding-left: 20px;
 }
-#diffstat-table .CodeRay {
+.diffstat-table .CodeRay {
   border: 0px;
 }

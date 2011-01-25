@@ -5,7 +5,7 @@ class RepositoriesController < ApplicationController
   before_filter :load_repository
   before_filter lambda { @path = extract_path_from_param(:path) },
     :only => [ :ls, :cat, :save_file, :create_file, :create_directory, :rm,
-      :add, :forget, :revert, :mark_resolved, :mark_unresolved, :diff ]
+      :add, :forget, :mark_resolved, :mark_unresolved, :diff ]
 
   around_filter :json_failable_action,
     :only => [ :save_file, :create_file, :create_directory, :rm, :mv, :summary,
@@ -68,7 +68,24 @@ class RepositoriesController < ApplicationController
   end
 
   def revert
-    @repository.revert!(@path)
+    params[:files] ||= []
+    params[:path] ||= ''
+
+    raise "Can't revert no files" if params[:files].empty? && params[:path].blank?
+
+    # If only one path is specified
+    unless params[:path].blank?
+      if params[:path] != '/'
+        files = File.join(params[:path].split('/')).to_a
+      else
+        files = %w(/)
+      end
+    end
+
+    # If more than just one path is specified
+    files ||= params[:files]
+
+    @repository.revert!(files)
 
     render_success
   end

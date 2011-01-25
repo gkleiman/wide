@@ -29,7 +29,7 @@ $(function () {
   });
 
   pull_button.click(function () {
-    pull_button.attr('disabled', 'disabled');
+    pull_button.button('option', 'disabled', true).removeClass('ui-state-hover');
     pull_dialog.dialog('open');
 
     return false;

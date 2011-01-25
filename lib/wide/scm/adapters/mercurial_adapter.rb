@@ -174,13 +174,13 @@ module Wide
           raise CommandFailed.new("Failed to forget file #{src_path} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
         end
 
-        def revert!(entry)
-          rel_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
+        def revert!(files)
+          files = files.map { |path| "path:#{path}" }
 
-          cmd = cmd_prefix.push('revert', '--no-backup', "path:#{rel_path}")
+          cmd = cmd_prefix.push('revert', '--no-backup', *files)
           shellout(Escape.shell_command(cmd))
 
-          raise CommandFailed.new("Failed to revert file #{src_path} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
+          raise CommandFailed.new("Failed to revert #{files.join(', ')} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
         end
 
         def commit(user, message, files = [])

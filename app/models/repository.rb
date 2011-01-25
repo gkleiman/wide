@@ -2,7 +2,7 @@ class Repository < ActiveRecord::Base
   include ActiveModel::Validations
 
   cattr_accessor :supported_actions
-  self.supported_actions = %w(add commit history forget mark_resolved mark_unresolved pull merge diff_stat diff)
+  self.supported_actions = %w(add commit history forget mark_resolved mark_unresolved pull merge diff_stat diff revert!)
 
   attr_accessor :entries_status, :url
 
@@ -93,9 +93,8 @@ class Repository < ActiveRecord::Base
     scm_engine.forget(entry)
   end
 
-  def revert!(rel_path)
-    entry = DirectoryEntry.new(full_path(rel_path))
-    scm_engine.revert!(entry)
+  def revert!(files)
+    scm_engine.revert!(files)
   end
 
   def mark_resolved(rel_path)
@@ -134,7 +133,7 @@ class Repository < ActiveRecord::Base
   end
 
   def respond_to?(symbol, include_private = false)
-    match = symbol.to_s.match(/^supports_(\w+)\?$/)
+    match = symbol.to_s.match(/^supports_([^?]+)\?$/)
     if match && self.supported_actions.include?(match[1])
       return true
     else
@@ -193,7 +192,7 @@ class Repository < ActiveRecord::Base
   end
 
   def method_missing(method_called, *args, &block)
-    match = method_called.to_s.match(/^supports_(\w+)\?$/)
+    match = method_called.to_s.match(/^supports_([^?]+)\?$/)
     if match && self.supported_actions.include?(match[1]) && scm_engine
       if scm_engine.respond_to?(match[1])
         true

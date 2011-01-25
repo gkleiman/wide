@@ -11,15 +11,23 @@ WIDE.toolbar = (function () {
     return "You have modified a file. If you navigate away from this page without first saving it, the changes will be lost.";
   }
 
+  var unhover_buttons = function () {
+    $('#toolbar button').removeClass('ui-state-hover');
+
+    return true;
+  };
+
   return {
     update_scm_buttons: function () {
       var pull_button = $('#pull_button');
       var commit_button = $('#commit_button');
+      var revert_button = $('#revert_button');
 
-      if(commit_button.length === 0 && pull_button.length === 0) {
+      if(commit_button.length === 0 && pull_button.length === 0 && revert_button.length === 0) {
         return false;
       }
 
+      revert_button.button().button('option', 'disabled', true).mouseout().blur();
       commit_button.button().button('option', 'disabled', true).mouseout().blur();
       $.getJSON(WIDE.repository_path() + '/summary', function (response) {
         if(!response) {
@@ -29,8 +37,10 @@ WIDE.toolbar = (function () {
 
         if(commit_button.length !== 0) {
           if(response.summary['commitable?'] === true) {
+            revert_button.button('option', 'disabled', false).mouseout().blur();
             commit_button.button('option', 'disabled', false).mouseout().blur();
           } else {
+            revert_button.button('option', 'disabled', true).mouseout().blur();
             commit_button.button('option', 'disabled', true).mouseout().blur();
           }
         }
@@ -43,6 +53,8 @@ WIDE.toolbar = (function () {
           }
         }
       });
+
+      unhover_buttons();
 
       return true;
     },
@@ -68,6 +80,10 @@ WIDE.toolbar = (function () {
         save_all_button.button('option', 'disabled', true).mouseout().blur();
         setConfirmUnload(false);
       }
+
+      unhover_buttons();
+
+      return true;
     }
   };
 }());
@@ -75,6 +91,8 @@ WIDE.toolbar = (function () {
 $(function () {
   $('#pull_button').button();
   $('#commit_button').button();
+  $('#revert_button').button();
+
   $('#save_button').button({
     icons: {
       primary: 'ui-icon-disk'
