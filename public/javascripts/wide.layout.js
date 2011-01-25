@@ -30,7 +30,7 @@ WIDE.layout = (function () {
     height_difference = tab_panel_border.bottom + tab_panel_border.top + tab_panel_padding.bottom + tab_panel_padding.top;
 
     $('.ui-tabs-panel').height(tabs_h - navbar_h - height_difference);
-    $('.editor:visible', '.ui-tabs-panel').height(tabs_h - navbar_h - height_difference).width(tab_w);
+    $('.editor:visible', '.ui-tabs-panel').height(tabs_h - navbar_h).width(tab_w);
 
     WIDE.editor.dimensions_changed();
 

@@ -18,6 +18,15 @@
 #central_pane form textarea {
   margin-top: 5px;
 }
+#central_pane .ui-tabs-panel {
+  padding: 0;
+}
+#central_pane .ui-tabs-panel p {
+  padding-left: 1em;
+}
+#central_pane .ui-tabs {
+  padding: 0;
+}
 
 #toolbar {
   font-size: 0.725em;

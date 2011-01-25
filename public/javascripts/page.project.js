@@ -3,5 +3,4 @@ $(function () {
     $(this).toggleClass('ui-state-hover');
     return true;
   });
-
 });
