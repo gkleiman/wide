@@ -2,8 +2,7 @@ module Wide
   module Scm
     module Adapters
 
-      class FilesystemAdapter
-        extend Wide::Scm::Adapters::AbstractAdapter
+      class FilesystemAdapter < Wide::Scm::Adapters::AbstractAdapter
       end
 
     end

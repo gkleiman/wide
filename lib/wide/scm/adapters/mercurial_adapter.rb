@@ -2,8 +2,7 @@ module Wide
   module Scm
     module Adapters
 
-      class MercurialAdapter
-        extend Wide::Scm::Adapters::AbstractAdapter
+      class MercurialAdapter < Wide::Scm::Adapters::AbstractAdapter
 
         # Name of the mercurial binary
         HG_BIN = 'hg'
@@ -12,7 +11,7 @@ module Wide
         self.skip_paths = %w(.hg)
 
         def status
-          status_hash = super
+          status_hash = {}
 
           cmd = cmd_prefix.push('status')
           shellout(Escape.shell_command(cmd)) do |io|

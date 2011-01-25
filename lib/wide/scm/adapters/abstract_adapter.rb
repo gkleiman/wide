@@ -5,13 +5,10 @@ module Wide
       class CommandFailed < StandardError
       end
 
-      module AbstractAdapter
-        def self.extended(base)
-          base.send(:include, InstanceMethods)
-          base.send(:attr_accessor, :base_path)
-          base.send(:cattr_accessor, :skip_paths)
-          base.skip_paths = []
-        end
+      class AbstractAdapter
+        attr_accessor :base_path
+        cattr_accessor :skip_paths
+        self.skip_paths = []
 
         def adapter_name
           'Abstract'
@@ -19,6 +16,10 @@ module Wide
 
         def logger
           ::Rails.logger
+        end
+
+        def initialize(base_path)
+          self.base_path = base_path
         end
 
         def shellout(cmd, &block)
@@ -43,28 +44,21 @@ module Wide
           end
         end
 
-        module InstanceMethods
-          def initialize(base_path)
-            self.base_path = base_path
-          end
-
-          def status
-            Status.new(base_path)
-          end
-
-          def adapter_name
-            self.class.adapter_name
-          end
-
-          def logger
-            self.class.logger
-          end
-
-          def shellout(cmd, &block)
-            self.class.shellout(cmd, &block)
-          end
+        def self.status
+          Status.new(base_path)
         end
 
+        def self.adapter_name
+          self.class.adapter_name
+        end
+
+        def self.logger
+          self.class.logger
+        end
+
+        def self.shellout(cmd, &block)
+          self.class.shellout(cmd, &block)
+        end
       end
 
       class Status < Hash
