@@ -6,8 +6,7 @@ var poll_projects_table = function () {
 };
 
 $(function () {
-  // Make rows of the projects table clickable
-  $('#projects table tbody tr.success').live('click', function (event) {
+  var clickable_row_click_handler = function (event) {
     if (event.target.nodeName === 'A') {
       return true;
     }
@@ -18,8 +17,14 @@ $(function () {
     event.stopPropagation();
 
     return false;
-  });
+  };
 
   // Refresh the projects table if there is any uninitialized project
   poll_projects_table();
+
+  // Make rows of the ready projects in the projects table clickable
+  $('#projects table tbody tr.success').live('click', clickable_row_click_handler);
+
+  // Make the "Add a New Project" row clickable.
+  $('#projects table tbody tr.add_new_project').live('click', clickable_row_click_handler);
 });

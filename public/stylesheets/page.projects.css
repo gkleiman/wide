@@ -42,6 +42,10 @@
   float: right;
   margin-right: 0.5em;
 }
+#projects tbody tr.add_new_project {
+  text-align: center;
+  cursor: pointer;
+}
 
 div#container.projects.edit {
   overflow-y: scroll;

@@ -29,6 +29,6 @@
           There has been a problem initializing the repository
       %td.delete
         = link_to 'Remove Project', project, :method => :delete, :confirm => 'Are you sure that you want to remove the project?', :class => 'ui-icon ui-icon-trash'
-  %tr
-    %td(colspan=4)
+  %tr.add_new_project
+    %td.add_new_project.success(colspan=4)
       = link_to 'Add a New Project', new_project_path
