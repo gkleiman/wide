@@ -12,6 +12,7 @@ class Project < ActiveRecord::Base
 
   validates :name, :presence => true, :format => { :with => /\A[\w\- ]+\z/ }, :uniqueness => { :scope => :user_id, :case_sensitive => false }
 
+  before_validation :strip_project_name
   before_validation :set_repository_path
 
   attr_accessible_on_create :name, :repository_attributes
@@ -63,6 +64,10 @@ class Project < ActiveRecord::Base
   end
 
   private
+
+  def strip_project_name
+    self.name.try(:strip!)
+  end
 
   def set_repository_path
     if repository && repository.path.blank?

@@ -7,7 +7,7 @@ describe Project do
     p.to_param.should == p.name
   end
 
-  it "should set the repository path after validation" do
+  it "should set the repository path before validation" do
     p = Factory.build(:project)
 
     p.repository = p.build_repository
@@ -16,6 +16,14 @@ describe Project do
     p.valid?
 
     p.repository.path.should == File.join(p.user.user_name, p.name)
+  end
+
+  it "should strip the project name" do
+    p = Factory.build(:project, :name  => ' spaces ')
+
+    p.save
+
+    p.name.should == 'spaces'
   end
 
   describe "testing validations" do
