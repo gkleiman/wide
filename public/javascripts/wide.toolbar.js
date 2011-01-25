@@ -90,8 +90,16 @@ WIDE.toolbar = (function () {
 
 $(function () {
   $('#pull_button').button();
-  $('#commit_button').button();
-  $('#revert_button').button();
+  $('#commit_button').button({
+    icons: {
+      primary: 'ui-icon-check'
+    }
+  });
+  $('#revert_button').button({
+    icons: {
+      primary: 'ui-icon-arrowreturnthick-1-s'
+    }
+  });
 
   $('#save_button').button({
     icons: {
