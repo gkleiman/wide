@@ -15,7 +15,8 @@ $(function ($) {
   });
 
   // Add ui-state-default to all the text input boxes
-  $('.simple_form .string input').addClass('ui-state-default');
+  $('.simple_form .string input:disabled').addClass('ui-state-disabled');
+  $('.simple_form .string input:not(:disabled)').addClass('ui-state-default');
   $('.simple_form .password input').addClass('ui-state-default');
   $('.simple_form .select select').addClass('ui-state-default');
 
@@ -29,6 +30,6 @@ $(function ($) {
   if(first_error.length !== 0) {
     first_error.focus();
   } else {
-    $('.simple_form .input input').first().focus();
+    $('.simple_form .input input:not(:disabled)').first().focus();
   }
 });
