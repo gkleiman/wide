@@ -45,6 +45,10 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def log(path = nil, revision_from = nil, revision_until = nil)
+    scm_engine.log(path, revision_from, revision_until)
+  end
+
   def directory_entries(rel_path)
     entries = Directory.new(full_path(rel_path)).entries
 
@@ -132,9 +136,9 @@ class Repository < ActiveRecord::Base
     scm_engine ? scm_engine.diff_stat(revision) : {}
   end
 
-  def diff(rel_path)
+  def diff(rel_path, by_revision = nil)
     entry = DirectoryEntry.new(full_path(rel_path))
-    scm_engine.diff(entry)
+    scm_engine.diff(entry, by_revision)
   end
 
   def clean?

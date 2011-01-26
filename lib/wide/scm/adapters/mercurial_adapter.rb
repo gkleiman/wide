@@ -62,26 +62,27 @@ module Wide
           status_hash
         end
 
-        def diff(entry, revision = '')
+
+        def diff(entry, by_revision = nil)
           rel_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
 
           cmd = cmd_prefix.push('diff', '--git', "path:#{rel_path}")
 
-          cmd.push('-r', revision) unless revision.blank?
+          cmd.push('-c', "#{by_revision.to_i}") unless by_revision.nil?
 
           lines = ''
           shellout(Escape.shell_command(cmd)) do |io|
             lines = io.read
           end
 
-          raise CommandFailed.new("Failed to diff file #{rel_path}:#{revision} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
+          raise CommandFailed.new("Failed to diff file #{rel_path}:#{by_revision} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
 
           lines
         end
 
-        def diff_stat(revision = nil)
+        def diff_stat(by_revision = nil)
           # path | number_of_changes +++---
-          # For example: librabbitmq/amqp_connection.c    |  12 +++
+          # For example: librabbitmq/amqp_connection.c    |  12 +++---
           bin_file_stats_regexp = /\A\s*([^|\s]+)\s*\|\s*Bin\s*\z/
           file_stats_regexp = /\A\s*([^|\s]+)\s*\|\s*(\d+)\s*([^-]*)(-*)\z/
           summary_regexp = /\A\s*(\d+) files changed, (\d+) insertions\(\+\), (\d+) deletions\(-\)\z/
@@ -89,9 +90,9 @@ module Wide
           stats = { :files_changed => 0, :insertions => 0, :deletions => 0, :files => [] }
 
           cmd = cmd_prefix.push('diff', '--git', '--stat')
-          unless revision.blank?
-            cmd << '-r'
-            cmd << "#{revision.to_s}"
+          unless by_revision.blank?
+            cmd << '-c'
+            cmd << "#{by_revision.to_s}"
           end
 
           old_columns = ENV['COLUMNS']
@@ -125,7 +126,7 @@ module Wide
           end
           ENV['COLUMNS'] = old_columns
 
-          raise CommandFailed.new("Failed to get the diffstat for #{base_path}:#{revision}") if $? && $?.exitstatus != 0
+          raise CommandFailed.new("Failed to get the diffstat for #{base_path}:#{by_revision}") if $? && $?.exitstatus != 0
 
           stats
         end
