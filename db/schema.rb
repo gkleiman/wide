@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110124210919) do
+ActiveRecord::Schema.define(:version => 20110125234905) do
 
   create_table "admin_users", :force => true do |t|
     t.string   "first_name",       :default => "",    :null => false
@@ -27,6 +27,29 @@ ActiveRecord::Schema.define(:version => 20110124210919) do
   end
 
   add_index "admin_users", ["email"], :name => "index_admin_users_on_email", :unique => true
+
+  create_table "changes", :force => true do |t|
+    t.integer "changeset_id",                 :null => false
+    t.string  "path",                         :null => false
+    t.string  "action",       :default => "", :null => false
+  end
+
+  add_index "changes", ["changeset_id", "action"], :name => "index_changes_on_changeset_id_and_action"
+  add_index "changes", ["changeset_id"], :name => "index_changes_on_changeset_id"
+
+  create_table "changesets", :force => true do |t|
+    t.integer  "repository_id",                   :null => false
+    t.integer  "revision",                        :null => false
+    t.string   "scmid",                           :null => false
+    t.string   "committer",                       :null => false
+    t.string   "committer_email", :default => "", :null => false
+    t.datetime "committed_on",                    :null => false
+    t.text     "message"
+  end
+
+  add_index "changesets", ["committed_on"], :name => "index_changesets_on_committed_on"
+  add_index "changesets", ["repository_id", "revision"], :name => "index_changesets_on_repository_id_and_revision", :unique => true
+  add_index "changesets", ["repository_id"], :name => "index_changesets_on_repository_id"
 
   create_table "constants", :force => true do |t|
     t.integer  "project_id"

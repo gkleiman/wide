@@ -79,7 +79,43 @@ module Wide
             end
           end
         end
+      end
 
+      class Revision
+        attr_accessor :revision, :scmid, :author, :author_email, :time, :message, :paths
+
+        def initialize(attributes={})
+          self.revision = attributes[:revision]
+          self.scmid = attributes[:scmid]
+          self.author = attributes[:author]
+          self.author_email = attributes[:author_email]
+          self.time = attributes[:time]
+          self.message = attributes[:message] || ""
+          self.paths = attributes[:paths]
+        end
+
+        def save(repo)
+          Changeset.transaction do
+            changeset = Changeset.create(
+              :repository => repo,
+              :revision => revision,
+              :scmid => scmid,
+              :committer => author,
+              :committer_email => author_email,
+              :committed_on => time,
+              :message => message
+            )
+
+            if changeset.save
+              paths.each do |file|
+                Change.create(
+                  :changeset => changeset,
+                  :action => file[:action],
+                  :path => file[:path])
+              end
+            end
+          end
+        end
       end
 
     end

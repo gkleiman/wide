@@ -10,6 +10,8 @@ class Repository < ActiveRecord::Base
 
   belongs_to :project
 
+  has_many :changesets, :include => :changes, :dependent => :destroy, :order => 'revision DESC'
+
   class ScmAdapterInstalledValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       unless Wide::Scm::Scm.all_adapters.include?(value)
@@ -32,6 +34,16 @@ class Repository < ActiveRecord::Base
   validates :url, :scm_valid_url => true
 
   after_create :prepare_init_or_clone
+
+  def add_new_revisions_to_db
+    if scm_engine && scm_engine.respond_to?(:log)
+      last_changeset = changesets.first
+
+      scm_engine.log(nil, last_changeset.try(:revision)).drop(1).each do |changeset|
+        changeset.save(self)
+      end
+    end
+  end
 
   def directory_entries(rel_path)
     entries = Directory.new(full_path(rel_path)).entries
@@ -109,6 +121,7 @@ class Repository < ActiveRecord::Base
 
   def commit(user, message, files = [])
     scm_engine.commit(user, message, files)
+    add_new_revisions_to_db
   end
 
   def summary

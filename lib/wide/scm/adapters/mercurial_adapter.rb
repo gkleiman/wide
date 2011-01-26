@@ -1,3 +1,5 @@
+require 'rexml/document'
+
 module Wide
   module Scm
     module Adapters
@@ -235,6 +237,50 @@ module Wide
           summary[:commitable?] = !summary[:clean?] && !summary[:unresolved?]
 
           summary
+        end
+
+        def log(path=nil, revision_from=nil, revision_to=nil)
+          cmd = cmd_prefix.push('log', '--encoding', 'utf8', '-v', '--style', Rails.root.join('extra', 'hg_template.xml').to_s)
+
+          if revision_from && revision_to
+            cmd.push('-r',  "#{revision_from.to_i}:#{revision_to.to_i}")
+          elsif revision_from
+            cmd.push('-r', "#{revision_from.to_i}:")
+          end
+
+          cmd << "path:#{path}" unless path.blank?
+
+          revisions = []
+          shellout(Escape.shell_command(cmd)) do |io|
+            begin
+              doc = REXML::Document.new(io.read)
+              doc.elements.each("log/logentry") do |logentry|
+                paths = []
+                logentry.elements.each("paths/path") do |path|
+                  paths << {
+                    :action => path.attributes['action'],
+                    :path => "#{CGI.unescape(path.text)}",
+                  }
+                end
+
+                revisions << Revision.new({
+                  :revision => logentry.attributes['revision'],
+                  :scmid => logentry.attributes['node'],
+                  :author => (logentry.elements['author'] ? logentry.elements['author'].text : ""),
+                  :author_email => (logentry.elements['author'] ? logentry.elements['author'].attributes['email'] : ""),
+                  :time => Time.xmlschema(logentry.elements['date'].text).localtime,
+                  :message => logentry.elements['msg'].text,
+                  :paths => paths
+                })
+              end
+            rescue
+              raise CommandFailed.new("Failed to get revisions for #{base_path}: #{$!}")
+            end
+          end
+
+          raise CommandFailed.new("Failed to get revisions for #{base_path}") if $? && $?.exitstatus != 0
+
+          revisions
         end
 
         def clean?
