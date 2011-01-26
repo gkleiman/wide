@@ -94,7 +94,7 @@ $(function () {
       primary: 'ui-icon-clock'
     }
   }).click(function () {
-    window.location = WIDE.repository_path + '/changesets';
+    window.location = WIDE.repository_path() + '/changesets';
   });
 
   $('#pull_button').button();
