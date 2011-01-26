@@ -28,7 +28,7 @@ class RepositoriesController < ApplicationController
   end
 
   def diff
-    render :text => CodeRay.scan(@repository.diff(@path), 'diff').html(:css => :class)
+    render :layout => false
   end
 
   def save_file

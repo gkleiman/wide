@@ -20,4 +20,8 @@ module ApplicationHelper
     end
     link_to_function(name, "add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")", :id => 'add_link')
   end
+
+  def highlight_diff(diff)
+    CodeRay.scan(diff, 'diff').html(:css => :class).html_safe
+  end
 end
