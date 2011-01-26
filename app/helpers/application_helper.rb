@@ -21,6 +21,11 @@ module ApplicationHelper
     link_to_function(name, "add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")", :id => 'add_link')
   end
 
+  def avatar_url(email)
+    gravatar_id = Digest::MD5::hexdigest(email).downcase
+    "http://gravatar.com/avatar/#{gravatar_id}.png?s=48&d=identicon"
+  end
+
   def highlight_diff(diff)
     CodeRay.scan(diff, 'diff').html(:css => :class).html_safe
   end

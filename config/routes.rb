@@ -34,6 +34,9 @@ Wide::Application.routes.draw do
       post 'mark_unresolved'
       post 'commit'
       post 'pull'
+
+      # Changesets
+      resources :changesets, :only => [ :index, :show ]
     end
   end
 end

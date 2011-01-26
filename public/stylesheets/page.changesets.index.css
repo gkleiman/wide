@@ -1,0 +1,239 @@
+#changesets {
+  width: 833px;
+  margin: 0 auto;
+}
+#changesets h1.changesets {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 12px 0 0.4em 0;
+  padding-left: 0.4em;
+}
+#changesets h3 {
+  font-size: 1em;
+  font-weight: bold;
+  margin: 0;
+  padding-left: 0.4em;
+}
+.changesets-date {
+  margin: 0 auto;
+  padding: 10px 20px !important;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.changeset-description {
+  margin-bottom: 10px;
+  width: 710px;
+  white-space: pre-wrap;
+}
+
+#content h2.changesets {
+  margin: 0;
+  padding: 12px 0 10px 20px;
+}
+
+#changesets-graph {
+  float: left;
+  margin-top: 20px;
+  margin-left: -160px;
+  width: 160px;
+}
+
+#changesets-inner {
+  margin: 0 0 10px;
+}
+
+#changesets-inner>ol {
+  font: 12px/1.5em "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, "Courier New", Courier, monospace;
+}
+
+#changesets-inner>ol>li {
+  margin: 0;
+  padding: 0.5em 300px 15px 20px;
+  border-bottom: 1px solid #DDD;
+}
+
+.relations {
+  float: right;
+  margin: 0 -280px 0 0;
+  text-align: right;
+}
+
+.relations dt {
+  clear: left;
+  float: left;
+  width: 100px;
+  text-align: right;
+  color: #747474;
+}
+
+.relations dt:after {
+  content: ":";
+}
+
+.relations dd {
+  float: left;
+  margin: 0 0 0 0.5em;
+}
+
+#changesets-inner h4 {
+  position: absolute;
+  left: -9999px;
+}
+
+#changesets>.added,
+#changesets>.modified,
+#changesets>.removed {
+  float: right;
+  margin-top: 3px;
+  margin-left: 16px;
+  width: 16px;
+}
+#changesets>.removed {
+  margin-right: 209px;
+}
+.files-affected {
+  float: right;
+  margin: 0 -100px 0 0;
+  width: 96px;
+  overflow: hidden;
+}
+
+.files-affected dt {
+  position: absolute;
+  left: -9999px;
+}
+
+.files-affected dd {
+  float: left;
+  width: 32px;
+  text-align: center;
+}
+
+.files-affected dd[title="Added"] {
+  color: #282;
+}
+
+.files-affected dd[title="Modified"] {
+  color: #b70;
+}
+
+.files-affected dd[title="Removed"] {
+  color: #c33;
+}
+
+#changesets-inner p {
+  margin: 0.25em 0 0.5em;
+  line-height: inherit;
+}
+#changesets-inner a {
+  text-decoration: none;
+}
+
+#changesets-inner .metadata {
+  position: relative;
+  margin: 0.5em 0 0;
+  min-height: 34px;
+  padding: 2px 0 2px 45px;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+#changesets-inner .metadata dt {
+  position: absolute;
+  left: -9999px;
+}
+
+#changesets-inner .metadata .avatar {
+  position: absolute;
+  left: -3px;
+  top: 0;
+}
+
+#changesets-inner .metadata dd[title] {
+  color: #747474;
+}
+
+#changesets-inner li {
+  position: relative;
+}
+
+#changesets-inner .metadata+p {
+  position: absolute;
+  right: 220px;
+  bottom: 12px;
+  display: block;
+  width: auto;
+}
+
+.changesets-changeset {
+  margin: 0 auto -1px;
+  font: 12px/16px "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, "Courier New", Courier, monospace;
+}
+
+.changesets-changeset h4 {
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.changesets-changeset span {
+  font-family: "Lucida Grande", "Trebuchet MS", Tahoma, Arial, sans-serif;
+}
+
+dl.metadata dd.when,
+dl.metadata dd.who {
+  margin-left: 0.5em;
+}
+#changesets-footer {
+  margin: 0 auto;
+}
+div#container.changesets {
+  overflow-y: auto;
+}
+
+.pagination {
+  width: 100%;
+  text-align: right;
+  font-size: 0.75em !important;
+  margin-bottom: 1em;
+}
+
+.pagination a,
+.pagination em,
+.pagination span {
+  border: 0 !important;
+  text-decoration: none;
+}
+
+#changeset {
+  width: 833px;
+  margin: 0 auto;
+}
+#changeset h1 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 12px 0 0.4em 0;
+  padding-left: 0.4em;
+}
+
+.file {
+  width: 833px;
+  margin: 0 auto;
+  margin-bottom: 1em;
+}
+.file .meta {
+  width: 100%;
+}
+.file .meta .info {
+  font-size: 0.9em;
+}
+.file .meta .info span {
+  float: left;
+}
+
+.file pre {
+  width: 812px;
+  padding: 5px 10px 10px 10px;
+  display: inline-block;
+  font-size: 0.8em;
+  white-space: pre-wrap;
+}

@@ -1,15 +1,12 @@
 #projects {
-  width: 60%;
-  margin: 2em auto;
-  padding: 0 2.5%;
+  width: 833px;
+  margin: 0 auto;
 }
 #projects h1 {
-  display: block;
   font-size: 1.5em;
   font-weight: bold;
   margin: 12px 0 0.4em 0;
   padding-left: 0.4em;
-  clear: both;
 }
 #projects h1 .ui-icon-circle-plus {
   display: inline-block;

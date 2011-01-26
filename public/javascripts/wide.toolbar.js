@@ -89,6 +89,14 @@ WIDE.toolbar = (function () {
 }());
 
 $(function () {
+  $('#log_button').button({
+    icons: {
+      primary: 'ui-icon-clock'
+    }
+  }).click(function () {
+    window.location = WIDE.repository_path + '/changesets';
+  });
+
   $('#pull_button').button();
   $('#commit_button').button({
     icons: {

@@ -1,0 +1,46 @@
+- title "wIDE | #{current_user.user_name} | #{@project.name} | Changeset #{@changeset.scmid}", false
+
+- content_for :alternative_title do
+  %h1= raw("wIDE | #{link_to("My Projects", projects_path)} | #{link_to(h(@project.name), project_path(@project))} | #{link_to('Changesets', project_repository_changesets_path)} | #{@changeset.scmid}")
+
+#changeset.ui-widget
+  %h1.changeset.ui-widget-header= "Changeset #{@changeset.scmid}"
+  %table.diffstat-table.ui-widget-content
+    %tbody
+      - @diffstat[:files].each_with_index do |file, index|
+
+        - rel_path = Wide::PathUtils.relative_to_base(@project.repository.full_path, file[:path])
+
+        - case @status[file[:path]]
+        - when :modified then action_icon = 'ui-icon-pencil'
+        - when :removed then action_icon = 'ui-icon-minusthick'
+        - when :added then action_icon = 'ui-icon-plusthick'
+
+        %tr{'data-path' => rel_path}
+          %td{:class => [ :status, @status[file[:path]] ] }
+            %span{:class => ['ui-icon', action_icon]}
+            %td.path
+              %span.path
+                = rel_path
+              %a.view-diff{:href => "#diff-#{index}"} (View diff)
+          %td.diffstat
+            %span.diffstat-summary= file[:binary] ? 'Bin' : file[:number_of_changes]
+            %span.diffstat-bar
+              - unless file[:binary]
+                - file[:insertions].times do
+                  %span.plus +
+                - file[:deletions].times do
+                  %span.minus -
+
+  .files.ui-widget
+    - @diffstat[:files].each_with_index do |file, index|
+      - next if @status[file[:path]] == :removed
+      - rel_path = Wide::PathUtils.relative_to_base(@project.repository.full_path, file[:path])
+
+      .file.ui-widget.ui-widget-content{:id => "diff-#{index}"}
+        .meta{'data-path' => rel_path}
+          .info.ui-widget-header
+            %span.icon.ui-icon.ui-icon-document Document
+            = rel_path
+          %ul.actions
+        %pre.diff.CodeRay= highlight_diff(@repository.diff(rel_path, @changeset.revision))

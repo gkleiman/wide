@@ -27,6 +27,7 @@
     - if @project.repository.supports_commit?
       %button#commit_button Commit
       %button#revert_button Revert
+      %button#log_button Log
     - if @project.repository.supports_pull?
       %button#pull_button Pull
     %button#compile_button Compile
