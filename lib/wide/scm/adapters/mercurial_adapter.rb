@@ -10,7 +10,7 @@ module Wide
         HG_BIN = 'hg'
 
         # List of paths to skip when browsing the repository
-        self.skip_paths = %w(.hg)
+        self.skip_paths = %w(.hg .hgrc)
 
         def status
           status_hash = {}
