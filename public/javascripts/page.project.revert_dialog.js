@@ -32,7 +32,13 @@ $(function () {
     return false;
   });
 
-  $('#revert_dialog form').bind('ajax:success', function (xhr, result, status) {
+  $('#revert_dialog form').bind('ajax:beforeSend', function () {
+    if($('#revert_dialog input:checked').length === 0) {
+      return false;
+    }
+
+    return true;
+  }).bind('ajax:success', function (xhr, result, status) {
     if(result.success) {
       $(this).get(0).reset();
       WIDE.tree.refresh();
