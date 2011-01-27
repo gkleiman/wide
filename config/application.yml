@@ -1,6 +1,7 @@
 defaults: &defaults
   repositories_base: <%= Rails.root.join('public', 'repositories') %>
   compilation_base: <%= Rails.root.join('public', 'compiled') %>
+  repo_server_base: 'http://hg.wide.labi.fi.uba.ar/'
   ace_themes:
     - ["TextMate", "ace/theme/textmate"]
     - ["Eclipse", "ace/theme/eclipse"]

@@ -35,6 +35,12 @@ class Repository < ActiveRecord::Base
 
   after_create :prepare_init_or_clone
 
+  def repository_url
+    uri_escaped_path = path.split('/').map { |path| CGI::escape path }.join('/')
+
+    Settings.repo_server_base + uri_escaped_path
+  end
+
   def add_new_revisions_to_db
     if scm_engine && scm_engine.respond_to?(:log)
       last_changeset = changesets.first
