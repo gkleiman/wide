@@ -5,6 +5,19 @@
 
 #changeset.ui-widget
   %h1.changeset.ui-widget-header= "Changeset #{@changeset.scmid}"
+
+  #changeset-summary.ui-widget-content
+    %dl.relations
+      %dt= "commit #{@changeset.revision}"
+      %dd= @changeset.scmid
+    %p= @changeset.message
+    %dl.metadata
+      %dt Who
+      %dd.who= @changeset.committer
+      %dd= image_tag(avatar_url(@changeset.committer_email), :class => 'avatar')
+      %dt When
+      %dd.when{:title => @changeset.committed_on.xmlschema}= time_ago_in_words @changeset.committed_on
+
   %table.diffstat-table.ui-widget-content
     %tbody
       - @diffstat[:files].each_with_index do |file, index|
@@ -22,7 +35,8 @@
             %td.path
               %span.path
                 = rel_path
-              %a.view-diff{:href => "#diff-#{index}"} (View diff)
+              - unless @status[file[:path]] == :removed
+                %a.view-diff{:href => "#diff-#{index}"} (View diff)
           %td.diffstat
             %span.diffstat-summary= file[:binary] ? 'Bin' : file[:number_of_changes]
             %span.diffstat-bar
