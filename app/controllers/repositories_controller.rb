@@ -108,7 +108,7 @@ class RepositoriesController < ApplicationController
 
     raise "Can't commit no files" if params[:files].empty?
 
-    @repository.commit(current_user.email, params[:message], params[:files])
+    @repository.commit(current_user, params[:message], params[:files])
 
     render_success
   end

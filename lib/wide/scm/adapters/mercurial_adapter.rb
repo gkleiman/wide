@@ -186,7 +186,8 @@ module Wide
         end
 
         def commit(user, message, files = [])
-          cmd = cmd_prefix.push('commit', '-u', user.to_s, '-m', message.to_s, *files)
+          cmd = cmd_prefix.push('commit', '-u', user.to_s, '-m', message.to_s)
+          cmd.push(*files) unless files.empty?
           shellout(Escape.shell_command(cmd))
 
           raise CommandFailed.new("Failed to commit the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
