@@ -43,7 +43,7 @@ DSN = {
 
 TITLE = 'Mercurial (Hg) Proxy for wIDE'
 HGWEB_CFG_PATH = '/home/wide/hgwide/hgweb.cfg'
-REPOS_BASE = '/home/wide/application/current/repositories'
+REPOS_BASE = '/home/wide/application/shared/repositories'
 
 application = HgWide(TITLE, DSN, REPOS_BASE, HGWEB_CFG_PATH)
 
