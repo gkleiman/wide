@@ -19,5 +19,5 @@ test:
 
 production:
   <<: *defaults
-  repositories_base: <%= Rails.root.join('repositories') %>
+  repositories_base: "/home/wide/application/shared/repositories"
   compilation_base: <%= Rails.root.join('compiled') %>
