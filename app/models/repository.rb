@@ -99,8 +99,9 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  def add(rel_path)
-    entry = DirectoryEntry.new(full_path(rel_path))
+  def add(rel_path = '')
+    entry = nil
+    entry = DirectoryEntry.new(full_path(rel_path)) unless rel_path.blank?
     scm_engine.add(entry)
   end
 
@@ -124,7 +125,7 @@ class Repository < ActiveRecord::Base
   end
 
   def commit(user, message, files = [])
-    scm_engine.commit(user, message, files)
+    scm_engine.commit(user.email, message, files)
     add_new_revisions_to_db
   end
 
@@ -175,6 +176,9 @@ class Repository < ActiveRecord::Base
       # Untar the repository layout into the repository.
       if project_type && project_type.repository_template && !project_type.repository_template.path.blank?
         shellout(Escape.shell_command(['tar', '-zxkpf', project_type.repository_template.path, '-C', full_path]))
+
+        self.add
+        self.commit(self.project.user, 'Project template')
       end
     else
       scm_engine.clone(url)

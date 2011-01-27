@@ -158,10 +158,14 @@ module Wide
           raise CommandFailed.new("Failed to remove file #{src_path} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
         end
 
-        def add(entry)
-          rel_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
+        def add(entry = nil)
+          cmd = cmd_prefix.push('add')
 
-          cmd = cmd_prefix.push('add', "path:#{rel_path}")
+          unless entry.nil?
+            rel_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
+            cmd << "path:#{rel_path}"
+          end
+
           shellout(Escape.shell_command(cmd))
 
           raise CommandFailed.new("Failed to add file #{src_path} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
@@ -186,7 +190,8 @@ module Wide
         end
 
         def commit(user, message, files = [])
-          cmd = cmd_prefix.push('commit', '-u', user.to_s, '-m', message.to_s, *files)
+          cmd = cmd_prefix.push('commit', '-u', user.to_s, '-m', message.to_s)
+          cmd.push(*files) unless files.empty?
           shellout(Escape.shell_command(cmd))
 
           raise CommandFailed.new("Failed to commit the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
