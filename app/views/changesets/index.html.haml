@@ -8,37 +8,40 @@
 
 #changesets.ui-widget
   %h1.changesets.ui-widget-header Changesets
-  = will_paginate @changesets
-  .removed.ui-icon.ui-icon-minusthick
-  .modified.ui-icon.ui-icon-pencil
-  .added.ui-icon.ui-icon-plusthick
-  #changesets-inner.ui-widget-content.ui-corner-all
-    - changeset = @changesets.shift
-    - until changeset.nil?
-      - current_day = changeset.committed_on.strftime("%Y-%m-%d")
+  - unless @changesets.empty?
+    = will_paginate @changesets
+    .removed.ui-icon.ui-icon-minusthick
+    .modified.ui-icon.ui-icon-pencil
+    .added.ui-icon.ui-icon-plusthick
+    #changesets-inner.ui-widget-content.ui-corner-all
+      - changeset = @changesets.shift
+      - until changeset.nil?
+        - current_day = changeset.committed_on.strftime("%Y-%m-%d")
 
-      %h3.ui-widget-header= current_day
-      %ol.ui-widget
-        - while !changeset.nil? && changeset.committed_on.strftime("%Y-%m-%d") == current_day
-          %li
-            %dl.relations
-              %dt= "commit #{changeset.revision}"
-              %dd= link_to changeset.scmid, project_repository_changeset_path(@project, changeset.revision)
-            %h4 Files affected
-            %dl.files-affected
-              %dt Added
-              %dd(title="Added")= changeset.files_added
-              %dt Modified
-              %dd(title="Modified")= changeset.files_modified
-              %dt Removed
-              %dd(title="Removed")= changeset.files_removed
-            %p= link_to changeset.message, project_repository_changeset_path(@project, changeset.revision)
-            %dl.metadata
-              %dt Who
-              %dd.who= changeset.committer
-              %dd= image_tag(avatar_url(changeset.committer_email), :class => 'avatar')
-              %dt When
-              %dd.when{:title => changeset.committed_on.xmlschema}= time_ago_in_words changeset.committed_on
+        %h3.ui-widget-header= current_day
+        %ol.ui-widget
+          - while !changeset.nil? && changeset.committed_on.strftime("%Y-%m-%d") == current_day
+            %li
+              %dl.relations
+                %dt= "commit #{changeset.revision}"
+                %dd= link_to changeset.scmid, project_repository_changeset_path(@project, changeset.revision)
+              %h4 Files affected
+              %dl.files-affected
+                %dt Added
+                %dd(title="Added")= changeset.files_added
+                %dt Modified
+                %dd(title="Modified")= changeset.files_modified
+                %dt Removed
+                %dd(title="Removed")= changeset.files_removed
+              %p= link_to changeset.message, project_repository_changeset_path(@project, changeset.revision)
+              %dl.metadata
+                %dt Who
+                %dd.who= changeset.committer
+                %dd= image_tag(avatar_url(changeset.committer_email), :class => 'avatar')
+                %dt When
+                %dd.when{:title => changeset.committed_on.xmlschema}= time_ago_in_words changeset.committed_on
 
-          - changeset = @changesets.shift
-  = will_paginate @changesets
+            - changeset = @changesets.shift
+    = will_paginate @changesets
+  - else
+    There are no changesets.
