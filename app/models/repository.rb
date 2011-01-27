@@ -39,7 +39,8 @@ class Repository < ActiveRecord::Base
     if scm_engine && scm_engine.respond_to?(:log)
       last_changeset = changesets.first
 
-      scm_engine.log(nil, last_changeset.try(:revision)).drop(1).each do |changeset|
+      scm_engine.log(nil, last_changeset.try(:revision)).each do |changeset|
+        next if !last_changeset.nil? && changeset.revision.to_i == last_changeset.revision.to_i
         changeset.save(self)
       end
     end
@@ -182,6 +183,7 @@ class Repository < ActiveRecord::Base
       end
     else
       scm_engine.clone(url)
+      add_new_revisions_to_db
     end
 
     true
