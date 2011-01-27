@@ -4,8 +4,11 @@
 
 Project:
   fields:
-    default: name, user, project_type, public
+    default: name, user, project_type, public, status
     form: name, user, project_type, public
+    options:
+      booleans:
+        public: ['Public', 'Private']
   order_by: user_id
   relationships: repository, collaborators
   filters: user, public
@@ -19,7 +22,7 @@ ProjectType:
   order_by:
   relationships:
   filters:
-  search: name
+  search: name, description
   application: wIDE
 
 Repository:
@@ -34,8 +37,11 @@ Repository:
 
 User:
   fields:
-    default: user_name, active, email
+    default: user_name, active, email, created_at
     form: user_name, active, email, password, password_confirmation
+    options:
+      booleans:
+        active: ['Active', 'Inactive']
   order_by:
   relationships: projects
   filters: active
