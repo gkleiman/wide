@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
 
   has_many :projects, :dependent => :destroy
   has_many :project_collaborators, :dependent => :destroy
-  has_many :third_party_projects, :through => :project_collaborators
+  has_many :third_party_projects, :through => :project_collaborators, :source => :project
 
   attr_accessible_on_create :user_name
   attr_accessible :email, :password, :password_confirmation, :remember_me,
