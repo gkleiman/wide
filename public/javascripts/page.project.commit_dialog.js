@@ -25,7 +25,7 @@ $(function () {
   $('#commit_button').click(function () {
     $('#commit_button').button('option', 'disabled', true).removeClass('ui-state-hover');
 
-    $('#commit_dialog #commit-summary').load(WIDE.repository_path() + '/status', function (response, status, xhr) {
+    $('#commit_dialog #commit-summary').load(WIDE.repository_path() + '/diffstat', function (response, status, xhr) {
       if(status !== 'error') {
         $('#commit_dialog textarea').placeholder('Type your commit message here.');
 

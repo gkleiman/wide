@@ -3,7 +3,32 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_project
 
+  private
   def current_project
-    @project ||= current_user.projects.find_by_name(params[:id])
+    @project
+  end
+
+  def load_repository
+    @project = current_user.projects.find_by_name(params[:project_id])
+
+    raise ActiveRecord::RecordNotFound if @project.nil?
+
+    @repository = @project.repository
+  end
+
+  def json_failable_action
+    begin
+      yield
+    rescue Exception => exception
+      logger.error(exception.inspect + "\n" + exception.backtrace[0..5].join("\n"))
+      render :json => { :success => 0 }
+    end
+  end
+
+  def render_success(extra = {})
+    result = { :success => 1}
+    result.merge!(extra)
+
+    render :json => result
   end
 end

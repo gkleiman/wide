@@ -1,4 +1,6 @@
 WIDE.file = function (path, is_directory, file_name) {
+  var encoded_path = WIDE.encode_path(path);
+
   // Convert whatever is passed to a boolean value
   is_directory = !!is_directory;
 
@@ -8,23 +10,14 @@ WIDE.file = function (path, is_directory, file_name) {
 
   var perform_action = function (options) {
     var action = options.action;
-    var data, dataType;
+    var data, dataType, url;
     var fail_func = function (r) {
       if(typeof(options.fail) === 'function') {
         options.fail.call(this, r);
       }
     };
 
-    if (options.dest_path !== undefined) {
-      data = {
-        src_path: path,
-        dest_path: options.dest_path
-      };
-    } else {
-      data = {
-        path: path
-      }
-    };
+    data = options.params || {};
 
     if (options.method == 'GET') {
       dataType = 'text';
@@ -32,9 +25,15 @@ WIDE.file = function (path, is_directory, file_name) {
       dataType = 'json';
     }
 
+    if (action !== undefined) {
+      url = WIDE.repository_entries_path() + '/' + encoded_path + '/' + action;
+    } else {
+      url = WIDE.repository_entries_path() + '/' + encoded_path;
+    }
+
     $.ajax({
       type: options.method,
-      url: WIDE.repository_path() + '/' + action,
+      url: url,
       data: data,
       success: function (r) {
         if(r.success === undefined || r.success === 1) {
@@ -94,10 +93,10 @@ WIDE.file = function (path, is_directory, file_name) {
     },
     // fs functions
     create: function (success, fail) {
-      var action = 'create_' + (is_directory ? 'directory' : 'file');
+      var type = is_directory ? 'directory' : 'file';
       perform_action({
         method: 'POST',
-        action: action,
+        params: { _method: 'put', type: type },
         success: success,
         fail: fail
       });
@@ -106,7 +105,7 @@ WIDE.file = function (path, is_directory, file_name) {
       perform_action({
         method: 'POST',
         action: 'mv',
-        dest_path: dest_path,
+        params: { dest_path: dest_path },
         success: success,
         fail: fail
       });
@@ -114,15 +113,18 @@ WIDE.file = function (path, is_directory, file_name) {
     cat: function (success, fail) {
       perform_action({
         method: 'GET',
-        action: 'cat',
         success: success,
         fail: fail
       });
     },
     rm: function (success, fail) {
+      var params = {};
+
+      params._method = 'delete';
+
       perform_action({
         method: 'POST',
-        action: 'rm',
+        params:  { _method: 'delete' },
         success: success,
         fail: fail
       });

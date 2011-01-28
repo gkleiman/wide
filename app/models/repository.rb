@@ -35,6 +35,10 @@ class Repository < ActiveRecord::Base
 
   after_create :prepare_init_or_clone
 
+  def directory_entry(rel_path)
+    DirectoryEntry.new(full_path(rel_path))
+  end
+
   def repository_url
     uri_escaped_path = path.split('/').map { |path| CGI::escape path }.join('/')
 
@@ -70,11 +74,11 @@ class Repository < ActiveRecord::Base
   end
 
   def file_contents(rel_path)
-    DirectoryEntry.new(full_path(rel_path)).get_content
+    directory_entry(rel_path).get_content
   end
 
   def save_file(rel_path, content)
-    DirectoryEntry.new(full_path(rel_path)).update_content(content)
+    directory_entry(rel_path).update_content(content)
   end
 
   def move_file(src_path, dest_path)
@@ -97,7 +101,7 @@ class Repository < ActiveRecord::Base
   end
 
   def remove_file(rel_path)
-    entry = DirectoryEntry.new(full_path(rel_path))
+    entry = directory_entry(rel_path)
 
     if scm_engine.respond_to?(:remove!) && scm_engine.versioned?(entry)
       scm_engine.remove!(entry)
@@ -108,12 +112,12 @@ class Repository < ActiveRecord::Base
 
   def add(rel_path = '')
     entry = nil
-    entry = DirectoryEntry.new(full_path(rel_path)) unless rel_path.blank?
+    entry = directory_entry(rel_path) unless rel_path.blank?
     scm_engine.add(entry)
   end
 
   def forget(rel_path)
-    entry = DirectoryEntry.new(full_path(rel_path))
+    entry = directory_entry(rel_path)
     scm_engine.forget(entry)
   end
 
@@ -122,12 +126,12 @@ class Repository < ActiveRecord::Base
   end
 
   def mark_resolved(rel_path)
-    entry = DirectoryEntry.new(full_path(rel_path))
+    entry = directory_entry(rel_path)
     scm_engine.mark_resolved(entry)
   end
 
   def mark_unresolved(rel_path)
-    entry = DirectoryEntry.new(full_path(rel_path))
+    entry = directory_entry(rel_path)
     scm_engine.mark_unresolved(entry)
   end
 
@@ -145,7 +149,7 @@ class Repository < ActiveRecord::Base
   end
 
   def diff(rel_path, by_revision = nil)
-    entry = DirectoryEntry.new(full_path(rel_path))
+    entry = directory_entry(rel_path)
     scm_engine.diff(entry, by_revision)
   end
 

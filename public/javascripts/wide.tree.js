@@ -247,16 +247,29 @@ $(function () {
 
       json_data: {
         ajax: {
-          url: WIDE.repository_path() + '/ls',
-          data: function (n) {
-            var path = '-1';
+          url: function (n) {
+            var path = '', path_array;
 
             if(n !== -1) {
-              path = get_path(n);
+              path_array = $('#tree').jstree('get_path', n);
+
+              if(path_array.length > 0) {
+                path_array.shift(); // Skip the leading slash
+
+                path = $.map(path_array, function (path_element) {
+                  return encodeURIComponent(path_element);
+                }).join('/');
+              }
             }
-            return {
-              path: path
-            };
+
+            return WIDE.repository_entries_path() + '/' + path;
+          },
+          data: function (n) {
+            if (n == -1) {
+              return { initial_load: true };
+            }
+
+            return {};
           },
           error: function (r) {
             WIDE.notifications.error('Error trying to load the repository tree.');

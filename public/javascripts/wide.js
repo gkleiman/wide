@@ -15,11 +15,32 @@ var WIDE = (function () {
     repository_path: function () {
       return this.base_path() + '/repository';
     },
+    repository_entries_path: function () {
+      return this.base_path() + '/repository/entries';
+    },
     csrf_token: function () {
       return $('meta[name=csrf-token]').attr('content');
     },
     csrf_param: function () {
       return $('meta[name=csrf-param]').attr('content');
+    },
+    encode_path: function (path) {
+      var path_array;
+
+      if (path === '/') {
+        return path;
+      }
+
+      path_array = path.split('/');
+
+      if (path_array[0] == '/') {
+        alert(path);
+        path_array.shift();
+      }
+
+      return $.map(path_array, function (path_element) {
+        return encodeURIComponent(path_element);
+      }).join('/');
     }
   };
 }());

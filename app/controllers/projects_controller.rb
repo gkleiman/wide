@@ -69,7 +69,7 @@ class ProjectsController < ApplicationController
 
   private
   def load_project
-    @project ||= current_project
+    @project ||= current_user.projects.find_by_name(params[:id])
 
     raise ActiveRecord::RecordNotFound unless @project
 

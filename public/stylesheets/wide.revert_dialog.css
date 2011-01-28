@@ -1,0 +1,5 @@
+#revert-summary {
+  max-height: 400px;
+  overflow-y: auto;
+  font-size: 0.75em;
+}

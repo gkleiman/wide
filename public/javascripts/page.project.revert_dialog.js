@@ -23,7 +23,7 @@ $(function () {
   $('#revert_button').click(function () {
     $('#revert_button').button('option', 'disabled', true).removeClass('ui-state-hover');
 
-    $('#revert_dialog #revert-summary').load(WIDE.repository_path() + '/status', function (response, status, xhr) {
+    $('#revert_dialog #revert-summary').load(WIDE.repository_path() + '/diffstat', function (response, status, xhr) {
       if(status !== 'error') {
         $('#revert_dialog').dialog('open');
       }

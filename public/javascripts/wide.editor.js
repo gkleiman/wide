@@ -1,5 +1,5 @@
 WIDE.editor = (function () {
-  var edit_form_tmpl = '<p class="loading">Retrieving file...</p><form accept-charset="UTF-8" action="${WIDE.repository_path()}/save_file" data-remote="true" data-type="json" method="post" style="display: none;"><input name="utf8" type="hidden" value="&#x2713;" /><input name="${csrf_param}" type="hidden" value="${csrf_token}" /><input name="project_id" type="hidden" value="${project_id}" /><input name="path" type="hidden" value="${path}" /><textarea style="display: none;" name="content"></textarea></form><div class="editor"> </div>';
+  var edit_form_tmpl = '<p class="loading">Retrieving file...</p><form accept-charset="UTF-8" action="${save_path}" data-remote="true" data-type="json" method="post" style="display: none;"><input name="utf8" type="hidden" value="&#x2713;" /><input name="${csrf_param}" type="hidden" value="${csrf_token}" /><input name="path" type="hidden" value="${path}" /><textarea style="display: none;" name="content"></textarea></form><div class="editor"> </div>';
 
   var editors = [], id_count = 0;
 
@@ -157,7 +157,7 @@ WIDE.editor = (function () {
     var replacements = {
       csrf_token: WIDE.csrf_token(),
       csrf_param: WIDE.csrf_param(),
-      project_id: WIDE.project_id()
+      save_path: WIDE.repository_entries_path() + '/' + WIDE.encode_path(options.path)
     };
     var editor = $.tmpl(edit_form_tmpl, $.extend(options, replacements));
 

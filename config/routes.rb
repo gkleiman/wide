@@ -13,30 +13,39 @@ Wide::Application.routes.draw do
     end
 
     resource :repository, :except => [ :index, :show, :edit, :update, :new, :destroy, :create, :destroy ] do
-      get 'ls'
-      get 'cat'
-      post 'save_file'
       post 'create_file'
       post 'create_directory'
 
       # SCM
       get 'summary'
-      get 'status'
-      get 'diff'
+      get 'diffstat'
       get 'async_op_status'
-
-      post 'add'
-      post 'forget'
       post 'revert'
-      post 'mv'
-      post 'rm'
-      post 'mark_resolved'
-      post 'mark_unresolved'
+
       post 'commit'
       post 'pull'
 
       # Changesets
       resources :changesets, :only => [ :index, :show ]
+
+      # Entries (files and directories)
+      resources :entries, :only => [ :index ] do
+        collection do
+          get '*path/diff' => 'entries#diff', :as => 'diff'
+
+          post '*path/add' => 'entries#add', :as => 'add'
+          post '*path/forget' => 'entries#forget', :as => 'forget'
+          post '*path/revert' => 'entries#revert', :as => 'revert'
+          post '*path/mv' => 'entries#mv', :as => 'mv'
+          post '*path/mark_resolved' => 'entries#mark_resolved', :as => 'mark_resolved'
+          post '*path/mark_unresolved' => 'entries#mark_unresolved', :as => 'mark_unresolved'
+
+          get '*path' => 'entries#show', :as => 'show'
+          post '*path' => 'entries#update', :as => 'update'
+          delete '*path' => 'entries#destroy', :as => 'destroy'
+          put '*path' => 'entries#create', :as => 'create'
+        end
+      end
     end
   end
 end
