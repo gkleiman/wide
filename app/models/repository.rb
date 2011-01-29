@@ -59,6 +59,7 @@ class Repository < ActiveRecord::Base
       end
     end
   end
+  handle_asynchronously :add_new_revisions_to_db
 
   def log(path = nil, revision_from = nil, revision_until = nil)
     scm_engine.log(path, revision_from, revision_until)
