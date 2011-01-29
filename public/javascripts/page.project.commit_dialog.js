@@ -47,7 +47,7 @@ $(function () {
     if(result.success) {
       $(this).get(0).reset();
       WIDE.tree.refresh();
-      WIDE.notifications.success('Commit successfull.');
+      WIDE.notifications.success('Commit successful.');
     } else {
       WIDE.notifications.error('Commit failed.');
     }

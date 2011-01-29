@@ -39,7 +39,7 @@ WIDE.compile = (function () {
               document.location.href = encodeURI(WIDE.base_path() + '/binary');
               WIDE.compiler_output.add_output({
                 type: 'info',
-                description: 'Compilation successfull, downloading the binary file.'
+                description: 'Compilation successful, downloading the binary file.'
               });
             }
           } else {

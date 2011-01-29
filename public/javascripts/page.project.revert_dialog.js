@@ -42,7 +42,7 @@ $(function () {
     if(result.success) {
       $(this).get(0).reset();
       WIDE.tree.refresh();
-      WIDE.notifications.success('Revert successfull.');
+      WIDE.notifications.success('Revert successful.');
     } else {
       WIDE.notifications.error('Revert failed.');
     }

@@ -59,7 +59,7 @@ $(function () {
 
     var process_pull_result = function (result) {
       if(result.success && result.async_op_status.status === 'success') {
-        WIDE.notifications.success('Pull successfull.');
+        WIDE.notifications.success('Pull successful.');
         WIDE.tree.refresh();
       } else {
         report_pull_error();
