@@ -67,6 +67,12 @@ class ProjectsController < ApplicationController
     send_file("#{@project.bin_path}/binary", :filename => filename)
   end
 
+  def makefile
+    @project.write_makefile
+
+    send_file(@project.makefile_path, :filename => 'Makefile')
+  end
+
   private
   def load_project
     @project ||= current_user.projects.find_by_name(params[:id])

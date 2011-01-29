@@ -6,23 +6,9 @@ module Wide
     class CommandFailed < StandardError
     end
 
-    class CompileJobBinding
-      def initialize(project)
-        @project = project
-      end
-
-      def get_binding
-        binding
-      end
-    end
-
     class CompileJob < Struct.new(:project_id)
       def project
         @project ||= Project.find(project_id)
-      end
-
-      def makefile_path
-        @makefile_path ||= Wide::PathUtils.secure_path_join(project.bin_path, File.join('tmp', 'Makefile'))
       end
 
       def perform
@@ -55,21 +41,14 @@ module Wide
         FileUtils.mkdir_p(@dst_path)
         FileUtils.cp_r(@src_path, @dst_path)
 
-        write_makefile
-      end
-
-      def write_makefile
-        my_binding = CompileJobBinding.new(project).get_binding
-        makefile = ERB.new(project.project_type.makefile_template).result(my_binding)
-
-        File.open(makefile_path, 'w') { |f| f.write(makefile) }
+        project.write_makefile
       end
 
       def make_and_move_results
         # Go to the directory, run make, and save the output in @project.bin_path/mesages
         FileUtils.chdir(@dst_path)
         cmd = %w(make)
-        cmd = cmd.push('-s', '-f', makefile_path)
+        cmd = cmd.push('-s', '-f', project.makefile_path)
         cmd = Escape.shell_command(cmd).to_s + " >#{Escape.shell_single_word(Wide::PathUtils.secure_path_join(project.bin_path, 'messages')).to_s} 2>&1"
 
         shellout(cmd)
