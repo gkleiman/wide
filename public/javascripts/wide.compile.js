@@ -36,7 +36,7 @@ WIDE.compile = (function () {
             $('#compile_button').button('option', 'disabled', false);
 
             if(response.compile_status.status === 'success') {
-              document.location.href = encodeURI(WIDE.base_path() + '/download_binary');
+              document.location.href = encodeURI(WIDE.base_path() + '/binary');
               WIDE.compiler_output.add_output({
                 type: 'info',
                 description: 'Compilation successfull, downloading the binary file.'

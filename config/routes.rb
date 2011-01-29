@@ -9,7 +9,7 @@ Wide::Application.routes.draw do
     member do
       post 'compile'
       get 'compiler_output'
-      get 'download_binary'
+      get 'binary'
       get 'makefile'
     end
 

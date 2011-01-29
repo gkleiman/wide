@@ -56,7 +56,7 @@ class ProjectsController < ApplicationController
     redirect_to projects_path
   end
 
-  def download_binary
+  def binary
     raise ActiveRecord::RecordNotFound unless @project.compiler_output[:status] == 'success'
 
     filename = @project.name
