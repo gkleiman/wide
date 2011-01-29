@@ -109,7 +109,7 @@ $(function () {
       primary: 'ui-icon-gear'
     }
   }).click(function () {
-    $('#compile_button').button('option', 'disabled', true).mouseout().blur();
+    $('#compile_button').button('option', 'disabled', true).mouseout().blur().removeClass('ui-state-hover');
     WIDE.compile.compile(true);
   });
 });

@@ -4,7 +4,7 @@ WIDE.compiler_output = (function () {
 
   $(document).bind('keydown', 'up', function (event) {
     if ($('#compiler_output_table').hasClass('focused')) {
-      if (current_row) {
+      if (current_row && current_row.prev().length > 0) {
         current_row.prev().click();
       }
 
@@ -18,7 +18,7 @@ WIDE.compiler_output = (function () {
     var compiler_output_rows;
 
     if ($('#compiler_output_table').hasClass('focused')) {
-      if (current_row) {
+      if (current_row && current_row.next().length > 0) {
         current_row.next().click();
       } else {
         compiler_output_rows = $('#compiler_output_rows').children();
