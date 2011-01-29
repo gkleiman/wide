@@ -208,6 +208,12 @@ $(function () {
       add_scm_menu = true;
 
       $.extend(scm_menu.scm.submenu, {
+        log: {
+          label: 'Log',
+          action: function (node) {
+            WIDE.file(get_path(node)).log();
+          }
+        },
         forget: {
           label: 'Forget',
           action: function (node) {

@@ -35,6 +35,10 @@ class Repository < ActiveRecord::Base
 
   after_create :prepare_init_or_clone
 
+  def changesets_for_entry(rel_path)
+    Changeset.joins(:changes).where('changes.path' => rel_path)
+  end
+
   def directory_entry(rel_path)
     DirectoryEntry.new(full_path(rel_path))
   end

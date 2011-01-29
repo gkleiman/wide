@@ -28,12 +28,16 @@ class DirectoryEntry
     @type ||= File.ftype(path)
   end
 
+  def id
+    file_name.parameterize + Digest::SHA1.hexdigest(path)
+  end
+
   def as_json(options = {})
       entry = {
         :attr => {
           "data-filename" => file_name,
           :rel => type,
-          :id => file_name.parameterize + Digest::SHA1.hexdigest(path)
+          :id => id,
         },
         :data => file_name,
         :type => type,

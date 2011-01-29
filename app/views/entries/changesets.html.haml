@@ -1,13 +1,13 @@
-- title "wIDE | #{current_user.user_name} | #{@project.name} | Changesets", false
+- title "wIDE | #{current_user.user_name} | #{@project.name} | #{path}", false
 
 - content_for :alternative_title do
-  %h1= raw("wIDE | #{link_to("My Projects", projects_path)} | #{link_to(h(@project.name), project_path(@project))} | Changesets")
+  %h1= raw("wIDE | #{link_to("My Projects", projects_path)} | #{link_to(h(@project.name), project_path(@project))} | #{path}")
 
 - content_for :javascripts do
   = javascript_include_tag 'page.changesets.js'
 
 #changesets.ui-widget
-  %h1.changesets.ui-widget-header Changesets
+  %h1.changesets.ui-widget-header= "Changesets for #{path}"
   - unless @changesets.empty?
     = will_paginate @changesets
     .removed.ui-icon.ui-icon-minusthick
@@ -21,7 +21,7 @@
         %h3.ui-widget-header= current_day
         %ol.ui-widget
           - while !changeset.nil? && changeset.committed_on.strftime("%Y-%m-%d") == current_day
-            = render changeset
+            = render 'changesets/changeset', :changeset => changeset, :link_anchor => @repository.directory_entry(path).id
             - changeset = @changesets.shift
     = will_paginate @changesets
   - else

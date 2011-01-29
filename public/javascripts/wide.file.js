@@ -1,5 +1,6 @@
 WIDE.file = function (path, is_directory, file_name) {
   var encoded_path = WIDE.encode_path(path);
+  var base_url = WIDE.repository_entries_path() + '/' + encoded_path;
 
   // Convert whatever is passed to a boolean value
   is_directory = !!is_directory;
@@ -26,9 +27,9 @@ WIDE.file = function (path, is_directory, file_name) {
     }
 
     if (action !== undefined) {
-      url = WIDE.repository_entries_path() + '/' + encoded_path + '/' + action;
+      url = base_url + '/' + action;
     } else {
-      url = WIDE.repository_entries_path() + '/' + encoded_path;
+      url = base_url;
     }
 
     $.ajax({
@@ -136,6 +137,9 @@ WIDE.file = function (path, is_directory, file_name) {
         success: success,
         fail: fail
       });
+    },
+    log: function () {
+      window.location = base_url + '/changesets';
     },
     file_name: function () {
       return file_name;

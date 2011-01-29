@@ -1,0 +1,24 @@
+- if defined? link_anchor
+  - changeset_path = project_repository_changeset_path(@project, changeset.revision, :anchor => link_anchor)
+- else
+  - changeset_path = project_repository_changeset_path(@project, changeset.revision)
+
+%li
+  %dl.relations
+    %dt= "commit #{changeset.revision}"
+    %dd= link_to changeset.scmid, changeset_path
+  %h4 Files affected
+  %dl.files-affected
+    %dt Added
+    %dd(title="Added")= changeset.files_added
+    %dt Modified
+    %dd(title="Modified")= changeset.files_modified
+    %dt Removed
+    %dd(title="Removed")= changeset.files_removed
+  %p= link_to changeset.message, changeset_path
+  %dl.metadata
+    %dt Who
+    %dd.who= changeset.committer
+    %dd= image_tag(avatar_url(changeset.committer_email), :class => 'avatar')
+    %dt When
+    %dd.when{:title => changeset.committed_on.xmlschema}= time_ago_in_words changeset.committed_on

@@ -8,6 +8,8 @@ class EntriesController < ApplicationController
     :only => [ :create, :update, :destroy, :mv, :add, :forget, :revert,
       :mark_resolved, :mark_unresolved ]
 
+  helper_method :path
+
   def index
     # Initial loading of the tree
     entries = @repository.directory_entries('/')
@@ -43,6 +45,10 @@ class EntriesController < ApplicationController
     @repository.remove_file(path)
 
     render_success
+  end
+
+  def changesets
+    @changesets = @repository.changesets_for_entry(path).paginate(:per_page => 10, :page => params[:page])
   end
 
   def diff

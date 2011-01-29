@@ -23,6 +23,7 @@
       - @diffstat[:files].each_with_index do |file, index|
 
         - rel_path = Wide::PathUtils.relative_to_base(@project.repository.full_path, file[:path])
+        - diff_id = @repository.directory_entry(rel_path).id
 
         - case @status[file[:path]]
         - when :modified then action_icon = 'ui-icon-pencil'
@@ -36,7 +37,7 @@
               %span.path
                 = rel_path
               - unless @status[file[:path]] == :removed
-                %a.view-diff{:href => "#diff-#{index}"} (View diff)
+                %a.view-diff{:href => "##{diff_id}"} (View diff)
           %td.diffstat
             %span.diffstat-summary= file[:binary] ? 'Bin' : file[:number_of_changes]
             %span.diffstat-bar
@@ -49,9 +50,11 @@
   .files.ui-widget
     - @diffstat[:files].each_with_index do |file, index|
       - next if @status[file[:path]] == :removed
-      - rel_path = Wide::PathUtils.relative_to_base(@project.repository.full_path, file[:path])
 
-      .file.ui-widget.ui-widget-content{:id => "diff-#{index}"}
+      - rel_path = Wide::PathUtils.relative_to_base(@project.repository.full_path, file[:path])
+      - diff_id = DirectoryEntry.new(file[:path]).id
+
+      .file.ui-widget.ui-widget-content{:id => diff_id}
         .meta{'data-path' => rel_path}
           .info.ui-widget-header
             %span.icon.ui-icon.ui-icon-document Document

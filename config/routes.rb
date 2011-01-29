@@ -32,6 +32,7 @@ Wide::Application.routes.draw do
       resources :entries, :only => [ :index ] do
         collection do
           get '*path/diff' => 'entries#diff', :as => 'diff'
+          get '*path/changesets' => 'entries#changesets', :as => 'changesets'
 
           post '*path/add' => 'entries#add', :as => 'add'
           post '*path/forget' => 'entries#forget', :as => 'forget'
