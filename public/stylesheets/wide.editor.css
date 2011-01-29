@@ -33,3 +33,9 @@
   min-height: 22px;
   padding-left: 2px;
 }
+
+#toolbar .buttonset {
+  margin-right:1.5em;
+  padding-left: 1px;
+  float: left;
+}

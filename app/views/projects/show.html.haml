@@ -25,14 +25,17 @@
 .layout
   #toolbar.north
     - if @project.repository.supports_commit?
-      %button#commit_button Commit
-      %button#revert_button Revert
-      %button#log_button Log
-    - if @project.repository.supports_pull?
-      %button#pull_button Pull
-    %button#compile_button Compile
-    %button#save_all_button Save All
-    %button#save_button Save
+      .buttonset
+        %button#commit_button Commit
+        %button#revert_button Revert
+        - if @project.repository.supports_pull?
+          %button#pull_button Pull
+        %button.ui-priority-secondary#log_button Log
+
+    .buttonset
+      %button#compile_button Compile
+      %button#save_button Save
+      %button.ui-priority-secondary#save_all_button Save All
 
   #tree_pane.west
     #tree.ui-widget.ui-widget-content
