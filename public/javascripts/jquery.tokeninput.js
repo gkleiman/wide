@@ -433,7 +433,7 @@ $.TokenList = function (input, settings) {
     // Highlight the query part of the search term
     function highlight_term(value, term) {
         value = value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        return value.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<b>$1</b>");
+        return value.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + $.ui.autocomplete.escapeRegex(term) + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<b>$1</b>");
     }
 
     // Populate the results dropdown with some results
