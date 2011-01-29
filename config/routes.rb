@@ -13,9 +13,6 @@ Wide::Application.routes.draw do
     end
 
     resource :repository, :except => [ :index, :show, :edit, :update, :new, :destroy, :create, :destroy ] do
-      post 'create_file'
-      post 'create_directory'
-
       # SCM
       get 'summary'
       get 'diffstat'
