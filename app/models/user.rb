@@ -4,10 +4,9 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  # Ugly hack to make user registrations work with devise
+  # Ugly hack to make the user inactive after sign up
   before_validation(:on => :create) do
     self.active = true
-    self.ace_theme ||= Settings.default_ace_theme
   end
   after_validation(:on => :create) do
     self.active = false
@@ -25,6 +24,10 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me,
     :current_password, :ace_theme
 
+  before_save :set_default_ace_theme, :on => :create
+  after_create :send_signup_email_to_admins
+  after_save :send_activated_email
+
   def to_label
     "#{user_name} <#{email}>"
   end
@@ -40,5 +43,22 @@ class User < ActiveRecord::Base
   # Make user name case insensitive for login
   def self.find_for_database_authentication(conditions = {})
     self.where("LOWER(user_name) = LOWER(?)", conditions[:user_name]).first || super
+  end
+
+  private
+  def set_default_ace_theme
+    self.ace_theme ||= Settings.default_ace_theme
+  end
+
+  def send_activated_email
+    if active_was == false && active == true
+      Notifications.delay.activated(self)
+    end
+  end
+
+  def send_signup_email_to_admins
+    AdminUser.find_all_by_status(true).each do |admin|
+      Notifications.delay.new_signup(admin, self)
+    end
   end
 end
