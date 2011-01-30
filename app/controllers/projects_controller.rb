@@ -68,9 +68,7 @@ class ProjectsController < ApplicationController
   end
 
   def makefile
-    @project.write_makefile
-
-    send_file(@project.makefile_path, :filename => 'Makefile')
+    send_data(@project.makefile, :filename => 'Makefile')
   end
 
   private

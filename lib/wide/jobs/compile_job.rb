@@ -11,6 +11,10 @@ module Wide
         @project ||= Project.find(project_id)
       end
 
+      def makefile_path
+        @makefile_path ||= Wide::PathUtils.secure_path_join(project.bin_path, File.join('tmp', 'Makefile'))
+      end
+
       def perform
         # Append '/.' to the path, in order to copy all contents of a directory
         # instead of the directory itself
@@ -41,14 +45,18 @@ module Wide
         FileUtils.mkdir_p(@dst_path)
         FileUtils.cp_r(@src_path, @dst_path)
 
-        project.write_makefile
+        write_makefile
+      end
+
+      def write_makefile
+        File.open(makefile_path, 'w') { |f| f.write(@project.makefile) }
       end
 
       def make_and_move_results
         # Go to the directory, run make, and save the output in @project.bin_path/mesages
         FileUtils.chdir(@dst_path)
         cmd = %w(make)
-        cmd = cmd.push('-s', '-f', project.makefile_path)
+        cmd = cmd.push('-s', '-f', makefile_path)
         cmd = Escape.shell_command(cmd).to_s + " >#{Escape.shell_single_word(Wide::PathUtils.secure_path_join(project.bin_path, 'messages')).to_s} 2>&1"
 
         shellout(cmd)

@@ -55,10 +55,6 @@ class Project < ActiveRecord::Base
     @bin_path ||= Wide::PathUtils.secure_path_join(Settings.compilation_base, user.user_name, name)
   end
 
-  def makefile_path
-    @makefile_path ||= Wide::PathUtils.secure_path_join(bin_path, 'Makefile')
-  end
-
   def status
     async_op_status = repository.async_op_status
 
@@ -68,13 +64,9 @@ class Project < ActiveRecord::Base
   end
 
   # Process the project type's Makefile template and write it to the makefile path
-  def write_makefile
+  def makefile
     my_binding = MakefileBinding.new(self).get_binding
-    makefile_content = ERB.new(project_type.makefile_template).result(my_binding)
-
-    FileUtils.mkdir_p(bin_path)
-    FileUtils.rm_rf(makefile_path)
-    File.open(makefile_path, 'w') { |f| f.write(makefile_content) }
+    ERB.new(project_type.makefile_template).result(my_binding)
   end
 
   private
