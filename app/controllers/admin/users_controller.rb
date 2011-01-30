@@ -3,6 +3,8 @@ class Admin::UsersController < Admin::ResourcesController
     params[@object_name].delete(:password) if params[@object_name][:password].blank?
     params[@object_name].delete(:password_confirmation) if params[@object_name][:password_confirmation].blank?
 
+    @item.update_attribute(:active, params[@object_name][:active].to_i == 1)
+
     respond_to do |format|
       if @item.update_attributes(params[@object_name])
         set_attributes_on_update
