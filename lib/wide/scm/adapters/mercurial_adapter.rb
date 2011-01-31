@@ -261,7 +261,7 @@ module Wide
             begin
               # In some systems hg doesn't close the XML Document...
               output = io.read
-              output << "</log>" unless output.include?('</log>')
+              output << "</log>" unless output.include?('</log>') || output.empty?
 
               doc = REXML::Document.new(output)
               doc.elements.each("log/logentry") do |logentry|
