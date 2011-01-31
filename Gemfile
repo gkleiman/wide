@@ -22,9 +22,11 @@ gem 'settingslogic'
 gem "paperclip", "~> 2.3"
 
 # Typus
-gem 'typus', :git => 'https://github.com/fesplugas/typus.git'
+gem 'typus', :git => 'https://github.com/fesplugas/typus.git', :branch => '3-0-stable'
 gem 'fastercsv', :platforms => :ruby_18
 
+# Deploy with Capistrano
+gem 'capistrano'
 
 # For syntax highlighting
 gem 'coderay'
@@ -50,6 +52,4 @@ group :development, :test do
   gem 'wirble'
   gem 'hirb'
   gem 'awesome_print'
-  # Deploy with Capistrano
-  gem 'capistrano'
 end
