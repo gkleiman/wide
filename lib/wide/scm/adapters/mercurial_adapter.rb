@@ -259,7 +259,11 @@ module Wide
           revisions = []
           shellout(Escape.shell_command(cmd)) do |io|
             begin
-              doc = REXML::Document.new(io.read)
+              # In some systems hg doesn't close the XML Document...
+              output = io.read
+              output << "</log>" unless output.include?('</log>')
+
+              doc = REXML::Document.new(output)
               doc.elements.each("log/logentry") do |logentry|
                 paths = []
                 logentry.elements.each("paths/path") do |path|
