@@ -2,7 +2,7 @@ class Project < ActiveRecord::Base
   belongs_to :user
   belongs_to :project_type
 
-  has_many :constants, :dependent => :destroy
+  has_many :constants, :dependent => :destroy, :as => :container
   has_one :repository, :dependent => :destroy
   has_many :project_collaborators, :dependent => :destroy
   has_many :collaborators, :through => :project_collaborators, :source => :user
@@ -12,13 +12,15 @@ class Project < ActiveRecord::Base
 
   validates :name, :presence => true, :format => { :with => /\A[\w\- ]+\z/ }, :uniqueness => { :scope => :user_id, :case_sensitive => false }
 
-  before_validation :strip_project_name
-  before_validation :set_repository_path
-
   attr_accessible_on_create :name, :repository_attributes
   attr_accessible :project_type_id, :constants_attributes, :public, :collaborator_ids
 
   serialize :compilation_status
+
+  # Callbacks
+  before_validation :strip_project_name
+  before_validation :set_repository_path
+  before_save :add_constants_from_project_type
 
   def to_param
     name
@@ -82,6 +84,18 @@ class Project < ActiveRecord::Base
     end
 
     true
+  end
+
+  def add_constants_from_project_type
+    if project_type_id_changed? && project_type.present?
+      project_type.constants.each do |constant|
+        project_constant = constants.find_by_name(constant.name)
+
+        if project_constant.blank?
+          constants.build(:name => constant.name, :value => constant.value)
+        end
+      end
+    end
   end
 
   # Class used to generate the Makefile from an ERB template.

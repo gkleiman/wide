@@ -8,3 +8,4 @@ admin:
   Repository: create, read, update, delete
   User: create, read, update, delete
   ProjectCollaborator: all
+  Constant: all

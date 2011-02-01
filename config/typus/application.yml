@@ -10,7 +10,7 @@ Project:
       booleans:
         public: ['Public', 'Private']
   order_by: user_id
-  relationships: repository, collaborators
+  relationships: repository, collaborators, constants
   filters: user, public
   search: name
   application: wIDE
@@ -20,7 +20,7 @@ ProjectType:
     default: name, description
     form: name, description, binary_extension, makefile_template, repository_template
   order_by:
-  relationships:
+  relationships: constants
   filters:
   search: name, description
   application: wIDE
@@ -55,4 +55,13 @@ ProjectCollaborator:
   order_by:
   relationships: project, user
   filters: project, user
+  search:
+
+Constant:
+  fields:
+    default: name, value
+    form: name, value
+  order_by:
+  relationships: container
+  filters:
   search:

@@ -1,5 +1,6 @@
 class ProjectType < ActiveRecord::Base
   has_many :projects
+  has_many :constants, :dependent => :destroy, :as => :container
 
   has_attached_file :repository_template
 

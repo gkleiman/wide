@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110127082641) do
+ActiveRecord::Schema.define(:version => 20110201031624) do
 
   create_table "admin_users", :force => true do |t|
     t.string   "first_name",       :default => "",    :null => false
@@ -53,11 +53,12 @@ ActiveRecord::Schema.define(:version => 20110127082641) do
   add_index "changesets", ["repository_id"], :name => "index_changesets_on_repository_id"
 
   create_table "constants", :force => true do |t|
-    t.integer  "project_id"
-    t.string   "name",       :null => false
-    t.string   "value",      :null => false
+    t.integer  "container_id"
+    t.string   "name",           :null => false
+    t.string   "value",          :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "container_type"
   end
 
   create_table "delayed_jobs", :force => true do |t|
