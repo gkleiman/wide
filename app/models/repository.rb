@@ -44,9 +44,7 @@ class Repository < ActiveRecord::Base
   end
 
   def repository_url
-    uri_escaped_path = path.split('/').map { |path| CGI::escape path }.join('/')
-
-    Settings.repo_server_base + uri_escaped_path
+    URI.encode(Settings.repo_server_base + Wide::PathUtils.without_leading_slash(path))
   end
 
   def add_new_revisions_to_db
