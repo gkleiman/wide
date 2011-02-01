@@ -34,9 +34,6 @@ Wide::Application.configure do
   # Enable serving of images, stylesheets, and javascripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
 
-  # Disable delivery errors, bad email addresses will be ignored
-  # config.action_mailer.raise_delivery_errors = false
-
   # Enable threaded mode
   # config.threadsafe!
 
@@ -49,11 +46,9 @@ Wide::Application.configure do
 
   # Send emails
   config.action_mailer.delivery_method = :sendmail
-  # Defaults to:
-  # config.action_mailer.sendmail_settings = {
-  #   :location => '/usr/sbin/sendmail',
-  #   :arguments => '-i -t'
-  # }
+  config.action_mailer.sendmail_settings = { :location => '/usr/sbin/sendmail', :arguments => '-i' }
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = false
+  # To disable delivery errors and ignore bad email addresses set the following
+  # option to false
+  config.action_mailer.raise_delivery_errors = true
 end
