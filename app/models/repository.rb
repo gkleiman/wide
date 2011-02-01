@@ -36,7 +36,7 @@ class Repository < ActiveRecord::Base
   after_create :prepare_init_or_clone
 
   def changesets_for_entry(rel_path)
-    Changeset.joins(:changes).where('changes.path' => rel_path)
+    changesets.joins(:changes).where('changes.path' => rel_path).order('"changesets"."committed_on" DESC')
   end
 
   def directory_entry(rel_path)
@@ -126,8 +126,8 @@ class Repository < ActiveRecord::Base
     scm_engine.forget(entry)
   end
 
-  def revert!(files)
-    scm_engine.revert!(files)
+  def revert!(files, revision = nil)
+    scm_engine.revert!(files, revision)
   end
 
   def mark_resolved(rel_path)

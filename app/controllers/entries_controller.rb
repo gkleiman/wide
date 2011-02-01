@@ -1,5 +1,5 @@
 class EntriesController < ApplicationController
-  respond_to  :json
+  respond_to  :json, :html
 
   before_filter :authenticate_user!
   before_filter :load_repository
@@ -88,9 +88,12 @@ class EntriesController < ApplicationController
   end
 
   def revert
-    @repository.revert!(path)
+    @repository.revert!(path, params[:revision])
 
-    render_success
+    respond_to do |format|
+      format.html { redirect_to project_path(@project) }
+      format.json { render_success }
+    end
   end
 
   def mv

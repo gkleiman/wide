@@ -59,5 +59,6 @@
           .info.ui-widget-header
             %span.icon.ui-icon.ui-icon-document Document
             = rel_path
-          %ul.actions
+            %ul.actions
+              %li=link_to "Revert working copy to this version", revert_project_repository_entries_path(:project_id => @project, :path => rel_path, :revision => @changeset.revision), :method => :post
         %pre.diff.CodeRay= highlight_diff(@repository.diff(rel_path, @changeset.revision))

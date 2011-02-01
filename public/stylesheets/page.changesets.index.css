@@ -230,6 +230,24 @@ div#container.changesets {
 .file .meta .info span {
   float: left;
 }
+.file .meta .actions {
+  float:right;
+}
+.file .meta .actions li {
+  list-style-type: none;
+  float: left;
+  margin: 0 0 0 7px;
+  padding-left:9px;
+}
+.file .meta .actions li {
+  margin-left: 0;
+  margin-right: 5px;
+  padding-left: 0;
+}
+.file .meta .actions li a {
+  font-weight: normal;
+  font-size: 0.8em;
+}
 
 .file pre {
   width: 812px;
