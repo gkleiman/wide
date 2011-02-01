@@ -2,7 +2,7 @@ class MakeConstantsPolymorphic < ActiveRecord::Migration
   def self.up
     change_table :constants do |t|
       t.rename :project_id, :container_id
-      t.column :container_type, :string, :default => 'Project', :null => trye
+      t.column :container_type, :string, :default => 'Project', :null => true
       t.change :container_type, :string, :null => true
     end
 
