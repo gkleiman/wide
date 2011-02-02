@@ -6,7 +6,7 @@
   %h1.ui-widget-header Account Information
   = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f|
     = f.input :user_name, :disabled => true
-    = f.input :email
+    = f.input :email, :hint => "To change your avatar, create an account in #{link_to 'Gravatar', 'http://en.gravatar.com/site/signup/'} using this email address.".html_safe
     = f.input :ace_theme, :collection => Settings.ace_themes, :include_blank => false
     = f.input :password, :hint => "Leave blank if you don't want to change it.", :required => false
     = f.input :password_confirmation
