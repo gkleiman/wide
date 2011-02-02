@@ -123,10 +123,6 @@ $(function () {
     WIDE.editor.save_all();
   });
 
-  $('#download_makefile_button').button().click(function () {
-    window.location = WIDE.base_path() + '/' + 'makefile';
-  });
-
   WIDE.toolbar.update_scm_buttons();
   WIDE.toolbar.update_save_buttons();
 });

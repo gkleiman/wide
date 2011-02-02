@@ -57,8 +57,9 @@ div#container.projects.edit {
   text-align: center;
 }
 
+.project .makefile,
 .constants p {
-  text-align: center;
+  text-align: center !important;
 }
 .fields {
   padding-top: 0.5em;

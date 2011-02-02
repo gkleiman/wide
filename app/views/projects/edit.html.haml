@@ -21,6 +21,9 @@
         = render 'constant_fields', :f => builder
       %p
         = link_to_add_fields('Add a new constant', f, :constants)
+    %h1.ui-widget-header Makefile
+    .makefile
+      %button#download_makefile_button Download Makefile
     %h1.ui-widget-header Collaborators
     .collaborators
       = text_field_tag 'project[collaborator_ids]', '', :id => 'collaborator_ids'

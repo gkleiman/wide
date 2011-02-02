@@ -28,4 +28,12 @@ $(function () {
       inputToken: "ui-autocomplete-input"
     }
   });
+
+  $('#download_makefile_button').button().click(function () {
+    window.location = WIDE.base_path() + '/' + 'makefile';
+  }).hover(function () {
+    $(this).removeClass('ui-state-hover');
+  }, function () {
+    $(this).addClass('ui-state-hover');
+  });
 });
