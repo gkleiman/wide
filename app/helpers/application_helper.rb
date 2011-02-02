@@ -23,7 +23,7 @@ module ApplicationHelper
 
   def avatar_url(email)
     gravatar_id = Digest::MD5::hexdigest(email).downcase
-    "http://gravatar.com/avatar/#{gravatar_id}.png?s=48&d=retro"
+    "http://gravatar.com/avatar/#{gravatar_id}.png?s=48&d=identicon"
   end
 
   def highlight_diff(diff)
