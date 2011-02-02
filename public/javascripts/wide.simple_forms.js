@@ -30,6 +30,6 @@ $(function ($) {
   if(first_error.length !== 0) {
     first_error.focus();
   } else {
-    $('.simple_form .input input:not(:disabled)').first().focus();
+    $('.simple_form .input input:not(:disabled):not([readonly])').first().focus();
   }
 });
