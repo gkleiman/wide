@@ -1,27 +1,30 @@
 %table.diffstat-table
   %tbody
-    - @diffstat[:files].each do |file|
-      - rel_path = Wide::PathUtils.relative_to_base(@project.repository.full_path, file[:path])
+    - @status.keys.each do |path|
+      - rel_path = Wide::PathUtils.relative_to_base(@project.repository.full_path, path)
+      - stripped_path = path.strip
 
-      - case @status[file[:path]].first
+      - case @status[path].first
       - when :modified then action_icon = 'ui-icon-pencil'
       - when :removed then action_icon = 'ui-icon-minusthick'
       - when :added then action_icon = 'ui-icon-plusthick'
 
       %tr{'data-path' => rel_path}
-        %td{:class => [ :status, @status[file[:path]] ] }
-          %span{:class => [ 'ui-icon', action_icon, @status[file[:path]] ] }
+        %td{:class => [ :status, @status[path] ] }
+          %span{:class => [ 'ui-icon', action_icon, @status[path] ] }
           %td.path
             %span.path
               = rel_path
             %a.view-diff(href = "#") (View diff)
         %td.diffstat
-          %span.diffstat-summary= file[:binary] ? 'Bin' : file[:number_of_changes]
-          %span.diffstat-bar
-            - unless file[:binary]
-              - file[:insertions].times do
-                %span.plus +
-              - file[:deletions].times do
-                %span.minus -
+          - unless @diffstat[:files][stripped_path].nil?
+            - diffstat = @diffstat[:files][stripped_path]
+            %span.diffstat-summary= diffstat[:binary] ? 'Bin' : diffstat[:number_of_changes]
+            %span.diffstat-bar
+              - unless diffstat[:binary]
+                - diffstat[:insertions].times do
+                  %span.plus +
+                - diffstat[:deletions].times do
+                  %span.minus -
         %td.checkbox
           = check_box_tag 'files[]', rel_path, true

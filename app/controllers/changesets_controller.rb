@@ -23,6 +23,8 @@ class ChangesetsController < ApplicationController
   private
   def load_repository
     @project = current_user.projects.find_by_name params[:project_id]
-    @repository = @project.repository
+    @repository = @project.try(:repository)
+
+    raise ActiveRecord::RecordNotFound unless @repository.present?
   end
 end
