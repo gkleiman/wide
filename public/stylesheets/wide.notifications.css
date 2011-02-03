@@ -2,9 +2,8 @@
   display: inline-block;
   position: absolute;
   top: 2px;
-  width: 100%;
+  left: 50%;
   text-align: center;
-  z-index: 10000;
   font-size: 13px;
 }
 #notification {
@@ -12,6 +11,7 @@
   padding: 0pt 1em;
   text-align: center;
   opacity: 1;
+  z-index: 10000;
 }
 #notification > span {
   display: inline-block;

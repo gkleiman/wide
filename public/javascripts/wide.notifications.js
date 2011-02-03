@@ -1,11 +1,9 @@
 WIDE.notifications = (function () {
-  var delay = 10000;
-  var notification_div;
+  var delay = 10000, notification_wrapper, notification_div;
 
   var set_notification_div = function () {
     notification_div = notification_div || $('#notification');
-
-    return notification_div;
+    notification_wrapper = notification_wrapper || $('#notification-wrapper');
   };
 
   var add_notification = function (notification_type, message, fade_out) {
@@ -33,6 +31,8 @@ WIDE.notifications = (function () {
         .removeClass('ui-state-error ui-state-highlight')
         .addClass(div_class)
         .show();
+
+        notification_wrapper.css('margin-left', - notification_div.width() / 2);
 
       if(fade_out) {
         notification_div.delay(delay).fadeOut('fast');

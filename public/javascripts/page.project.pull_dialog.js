@@ -41,6 +41,8 @@ $(function () {
     if ($('input[name=url]', pull_dialog).val().length === 0) {
       WIDE.notifications.error('A URL is needed to pull from another repository');
 
+      pull_dialog.dialog('close');
+
       return false;
     }
 
