@@ -5,10 +5,14 @@
     %th Repository URL
     %th
 %tbody.ui-widget-content.ui-state-default
-  - @third_party_projects.each do |project|
+  - unless @third_party_projects.empty?
+    - @third_party_projects.each do |project|
+      %tr
+        %td= project.user.user_name
+        %td= project.name
+        %td.repository_url= project.try(:repository).try(:repository_url) || '-'
+        %td.fork
+          = link_to 'Fork Project', new_project_path(:parent_project_id => project.id), :class => 'ui-icon ui-icon-arrowthick-1-nw', :title => 'Fork Project'
+  - else
     %tr
-      %td= project.user.user_name
-      %td= project.name
-      %td.repository_url= project.try(:repository).try(:repository_url) || '-'
-      %td.fork
-        = link_to 'Fork Project', new_project_path(:parent_project_id => project.id), :class => 'ui-icon ui-icon-arrowthick-1-nw', :title => 'Fork Project'
+      %td(colspan = 4)You are not a collaborator in any project.
