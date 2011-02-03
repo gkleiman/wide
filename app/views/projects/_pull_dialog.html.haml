@@ -2,4 +2,4 @@
   = form_tag pull_project_repository_path(@project), :remote => true do
     %fieldset
       = label_tag :url, 'Repository URL'
-      = text_field_tag :url, nil, :class => 'ui-widget-content ui-state-active'
+      = select_tag :url, options_from_collection_for_select(@project.repository.pull_urls, :url, :url), :id => 'pull_urls'

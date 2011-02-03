@@ -7,13 +7,15 @@ $(function () {
     pull_button.button('option', 'disabled', false);
   };
 
+  $("#pull_urls").combobox();
+
   // Pull dialog
   pull_dialog.dialog({
     title: 'Pull changes',
     modal: true,
-    width: 500,
+    width: 800,
     autoOpen: false,
-    resizable: false,
+    resizable: true,
     buttons: {
       Pull: function () {
         $('form', pull_dialog).submit();
@@ -36,7 +38,7 @@ $(function () {
   });
 
   $('form', pull_dialog).bind('ajax:beforeSend', function () {
-    if ($('#url', pull_dialog).val().length === 0) {
+    if ($('input[name=url]', pull_dialog).val().length === 0) {
       WIDE.notifications.error('A URL is needed to pull from another repository');
 
       return false;
