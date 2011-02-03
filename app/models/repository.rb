@@ -11,6 +11,7 @@ class Repository < ActiveRecord::Base
   belongs_to :project
 
   has_many :changesets, :include => :changes, :dependent => :destroy, :order => 'revision DESC'
+  has_many :pull_urls, :dependent => :destroy, :order => 'created_at DESC'
 
   class ScmAdapterInstalledValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
@@ -40,7 +41,7 @@ class Repository < ActiveRecord::Base
     :unless => Proc.new { self.parent_repository.present? }
 
   before_validation :copy_attributes_from_parent_repository, :on => :create
-  after_create :prepare_init_or_clone
+  after_create :queue_init_or_clone
 
   def changesets_for_entry(rel_path)
     changesets.joins(:changes).where('changes.path' => rel_path).order('"changesets"."committed_on" DESC')
@@ -195,39 +196,11 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  def init_or_clone(url)
-    # Create the directory tree
-    FileUtils.rm_rf(full_path)
-    FileUtils.mkdir_p(full_path)
-
-    if url.blank?
-      scm_engine.init
-
-      project_type = project.project_type
-
-      # Untar the repository layout into the repository.
-      if project_type && project_type.repository_template && !project_type.repository_template.path.blank?
-        shellout(Escape.shell_command(['tar', '-zxkpf', project_type.repository_template.path, '-C', full_path]))
-
-        self.add
-        self.commit(self.project.user, 'Project template')
-      end
-    else
-      scm_engine.clone(url)
-      add_new_revisions_to_db
-    end
-
-    true
-  end
-
-  def async_operation(operation, url, delegate_to_scm_engine = true)
+  def async_operation(operation, url)
     status = 'error'
 
-    receiver = scm_engine if(delegate_to_scm_engine)
-    receiver ||= self
-
     begin
-      status = 'success' if(receiver.send(operation, url))
+      status = 'success' if(self.send(operation, url))
     ensure
       self.async_op_status = Wide::Scm::AsyncOpStatus.new(:operation => operation, :status => status)
       self.save!
@@ -266,29 +239,60 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  def prepare_init_or_clone
+  def queue_init_or_clone
     # Queue initialization/cloning
     queue_async_operation(:init_or_clone, self.url, false)
 
     true
   end
 
-  def queue_async_operation(operation, url, delegate_to_scm_engine = true)
+  def init_or_clone(url)
+    # Create the directory tree
+    FileUtils.rm_rf(full_path)
+    FileUtils.mkdir_p(full_path)
+
+    if url.blank?
+      scm_engine.init
+
+      project_type = project.project_type
+
+      # Untar the repository layout into the repository.
+      if project_type && project_type.repository_template && !project_type.repository_template.path.blank?
+        shellout(Escape.shell_command(['tar', '-zxkpf', project_type.repository_template.path, '-C', full_path]))
+
+        self.add
+        self.commit(self.project.user, 'Project template')
+      end
+    else
+      scm_engine.clone(url)
+      add_new_revisions_to_db
+
+      if(scm_engine.class.valid_url?(url))
+        # Add the url if the clone was successful and it wasn't a fork
+        pull_urls.find_or_create_by_url(url)
+      end
+    end
+
+    true
+  end
+
+  def pull(url)
+   if(!scm_engine || url.blank? || !scm_engine.class.valid_url?(url))
+     return false
+   end
+
+    if scm_engine.pull(url)
+      pull_urls.find_or_create_by_url(url)
+      true
+    end
+
+    false
+  end
+
+  def queue_async_operation(operation, url)
     # Run one async_operation at a time.
     if self.async_op_status && self.async_op_status[:status] == 'running'
       return Wide::Scm::AsyncOpStatus.new(:operation => operation, :status => 'error')
-    end
-
-    # If the operation is to be delegated to the scm, ensure that the url is
-    # valid.
-    if(delegate_to_scm_engine && (!scm_engine || url.blank? ||
-                                  !scm_engine.class.valid_url?(url)))
-      self.async_op_status = Wide::Scm::AsyncOpStatus.new(:operation => operation,
-                                                          :status => 'error')
-
-      self.save!
-
-      return self.async_op_status
     end
 
     self.async_op_status = Wide::Scm::AsyncOpStatus.new(:operation => operation)

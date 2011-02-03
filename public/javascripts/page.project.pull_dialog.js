@@ -25,7 +25,7 @@ $(function () {
       }
     }
   }).bind('dialogclose', function (event, ui) {
-    pull_button.mouseout().blur();
+    pull_button.mouseout().blur().button('option', 'disabled', false);
   });
 
   pull_button.click(function () {
@@ -38,13 +38,10 @@ $(function () {
   $('form', pull_dialog).bind('ajax:beforeSend', function () {
     if ($('#url', pull_dialog).val().length === 0) {
       WIDE.notifications.error('A URL is needed to pull from another repository');
-      pull_button.button('option', 'disabled', false);
-      pull_dialog.dialog('close');
 
       return false;
     }
 
-    pull_dialog.dialog('close');
     return true;
   }).bind('ajax:error', function (data, result, xhr) {
     report_pull_error();
