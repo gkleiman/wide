@@ -66,11 +66,9 @@ module Wide
         def diff(entry, by_revision = nil)
           rel_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
 
-          cmd = cmd_prefix.push('diff', '--git', "path:#{rel_path}")
-
-          cmd.push('-c', "#{by_revision.to_i}") unless by_revision.nil?
-
           lines = ''
+          cmd = cmd_prefix.push('diff', '--git', "path:#{rel_path}")
+          cmd.push('-c', "#{by_revision.to_i}") unless by_revision.nil?
           shellout(Escape.shell_command(cmd)) do |io|
             lines = io.read
           end
@@ -94,7 +92,6 @@ module Wide
             cmd << '-c'
             cmd << "#{by_revision.to_s}"
           end
-
           old_columns = ENV['COLUMNS']
           ENV['COLUMNS'] = '10'
           shellout(Escape.shell_command(cmd)) do |io|
@@ -162,12 +159,10 @@ module Wide
 
         def add(entry = nil)
           cmd = cmd_prefix.push('add')
-
           unless entry.nil?
             rel_path = Wide::PathUtils.relative_to_base(base_path, entry.path)
             cmd << "path:#{rel_path}"
           end
-
           shellout(Escape.shell_command(cmd))
 
           raise CommandFailed.new("Failed to add file #{src_path} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
@@ -229,12 +224,11 @@ module Wide
         end
 
         def summary
-          cmd = cmd_prefix.push('summary')
           summary = {
             :clean? => false,
             :unresolved? => false
           }
-
+          cmd = cmd_prefix.push('summary')
           shellout(Escape.shell_command(cmd)) do |io|
             io.each_line do |line|
               line.chomp!
@@ -250,17 +244,14 @@ module Wide
         end
 
         def log(path=nil, revision_from=nil, revision_to=nil)
+          revisions = []
           cmd = cmd_prefix.push('log', '--encoding', 'utf8', '-v', '--style', Rails.root.join('extra', 'hg_template.xml').to_s)
-
           if revision_from && revision_to
             cmd.push('-r',  "#{revision_from.to_i}:#{revision_to.to_i}")
           elsif revision_from
             cmd.push('-r', "#{revision_from.to_i}:")
           end
-
           cmd << "path:#{path}" unless path.blank?
-
-          revisions = []
           shellout(Escape.shell_command(cmd)) do |io|
             begin
               # In some systems hg doesn't close the XML Document...
@@ -303,7 +294,6 @@ module Wide
 
         def init
           cmd = cmd_prefix.push('init')
-
           shellout(Escape.shell_command(cmd))
 
           raise CommandFailed.new("Failed to initialize Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
@@ -313,7 +303,6 @@ module Wide
 
         def clone(url)
           cmd = cmd_prefix.push('clone', url, base_path)
-
           shellout(Escape.shell_command(cmd))
 
           raise CommandFailed.new("Failed to clone repository #{url} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
@@ -323,7 +312,6 @@ module Wide
 
         def pull(url)
           cmd = cmd_prefix.push('pull', '-u', '--config', 'ui.merge=merge', url)
-
           shellout(Escape.shell_command(cmd))
 
           raise CommandFailed.new("Failed to pull repository #{url} in the Mercurial repository in #{base_path}") if $? && $?.exitstatus > 1
