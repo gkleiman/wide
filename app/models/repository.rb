@@ -283,6 +283,8 @@ class Repository < ActiveRecord::Base
 
     if scm_engine.pull(url)
       pull_urls.find_or_create_by_url(url)
+      add_new_revisions_to_db
+
       return true
     end
 
