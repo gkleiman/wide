@@ -7,13 +7,13 @@
   margin: 12px 0 0.4em 0;
   padding-left: 5px;
 }
-.projects table {
+.projects_table table {
   display: table;
   width: 100%;
   margin-bottom: 12px;
 }
-.projects table th,
-.projects table td {
+.projects_table table th,
+.projects_table table td {
   padding: 5px;
   font-weight: normal;
   font-size: 0.8em;
@@ -23,28 +23,28 @@
 .projects_table table tbody tr td a {
   text-decoration: underline !important;
 }
-.projects tr.success {
+.projects_table tr.success {
   cursor: pointer;
 }
-.projects table td.status {
+.projects_table table td.status {
   width: 7em;
 }
-.projects table td.delete {
+.projects_table table td.delete {
   width: 16px;
 }
-.projects table td.fork {
+.projects_table table td.fork {
   width: 16px;
 }
-.projects table tr.initializing td.status span.ui-icon-throbber {
+.projects_table table tr.initializing td.status span.ui-icon-throbber {
   float: right;
   margin-right: 0.5em;
 }
-.projects table td.add_new_project {
+.projects_table table td.add_new_project {
   font-weight: bold;
   text-align: center;
   cursor: pointer;
 }
-.projects table td.repository_url {
+.projects_table table td.repository_url {
   font-size: 0.75em;
 }
 
