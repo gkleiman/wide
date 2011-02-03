@@ -42,6 +42,9 @@ $(function () {
       return false;
     }
 
+    pull_dialog.dialog('close');
+    pull_button.mouseout().blur().button('option', 'disabled', true);
+
     return true;
   }).bind('ajax:error', function (data, result, xhr) {
     report_pull_error();

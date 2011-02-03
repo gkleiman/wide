@@ -277,16 +277,16 @@ class Repository < ActiveRecord::Base
   end
 
   def perform_pull(url)
-   if(!scm_engine || url.blank? || !scm_engine.class.valid_url?(url))
-     return false
-   end
+    if(!scm_engine || url.blank? || !scm_engine.class.valid_url?(url))
+      return false
+    end
 
     if scm_engine.pull(url)
       pull_urls.find_or_create_by_url(url)
-      true
+      return true
     end
 
-    false
+    return false
   end
 
   def queue_async_operation(operation, url)
