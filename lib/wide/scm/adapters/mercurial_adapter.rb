@@ -319,6 +319,15 @@ module Wide
           true
         end
 
+        def update!(revision = nil)
+          cmd = cmd_prefix.push('update')
+          cmd.push('-C')
+          cmd.push('-r', "#{revision.to_i}") unless revision.blank?
+          shellout(Escape.shell_command(cmd))
+
+          raise CommandFailed.new("Failed to update the Mercurial repository in #{base_path}") if $? && $?.exitstatus != 0
+        end
+
         def self.valid_url?(url)
           (url =~ %r{\A(http://|https://|ssh://)}) != nil
         end

@@ -2,7 +2,7 @@ class Repository < ActiveRecord::Base
   include ActiveModel::Validations
 
   cattr_accessor :supported_actions
-  self.supported_actions = %w(add commit history forget mark_resolved mark_unresolved pull merge diff_stat diff revert!)
+  self.supported_actions = %w(add commit history forget mark_resolved mark_unresolved pull merge diff_stat diff revert! update!)
 
   attr_accessor :entries_status, :url, :parent_repository
 
@@ -169,6 +169,10 @@ class Repository < ActiveRecord::Base
 
   def pull(url)
     queue_async_operation(:pull, url)
+  end
+
+  def update!(revision = nil)
+    scm_engine.update!(revision)
   end
 
   def respond_to?(symbol, include_private = false)

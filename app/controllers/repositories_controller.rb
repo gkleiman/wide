@@ -31,6 +31,14 @@ class RepositoriesController < ApplicationController
     render_success
   end
 
+  def update
+    @repository.update!(params[:revision])
+
+    flash[:notice] = "Repository updated to revision #{params[:revision]}"
+
+    redirect_to @project
+  end
+
   def diffstat
     @repository.update_entries_status
 

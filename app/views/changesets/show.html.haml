@@ -4,8 +4,14 @@
   %h1= raw("wIDE | #{link_to("My Projects", projects_path)} | #{link_to(h(@project.name), project_path(@project))} | #{link_to('Changesets', project_repository_changesets_path)} | #{@changeset.scmid}")
 
 #changeset.ui-widget
-  %h1.changeset.ui-widget-header= "Changeset #{@changeset.scmid}"
-
+  .title.ui-widget-header
+    %h1.changeset= "Changeset #{@changeset.scmid}"
+    %ul.actions
+      %li= link_to 'Update to this revision',
+        update_project_repository_path(current_project,
+          :revision => @changeset.revision),
+        :method => :post,
+        :confirm => 'Any non-committed changes will be lost. Are you sure that you want to update the repository to this revision?'
   #changeset-summary.ui-widget-content
     %dl.relations
       %dt= "commit #{@changeset.revision}"

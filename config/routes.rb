@@ -13,12 +13,13 @@ Wide::Application.routes.draw do
       get 'makefile'
     end
 
-    resource :repository, :except => [ :index, :show, :edit, :update, :new, :destroy, :create, :destroy ] do
+    resource :repository, :only => [] do
       # SCM
       get 'summary'
       get 'diffstat'
       get 'async_op_status'
       post 'revert'
+      post '/update', :action => :update, :as => 'update'
 
       post 'commit'
       post 'pull'
