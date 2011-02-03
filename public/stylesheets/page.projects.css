@@ -20,8 +20,8 @@
   text-wrap: unrestricted;
   word-wrap: break-word;
 }
-.projects table a {
-  text-decoration: underline;
+.projects_table table tbody tr td a {
+  text-decoration: underline !important;
 }
 .projects tr.success {
   cursor: pointer;
