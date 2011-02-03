@@ -4,7 +4,7 @@ class Repository < ActiveRecord::Base
   cattr_accessor :supported_actions
   self.supported_actions = %w(add commit history forget mark_resolved mark_unresolved pull merge diff_stat diff revert!)
 
-  attr_accessor :entries_status, :url
+  attr_accessor :entries_status, :url, :parent_repository
 
   serialize :async_op_status
 
@@ -29,10 +29,17 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  validates :path, :presence => true, :uniqueness => true
-  validates :scm, :presence => true, :scm_adapter_installed => true
-  validates :url, :scm_valid_url => true
+  validates :path,
+    :presence => true,
+    :uniqueness => true
+  validates :scm,
+    :presence => true,
+    :scm_adapter_installed => true
+  validates :url,
+    :scm_valid_url => true,
+    :unless => Proc.new { self.parent_repository.present? }
 
+  before_validation :copy_attributes_from_parent_repository, :on => :create
   after_create :prepare_init_or_clone
 
   def changesets_for_entry(rel_path)
@@ -177,6 +184,13 @@ class Repository < ActiveRecord::Base
     self.entries_status = scm_engine.status
   end
 
+  def copy_attributes_from_parent_repository
+    if parent_repository.present?
+      self.scm = parent_repository.scm
+      self.url = "file://#{parent_repository.full_path}"
+    end
+  end
+
   def init_or_clone(url)
     # Create the directory tree
     FileUtils.rm_rf(full_path)
@@ -263,7 +277,8 @@ class Repository < ActiveRecord::Base
 
     # If the operation is to be delegated to the scm, ensure that the url is
     # valid.
-    if(delegate_to_scm_engine && (!scm_engine || url.blank? || !scm_engine.class.valid_url?(url)))
+    if(delegate_to_scm_engine && (!scm_engine || url.blank? ||
+                                  !scm_engine.class.valid_url?(url)))
       self.async_op_status = Wide::Scm::AsyncOpStatus.new(:operation => operation,
                                                           :status => 'error')
 

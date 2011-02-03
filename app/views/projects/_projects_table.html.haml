@@ -4,6 +4,7 @@
     %th Project Type
     %th Status
     %th
+    %th
 %tbody.ui-widget-content.ui-state-default
   - @projects.each do |project|
     - status = project.status
@@ -27,8 +28,10 @@
             Initializing ...
         - else
           There has been a problem initializing the repository
+      %td.fork
+        = link_to 'Fork Project', new_project_path(:parent_project_id => project.id), :class => 'ui-icon ui-icon-arrowthick-1-nw', :title => 'Fork Project'
       %td.delete
-        = link_to 'Remove Project', project, :method => :delete, :confirm => 'Are you sure that you want to remove the project?', :class => 'ui-icon ui-icon-trash'
+        = link_to 'Remove Project', project, :method => :delete, :confirm => 'Are you sure that you want to remove the project?', :class => 'ui-icon ui-icon-trash', :title => 'Remove Project'
   %tr.add_new_project
-    %td.add_new_project.success(colspan=4)
+    %td.add_new_project.success(colspan=5)
       = link_to 'Add a New Project', new_project_path

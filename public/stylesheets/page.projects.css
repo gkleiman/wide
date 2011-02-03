@@ -1,51 +1,56 @@
-#projects {
-  width: 833px;
+#tables {
   margin: 0 auto;
+  width: 833px;
 }
-#projects h1 {
-  font-size: 1.5em;
-  font-weight: bold;
+
+.projects_table h1 {
   margin: 12px 0 0.4em 0;
-  padding-left: 0.4em;
+  padding-left: 5px;
 }
-#projects h1 .ui-icon-circle-plus {
-  display: inline-block;
-}
-#projects table {
+.projects table {
   display: table;
   width: 100%;
   margin-bottom: 12px;
 }
-#projects table th {
-  font-weight: bold;
-}
-#projects table th,
-#projects table td {
+.projects table th,
+.projects table td {
   padding: 5px;
+  font-weight: normal;
+  font-size: 0.8em;
+  text-wrap: unrestricted;
+  word-wrap: break-word;
 }
-#projects table a {
+.projects table a {
   text-decoration: underline;
 }
-#projects tbody tr.success {
+.projects tr.success {
   cursor: pointer;
 }
-#projects table td.status {
+.projects table td.status {
   width: 7em;
 }
-#projects table td.delete {
+.projects table td.delete {
   width: 16px;
 }
-#projects table tr.initializing td.status span.ui-icon-throbber {
+.projects table td.fork {
+  width: 16px;
+}
+.projects table tr.initializing td.status span.ui-icon-throbber {
   float: right;
   margin-right: 0.5em;
 }
-#projects tbody tr.add_new_project {
+.projects table td.add_new_project {
+  font-weight: bold;
   text-align: center;
   cursor: pointer;
 }
+.projects table td.repository_url {
+  font-size: 0.75em;
+}
 
+div#container.projects.index,
 div#container.projects.edit {
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 #add_link,
 .clone_instructions {

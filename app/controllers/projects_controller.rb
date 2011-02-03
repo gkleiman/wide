@@ -6,16 +6,27 @@ class ProjectsController < ApplicationController
 
   def index
     @projects = current_user.projects.all(:include => :repository)
+    @third_party_projects = current_user.third_party_projects
   end
 
   def new
-    @project = current_user.projects.new
+    @project = current_user.projects.build
 
-    @project.build_repository
+    if(parent_project)
+      @project.name = parent_project.name
+      @project.project_type_id = parent_project.project_type_id
+    else
+      @project = current_user.projects.new(params[:project])
+      @project.build_repository(:url => params[:parent_repository_url])
+    end
   end
 
   def create
     @project = current_user.projects.new(params[:project])
+
+    if(parent_project)
+      @project.build_repository(:parent_repository => parent_project.repository)
+    end
 
     if(@project.save)
       redirect_to projects_path, :notice => 'Project was sucessfully created.'
@@ -80,4 +91,14 @@ class ProjectsController < ApplicationController
     @project
   end
 
+  def parent_project
+    if(params[:parent_project_id] && @parent_project.blank?)
+      @parent_project ||= current_user.projects.find_by_id(params[:parent_project_id].to_s)
+      @parent_project ||= current_user.third_party_projects.find_by_id(params[:parent_project_id].to_s)
+
+      raise ActiveRecord::RecordNotFound unless @parent_project
+    end
+
+    @parent_project
+  end
 end

@@ -5,7 +5,13 @@
 - content_for :javascripts do
   = javascript_include_tag 'page.project.js', 'page.project.index.js'
 
-#projects.ui-corner-all.ui-widget
-  %h1.ui-widget-header.ui-corner-all My Projects
-  %table#toc
-    = render 'projects_table'
+#tables
+  #projects.projects_table.ui-corner-all.ui-widget
+    %h1.ui-widget-header.ui-corner-all My Projects
+    %table#my_projects
+      = render 'projects_table'
+
+  #third_party_projects.projects_table.ui-corner-all.ui-widget
+    %h1.ui-widget-header.ui-corner-all Projects from others
+    %table#third_party_projects
+      = render 'third_party_projects_table'

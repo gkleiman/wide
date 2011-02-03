@@ -23,8 +23,8 @@ $(function () {
   poll_projects_table();
 
   // Make rows of the ready projects in the projects table clickable
-  $('#projects table tbody tr.success').live('click', clickable_row_click_handler);
+  $('#my_projects tr.success').live('click', clickable_row_click_handler);
 
   // Make the "Add a New Project" row clickable.
-  $('#projects table tbody tr.add_new_project').live('click', clickable_row_click_handler);
+  $('#my_projects tr.add_new_project').live('click', clickable_row_click_handler);
 });
