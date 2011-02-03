@@ -23,7 +23,7 @@ REPOS_BASE = '/home/wide/application/shared/repositories'
 
 # --- User configuration ends here ---
 
-os.environ[HGRCPATH] = HGWEB_CFG_PATH
+os.environ['HGRCPATH'] = HGWEB_CFG_PATH
 application = HgWide(TITLE, DSN, REPOS_BASE, HGWEB_CFG_PATH)
 
 httpd = make_server('', 8070, application)

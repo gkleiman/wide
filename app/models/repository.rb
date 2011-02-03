@@ -169,7 +169,7 @@ class Repository < ActiveRecord::Base
   end
 
   def pull(url)
-    queue_async_operation(:pull, url)
+    queue_async_operation(:perform_pull, url)
   end
 
   def update!(revision = nil)
@@ -241,7 +241,7 @@ class Repository < ActiveRecord::Base
 
   def queue_init_or_clone
     # Queue initialization/cloning
-    queue_async_operation(:init_or_clone, self.url, false)
+    queue_async_operation(:init_or_clone, self.url)
 
     true
   end
@@ -276,7 +276,7 @@ class Repository < ActiveRecord::Base
     true
   end
 
-  def pull(url)
+  def perform_pull(url)
    if(!scm_engine || url.blank? || !scm_engine.class.valid_url?(url))
      return false
    end
@@ -298,7 +298,7 @@ class Repository < ActiveRecord::Base
     self.async_op_status = Wide::Scm::AsyncOpStatus.new(:operation => operation)
     self.save!
 
-    self.delay.async_operation(operation, url, delegate_to_scm_engine)
+    self.delay.async_operation(operation, url)
 
     self.async_op_status
   end
