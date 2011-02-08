@@ -31,6 +31,8 @@ $(function () {
 
   $('#download_makefile_button').button().click(function () {
     window.location = WIDE.base_path() + '/' + 'makefile';
+
+    return false;
   }).hover(function () {
     $(this).removeClass('ui-state-hover');
   }, function () {
