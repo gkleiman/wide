@@ -61,6 +61,11 @@
 #changeset-summary {
   padding: 5px 10px 10px 10px;
 }
+#changeset-summary dd img {
+  width: 42px;
+  height: 42px;
+}
+
 #changeset-summary .relations {
   margin: 0;
 }

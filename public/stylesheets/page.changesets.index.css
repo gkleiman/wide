@@ -154,6 +154,11 @@
   color: #747474;
 }
 
+#changesets-inner .metadata dd img {
+  width: 42px;
+  height: 42px;
+}
+
 #changesets-inner li {
   position: relative;
 }
