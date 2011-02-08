@@ -26,7 +26,7 @@
 
   %table.diffstat-table.ui-widget-content
     %tbody
-      - @status.keys.index do |path|
+      - @status.keys.each do |path|
         - rel_path = Wide::PathUtils.relative_to_base(@project.repository.full_path, path)
         - stripped_path = path.strip
         - diff_id = @repository.directory_entry(rel_path).id
@@ -56,7 +56,7 @@
                     %span.minus -
 
   .files.ui-widget
-    - @status.keys.index do |path|
+    - @status.keys.each do |path|
       - next if @status[path] == :removed
       - rel_path = Wide::PathUtils.relative_to_base(@project.repository.full_path, path)
       - diff_id = DirectoryEntry.new(path).id
