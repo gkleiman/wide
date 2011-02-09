@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110203071109) do
+ActiveRecord::Schema.define(:version => 20110208194928) do
 
   create_table "admin_users", :force => true do |t|
     t.string   "first_name",       :default => "",    :null => false
@@ -122,12 +122,15 @@ ActiveRecord::Schema.define(:version => 20110203071109) do
   add_index "pull_urls", ["repository_id"], :name => "index_pull_urls_on_repository_id"
 
   create_table "repositories", :force => true do |t|
-    t.integer  "project_id",      :null => false
-    t.string   "path",            :null => false
-    t.string   "scm",             :null => false
+    t.integer  "project_id",           :null => false
+    t.string   "path",                 :null => false
+    t.string   "scm",                  :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "async_op_status"
+    t.text     "cached_status"
+    t.text     "cached_summary"
+    t.datetime "scm_cache_expired_at"
   end
 
   add_index "repositories", ["project_id"], :name => "index_repositories_on_project_id", :unique => true

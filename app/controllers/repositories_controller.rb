@@ -40,9 +40,7 @@ class RepositoriesController < ApplicationController
   end
 
   def diffstat
-    @repository.update_entries_status
-
-    @status = @repository.entries_status
+    @status = @repository.status
     @diffstat = @repository.diff_stat
 
     render :layout => false

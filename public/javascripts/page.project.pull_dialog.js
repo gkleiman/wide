@@ -65,11 +65,10 @@ $(function () {
       if(result.success && result.async_op_status.status === 'success') {
         WIDE.notifications.success('Pull successful.');
         WIDE.tree.refresh();
+        WIDE.toolbar.update_scm_buttons();
       } else {
         report_pull_error();
       }
-
-      WIDE.toolbar.update_scm_buttons();
     };
 
     WIDE.notifications.activity_started('Pulling from ' + $('input[name=url]', pull_dialog).val() + ' ...');

@@ -288,10 +288,6 @@ module Wide
           revisions
         end
 
-        def clean?
-          !!self.summary[:clean?]
-        end
-
         def init
           cmd = cmd_prefix.push('init')
           shellout(Escape.shell_command(cmd))

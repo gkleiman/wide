@@ -4,9 +4,11 @@ class Repository < ActiveRecord::Base
   cattr_accessor :supported_actions
   self.supported_actions = %w(add commit history forget mark_resolved mark_unresolved pull merge diff_stat diff revert! update!)
 
-  attr_accessor :entries_status, :url, :parent_repository
+  attr_accessor :url, :parent_repository
 
   serialize :async_op_status
+  serialize :cached_status
+  serialize :cached_summary
 
   belongs_to :project
 
@@ -80,7 +82,6 @@ class Repository < ActiveRecord::Base
       end
     end
 
-    update_entries_status
     entries = mark_entries(entries)
   end
 
@@ -90,6 +91,8 @@ class Repository < ActiveRecord::Base
 
   def save_file(rel_path, content)
     directory_entry(rel_path).update_content(content)
+
+    expire_scm_cache
   end
 
   def move_file(src_path, dest_path)
@@ -101,14 +104,20 @@ class Repository < ActiveRecord::Base
     else
       entry.move!(full_dest_path)
     end
+
+    expire_scm_cache
   end
 
   def make_dir(rel_path)
     DirectoryEntry.create(full_path(rel_path), :directory)
+
+    expire_scm_cache
   end
 
   def create_file(rel_path)
     DirectoryEntry.create(full_path(rel_path), :file)
+
+    expire_scm_cache
   end
 
   def remove_file(rel_path)
@@ -119,40 +128,58 @@ class Repository < ActiveRecord::Base
     else
       entry.remove!
     end
+
+    expire_scm_cache
   end
 
   def add(rel_path = '')
     entry = nil
     entry = directory_entry(rel_path) unless rel_path.blank?
     scm_engine.add(entry)
+
+    expire_scm_cache
   end
 
   def forget(rel_path)
     entry = directory_entry(rel_path)
     scm_engine.forget(entry)
+
+    expire_scm_cache
   end
 
   def revert!(files, revision = nil)
     scm_engine.revert!(files, revision)
+
+    expire_scm_cache
   end
 
   def mark_resolved(rel_path)
     entry = directory_entry(rel_path)
     scm_engine.mark_resolved(entry)
+
+    expire_scm_cache
   end
 
   def mark_unresolved(rel_path)
     entry = directory_entry(rel_path)
     scm_engine.mark_unresolved(entry)
+
+    expire_scm_cache
   end
 
   def commit(user, message, files = [])
     scm_engine.commit(user.email, message, files)
+
+    expire_scm_cache
     add_new_revisions_to_db
   end
 
   def summary
-    scm_engine ? scm_engine.summary : {}
+    if scm_engine
+      get_from_scm_cache(:summary)
+    else
+      return {}
+    end
   end
 
   def diff_stat(revision = nil)
@@ -164,16 +191,14 @@ class Repository < ActiveRecord::Base
     scm_engine.diff(entry, by_revision)
   end
 
-  def clean?
-    scm_engine ? scm_engine.clean? : true
-  end
-
   def pull(url)
     queue_async_operation(:perform_pull, url)
   end
 
   def update!(revision = nil)
     scm_engine.update!(revision)
+
+    expire_scm_cache
   end
 
   def respond_to?(symbol, include_private = false)
@@ -185,8 +210,19 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  def update_entries_status
-    self.entries_status = scm_engine.status
+  def expire_scm_cache
+    current_time = current_time_from_proper_timezone
+
+    unless scm_cache_expired_at.present? && scm_cache_expired_at >= current_time
+      Repository.transaction do
+        lock!
+
+        # Check again to avoid race conditions
+        unless scm_cache_expired_at.present? && scm_cache_expired_at >= current_time
+          update_attribute(:scm_cache_expired_at, current_time_from_proper_timezone)
+        end
+      end
+    end
   end
 
   def copy_attributes_from_parent_repository
@@ -213,6 +249,10 @@ class Repository < ActiveRecord::Base
     Wide::PathUtils.secure_path_join(absolute_repository_base_path, rel_path)
   end
 
+  def status
+    get_from_scm_cache(:status)
+  end
+
   private
   def scm_engine
     @scm_engine ||= Wide::Scm::Scm.get_adapter(scm).new(full_path)
@@ -231,10 +271,51 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  # Return the scm value, updating it if it was stale.
+  def get_from_scm_cache(attribute_name)
+    cached_attribute_name = "cached_#{attribute_name.to_s}"
+    cached_value = self.send(cached_attribute_name)
+
+    if self.scm_cache_expired_at.nil?
+      expire_scm_cache
+    end
+
+    unless cached_value.present? && cached_value[:updated_at] > scm_cache_expired_at
+      update_scm_cache(attribute_name)
+      reload
+      self.send(cached_attribute_name)[:content]
+    else
+      cached_value[:content]
+    end
+  end
+
+  def update_scm_cache(attribute_name)
+    Repository.transaction do
+      lock!
+
+      reload
+
+      cached_attribute_name = "cached_#{attribute_name.to_s}"
+      cached_value = self.send(cached_attribute_name)
+
+      unless cached_value.present? && cached_value[:updated_at] >= scm_cache_expired_at
+        cached_value = {}
+        cached_value[:updated_at] = current_time_from_proper_timezone
+        cached_value[:content] = scm_engine.send(attribute_name)
+
+        self.send("#{cached_attribute_name.to_s}=", cached_value)
+
+        save!
+      end
+    end
+  end
+
   def mark_entries(entries)
+    status = self.status
+
     entries.each do |entry|
-      if self.entries_status[entry.path]
-        entry.css_class = self.entries_status[entry.path].map(&:to_s).join(' ')
+      if status[entry.path]
+        entry.css_class = status[entry.path].map(&:to_s).join(' ')
       end
     end
   end
@@ -273,6 +354,8 @@ class Repository < ActiveRecord::Base
       end
     end
 
+    expire_scm_cache
+
     true
   end
 
@@ -283,6 +366,8 @@ class Repository < ActiveRecord::Base
 
     if scm_engine.pull(url)
       pull_urls.find_or_create_by_url(url)
+
+      expire_scm_cache
       add_new_revisions_to_db
 
       return true
