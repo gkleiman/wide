@@ -12,7 +12,7 @@ class Repository < ActiveRecord::Base
 
   belongs_to :project
 
-  has_many :changesets, :include => :changes, :dependent => :destroy, :order => 'revision DESC'
+  has_many :changesets, :include => :changes, :dependent => :destroy, :order => 'committed_on DESC'
   has_many :pull_urls, :dependent => :destroy, :order => 'created_at DESC'
 
   class ScmAdapterInstalledValidator < ActiveModel::EachValidator
