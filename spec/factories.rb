@@ -20,7 +20,7 @@ Factory.define :ssh_key do |s|
 end
 
 Factory.define :constant do |c|
-  c.association :project
+  c.association :container, :factory => :project
   c.sequence(:name) { |n| "name#{n}" }
   c.sequence(:value) { |n| "value#{n}" }
 end

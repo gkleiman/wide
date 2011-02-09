@@ -27,7 +27,7 @@ describe Constant do
   it "should validate that the constant name is unique" do
     @constant.save
 
-    Factory.build(:constant, :name => @constant.name, :project_id => @constant.project_id).valid?.should == false
+    Factory.build(:constant, :name => @constant.name, :container => @constant.container).valid?.should == false
   end
 
   it "should accept valid constant values" do
