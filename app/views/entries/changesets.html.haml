@@ -1,7 +1,5 @@
-- title "wIDE | #{current_user.user_name} | #{@project.name} | #{path}", false
-
-- content_for :alternative_title do
-  %h1= raw("wIDE | #{link_to("My Projects", projects_path)} | #{link_to(h(@project.name), project_path(@project))} | #{path}")
+- title "wIDE | #{current_user.user_name} | #{@project.name} | Changesets | #{path}"
+- breadcrumbs ['wIDE', link_to('My Projects', projects_path), link_to(h(@project.name), project_path(@project)), link_to('Changesets', project_repository_changesets_path), h(path)]
 
 - content_for :javascripts do
   = javascript_include_tag 'wide.pagination.js'

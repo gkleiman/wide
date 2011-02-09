@@ -1,6 +1,5 @@
-- title "wIDE | #{current_user.user_name} | #{@project.name} | Project Settings", false
-- content_for :alternative_title do
-  %h1= raw("wIDE | #{link_to("My Projects", projects_path)} | #{link_to(h(@project.name), @project)} | Project Settings")
+- title "wIDE | #{current_user.user_name} | #{@project.name} | Project Settings"
+- breadcrumbs ['wIDE', link_to('My Projects', projects_path), link_to(h(@project.name), @project), 'Project Settings']
 
 - content_for :javascripts do
   = javascript_include_tag 'page.project.js', 'page.project.edit.js', 'jquery.tokeninput.js'

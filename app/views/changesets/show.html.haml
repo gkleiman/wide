@@ -1,7 +1,5 @@
-- title "wIDE | #{current_user.user_name} | #{@project.name} | Changeset #{@changeset.scmid}", false
-
-- content_for :alternative_title do
-  %h1= raw("wIDE | #{link_to("My Projects", projects_path)} | #{link_to(h(@project.name), project_path(@project))} | #{link_to('Changesets', project_repository_changesets_path)} | #{@changeset.scmid}")
+- title "wIDE | #{current_user.user_name} | #{@project.name} | Changeset #{@changeset.scmid}"
+- breadcrumbs ['wIDE', link_to('My Projects', projects_path), link_to(h(@project.name), project_path(@project)), link_to('Changesets', project_repository_changesets_path), @changeset.scmid]
 
 #changeset.ui-widget
   .title.ui-widget-header

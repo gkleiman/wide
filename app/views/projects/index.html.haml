@@ -1,6 +1,5 @@
-- title "wIDE | #{current_user.user_name} | My Projects", false
-- content_for :alternative_title do
-  %h1= raw('wIDE | My Projects')
+- title "wIDE | #{current_user.user_name} | My Projects"
+- breadcrumbs ['wIDE', 'My Projects']
 
 - content_for :javascripts do
   = javascript_include_tag 'page.project.js', 'page.project.index.js'

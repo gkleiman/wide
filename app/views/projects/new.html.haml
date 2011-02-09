@@ -1,7 +1,5 @@
-- title "wIDE | #{current_user.user_name} | New Project", false
-- content_for :alternative_title do
-  %h1= raw("wIDE | #{link_to("My Projects", projects_path)} | New Project")
-
+- title "wIDE | #{current_user.user_name} | New Project"
+- breadcrumbs ['wIDE', link_to('My Projects', projects_path), 'New Project']
 
 .simple_form_container.ui-widget-content.ui-widget
   %h1.ui-widget-header New Project

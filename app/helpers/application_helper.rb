@@ -1,11 +1,6 @@
 module ApplicationHelper
-  def title(page_title, show_title = true)
+  def title(page_title)
     content_for :title, page_title.to_s
-    @show_title = show_title
-  end
-
-  def show_title?
-    @show_title
   end
 
   def link_to_remove_fields(name, f)
@@ -28,5 +23,16 @@ module ApplicationHelper
 
   def highlight_diff(diff)
     CodeRay.scan(diff, 'diff').html(:css => :class).html_safe
+  end
+
+  def breadcrumbs(crumbs)
+    if crumbs.length > 1
+      current_crumb = crumbs.pop
+      crumbs.map! { |crumb| content_tag('li', crumb.html_safe) } << content_tag('li', current_crumb.html_safe, :class => 'current')
+    else
+      crumbs.map! { |crumb| content_tag('li', crumb.html_safe, :class => 'current') }
+    end
+
+    content_for(:breadcrumbs, crumbs.join(content_tag('li', '|', :class => 'separator')).html_safe)
   end
 end

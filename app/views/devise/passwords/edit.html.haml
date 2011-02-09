@@ -1,4 +1,5 @@
-- title 'wIDE | Change Password', true
+- title 'wIDE | Change Password'
+- breadcrumbs ['wIDE', 'Change Password']
 
 .simple_form_container.ui-widget-content.ui-corner-all
   %h1.ui-widget-header Change your password
@@ -8,4 +9,4 @@
     = f.input :password_confirmation
     = f.button :submit, "Change my password"
 
-  = render :partial => "devise/shared/links"
+= render :partial => "devise/shared/links"
