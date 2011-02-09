@@ -215,7 +215,8 @@ class Repository < ActiveRecord::Base
 
     unless scm_cache_expired_at.present? && scm_cache_expired_at >= current_time
       Repository.transaction do
-        lock!
+        # FIXME sqlite3 locking sucks =/
+        #lock!
 
         # Check again to avoid race conditions
         unless scm_cache_expired_at.present? && scm_cache_expired_at >= current_time
@@ -291,7 +292,8 @@ class Repository < ActiveRecord::Base
 
   def update_scm_cache(attribute_name)
     Repository.transaction do
-      lock!
+      # FIXME sqlite3 locking sucks =/
+      #lock!
 
       cached_attribute_name = "cached_#{attribute_name.to_s}"
       cached_value = self.send(cached_attribute_name)
