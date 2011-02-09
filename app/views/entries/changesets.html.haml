@@ -4,7 +4,7 @@
   %h1= raw("wIDE | #{link_to("My Projects", projects_path)} | #{link_to(h(@project.name), project_path(@project))} | #{path}")
 
 - content_for :javascripts do
-  = javascript_include_tag 'page.changesets.js'
+  = javascript_include_tag 'wide.pagination.js'
 
 #changesets.ui-widget
   %h1.changesets.ui-widget-header= "Changesets for #{path}"
