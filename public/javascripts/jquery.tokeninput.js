@@ -117,25 +117,6 @@ $.TokenList = function (input, settings) {
 
                     return false;
 
-                case KEY.BACKSPACE:
-                    previous_token = input_token.prev();
-
-                    if (!$(this).val().length) {
-                        if (selected_token) {
-                            delete_token($(selected_token));
-                        } else if (previous_token.length) {
-                            select_token($(previous_token.get(0)));
-                        }
-
-                        return false;
-                    } else if ($(this).val().length == 1) {
-                        hide_dropdown();
-                    } else {
-                        // set a timeout just long enough to let this function finish.
-                        setTimeout(function(){do_search(false);}, 5);
-                    }
-                    break;
-
                 case KEY.TAB:
                 case KEY.RETURN:
                 case KEY.COMMA:
@@ -221,8 +202,6 @@ $.TokenList = function (input, settings) {
         .addClass(settings.classes.inputToken)
         .appendTo(token_list)
         .append(input_box);
-
-    init_list();
 
     //
     // Functions
@@ -554,6 +533,8 @@ $.TokenList = function (input, settings) {
             }
         }
     }
+
+    init_list();
 };
 
 // Really basic cache for the results
