@@ -3,6 +3,11 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_project
 
+  def handle_unverified_request
+    super
+    cookies.delete 'remember_user_token'
+  end
+
   private
   def current_project
     @project
@@ -20,7 +25,8 @@ class ApplicationController < ActionController::Base
     begin
       yield
     rescue Exception => exception
-      logger.error(exception.inspect + "\n" + exception.backtrace[0..5].join("\n"))
+      logger.error(exception.inspect + "\n" +
+                   exception.backtrace[0..5].join("\n"))
       render :json => { :success => 0 }
     end
   end
