@@ -6,10 +6,11 @@ class User < ActiveRecord::Base
 
   # Ugly hack to make the user inactive after sign up
   before_validation(:on => :create) do
+    @active_was = self.active
     self.active = true
   end
   after_validation(:on => :create) do
-    self.active = false
+    self.active = @active_was || false
   end
 
   validates_presence_of :user_name

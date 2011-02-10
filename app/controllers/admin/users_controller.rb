@@ -17,4 +17,11 @@ class Admin::UsersController < Admin::ResourcesController
       end
     end
   end
+
+  private
+  def set_attributes_on_create
+    if params[@object_name][:active].present?
+      @item.active = (params[@object_name][:active].to_i == 1)
+    end
+  end
 end
