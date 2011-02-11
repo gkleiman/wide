@@ -1,19 +1,19 @@
 require 'bundler/capistrano'
 require 'delayed/recipes'
 
-set :application, "wIDE"
-set :repository,  "https://github.com/gkleiman/wide.git"
-set :rails_env, 'production'
-
+# Adjust the following settings according to your configuration
+# -------------------------------------------------------------
+server "192.168.0.102", :app, :web, :db
 set :deploy_to, "/home/wide/application"
 set :user, "wide"
 set :use_sudo, false
+# --- User configuration ends here ---
+
+set :application, "wIDE"
+set :repository,  "https://github.com/gkleiman/wide.git"
+set :rails_env, 'production'
 set :scm, :git
 set :deploy_via, :remote_cache
-
-role :web, "192.168.0.102"                          # Your HTTP server, Apache/etc
-role :app, "192.168.0.102"                          # This may be the same as your `Web` server
-role :db,  "192.168.0.102", :primary => true        # This is where Rails migrations will run
 
 namespace :customs do
   task :setup, :except => { :no_release => true } do

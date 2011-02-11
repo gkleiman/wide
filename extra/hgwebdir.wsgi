@@ -1,15 +1,3 @@
-# mod_wsgi deploy
-
-#   WSGIScriptAliasMatch ^(.*)$ /var/www/cgi-bin/hgwebdir.wsgi$1
-#   <Directory "/var/www/cgi-bin/">
-#     Order allow,deny
-#     Allow from all
-#     AllowOverride All
-#     Options ExecCGI
-#     AddHandler wsgi-script .wsgi
-#     WSGIPassAuthorization On    #EXTREMELY IMPORTANT
-#   </Directory>
-
 # enable demandloading to reduce startup time
 from mercurial import demandimport; demandimport.enable()
 
@@ -40,10 +28,10 @@ DSN = {
 	'PEPPER' : '8c858d8d637763dd07fecc528c59d953161b52e86483d3ed142bf2a736e74762635b279a7657b23c9e51236416b819f442e20ee6de72b9535bdc4ada8c75dda9',
 	'OPTIONS': {},
 }
+REPOS_BASE = '/home/wide/application/shared/repositories'
 
 TITLE = 'Mercurial (Hg) Proxy for wIDE'
 HGWEB_CFG_PATH = '/home/wide/hgwide/hgweb.cfg'
-REPOS_BASE = '/home/wide/application/shared/repositories'
 
 # --- User configuration ends here ---
 
