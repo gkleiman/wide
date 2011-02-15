@@ -95,8 +95,14 @@ WIDE.editor = (function () {
       case 'cpp':
         return require('ace/mode/c_cpp').Mode;
         break;
+      case 'java':
+        return require('ace/mode/java').Mode;
+        break;
       case 'js':
         return require('ace/mode/javascript').Mode;
+        break;
+      case 'xml':
+        return require('ace/mode/xml').Mode;
         break;
       case 'html':
         return require('ace/mode/html').Mode;
@@ -109,6 +115,15 @@ WIDE.editor = (function () {
         break;
       case 'py':
         return require('ace/mode/python').Mode;
+        break;
+      case 'rb':
+        return require('ace/mode/ruby').Mode;
+        break;
+      case 'coffee':
+        return require('ace/mode/coffee').Mode;
+        break;
+      case 'pl':
+        return require('ace/mode/perl').Mode;
         break;
     }
 
