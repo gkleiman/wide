@@ -97,10 +97,6 @@ class Repository < ActiveRecord::Base
     entries = mark_entries(entries)
   end
 
-  def file_contents(rel_path)
-    directory_entry(rel_path).get_content
-  end
-
   def save_file(rel_path, content)
     directory_entry(rel_path).update_content(content)
 

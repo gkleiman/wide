@@ -27,7 +27,7 @@ class EntriesController < ApplicationController
 
       render :json => entries
     else
-      render :text => @repository.file_contents(path)
+      render :text => entry.get_content
     end
   end
 
