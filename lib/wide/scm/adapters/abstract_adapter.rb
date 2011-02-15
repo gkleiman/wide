@@ -10,6 +10,10 @@ module Wide
         cattr_accessor :skip_paths
         self.skip_paths = []
 
+        def init
+          true
+        end
+
         def adapter_name
           'Abstract'
         end
@@ -44,8 +48,8 @@ module Wide
           end
         end
 
-        def self.status
-          Status.new(base_path)
+        def status
+          {}
         end
 
         def self.adapter_name
@@ -61,28 +65,9 @@ module Wide
         end
       end
 
-      class Status < Hash
-        attr_accessor :base_path
-
-        def initialize(base_path)
-          self.base_path = base_path
-          super()
-        end
-
-        def to_s
-          String.new().tap do |message|
-            self.each_pair do |path, status|
-              path = Wide::PathUtils.relative_to_base(base_path, path)
-              status = status.map(&:to_s).map(&:capitalize).join(' ')
-
-              message << "#{status}: #{path}\n" unless status == 'Unversioned'
-            end
-          end
-        end
-      end
-
       class Revision
-        attr_accessor :revision, :scmid, :author, :author_email, :time, :message, :paths
+        attr_accessor :revision, :scmid, :author, :author_email, :time,
+          :message, :paths
 
         def initialize(attributes={})
           self.revision = attributes[:revision]
