@@ -12,7 +12,9 @@ module Wide
       end
 
       def makefile_path
-        @makefile_path ||= Wide::PathUtils.secure_path_join(project.bin_path, File.join('tmp', 'Makefile'))
+        @makefile_path ||= Wide::PathUtils.secure_path_join(project.bin_path,
+                                                            File.join('tmp',
+                                                                      'Makefile'))
       end
 
       def perform
@@ -28,19 +30,24 @@ module Wide
       end
 
       def error(job, exception)
-        project.compilation_status = Wide::Scm::AsyncOpStatus.new(:operation => 'compile', :status => 'error')
+        project.compilation_status = Wide::Scm::AsyncOpStatus.new(
+          :operation => 'compile', :status => 'error')
+
         project.save!
       end
 
       def failure
-        project.compilation_status = Wide::Scm::AsyncOpStatus.new(:operation => 'compile', :status => 'error')
+        project.compilation_status = Wide::Scm::AsyncOpStatus.new(
+          :operation => 'compile', :status => 'error')
+
         project.save!
       end
 
       private
 
       def prepare_compilation_environment
-        # Create a temporary directory for compiling and copy the repository there
+        # Create a temporary directory for compiling and copy the repository
+        # there
         FileUtils.rm_rf(project.bin_path)
         FileUtils.mkdir_p(@dst_path)
         FileUtils.cp_r(@src_path, @dst_path)
@@ -53,7 +60,8 @@ module Wide
       end
 
       def make_and_move_results
-        # Go to the directory, run make, and save the output in @project.bin_path/mesages
+        # Go to the directory, run make, and save the output in
+        # @project.bin_path/mesages
         FileUtils.chdir(@dst_path)
         cmd = %w(make)
         cmd = cmd.push('-s', '-f', makefile_path)
@@ -62,10 +70,14 @@ module Wide
         shellout(cmd)
 
         if $? && $?.exitstatus != 0
-          project.compilation_status = Wide::Scm::AsyncOpStatus.new(:operation => 'compile', :status => 'error')
+          project.compilation_status = Wide::Scm::AsyncOpStatus.new(
+            :operation => 'compile', :status => 'error')
         else
-          project.compilation_status = Wide::Scm::AsyncOpStatus.new(:operation => 'compile', :status => 'success')
-          FileUtils.mv(File.join(@dst_path, 'binary'), File.join(project.bin_path, 'binary'))
+          project.compilation_status = Wide::Scm::AsyncOpStatus.new(
+            :operation => 'compile', :status => 'success')
+
+            FileUtils.mv(File.join(@dst_path, 'binary'),
+                         File.join(project.bin_path, 'binary'))
         end
 
           FileUtils.rm_rf(@dst_path)

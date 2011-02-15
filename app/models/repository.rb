@@ -2,7 +2,9 @@ class Repository < ActiveRecord::Base
   include ActiveModel::Validations
 
   cattr_accessor :supported_actions
-  self.supported_actions = %w(add commit history forget mark_resolved mark_unresolved pull merge diff_stat diff revert! update!)
+  self.supported_actions = %w(add commit history forget mark_resolved
+                              mark_unresolved pull merge diff_stat diff revert!
+                              update!)
 
   attr_accessor :url, :parent_repository
 
@@ -12,13 +14,17 @@ class Repository < ActiveRecord::Base
 
   belongs_to :project
 
-  has_many :changesets, :include => :changes, :dependent => :destroy, :order => 'committed_on DESC'
+  has_many :changesets,
+    :include => :changes,
+    :dependent => :destroy,
+    :order => 'committed_on DESC'
   has_many :pull_urls, :dependent => :destroy, :order => 'created_at DESC'
 
   class ScmAdapterInstalledValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       unless Wide::Scm::Scm.all_adapters.include?(value)
-        record.errors.add(attribute, :inclusion, options.merge(:value => value))
+        record.errors.add(attribute, :inclusion,
+                          options.merge(:value => value))
       end
     end
   end
@@ -27,7 +33,8 @@ class Repository < ActiveRecord::Base
     def validate_each(record, attribute, value)
       scm_engine = Wide::Scm::Scm.get_adapter(record.scm)
       unless scm_engine && (value.blank? || scm_engine.valid_url?(value))
-        record.errors.add(attribute, 'Invalid url', options.merge(:value => value))
+        record.errors.add(attribute, 'Invalid url',
+                          options.merge(:value => value))
       end
     end
   end
@@ -46,7 +53,8 @@ class Repository < ActiveRecord::Base
   after_create :queue_init_or_clone
 
   def changesets_for_entry(rel_path)
-    changesets.joins(:changes).where('changes.path' => rel_path).order('"changesets"."committed_on" DESC')
+    changesets.joins(:changes).where('changes.path' => rel_path).
+      order('"changesets"."committed_on" DESC')
   end
 
   def directory_entry(rel_path)
@@ -54,7 +62,8 @@ class Repository < ActiveRecord::Base
   end
 
   def repository_url
-    URI.encode(Settings.repo_server_base + Wide::PathUtils.without_leading_slash(path))
+    URI.encode(Settings.repo_server_base +
+               Wide::PathUtils.without_leading_slash(path))
   end
 
   def add_new_revisions_to_db
@@ -62,7 +71,10 @@ class Repository < ActiveRecord::Base
       last_changeset = changesets.first
 
       scm_engine.log(nil, last_changeset.try(:revision)).each do |changeset|
-        next if !last_changeset.nil? && changeset.revision.to_i == last_changeset.revision.to_i
+        if last_changeset.present? && changeset.revision.to_i == last_changeset.revision.to_i
+          next
+        end
+
         changeset.save(self)
       end
     end
@@ -220,16 +232,10 @@ class Repository < ActiveRecord::Base
 
         # Check again to avoid race conditions
         unless scm_cache_expired_at.present? && scm_cache_expired_at >= current_time
-          update_attribute(:scm_cache_expired_at, current_time_from_proper_timezone)
+          update_attribute(:scm_cache_expired_at,
+                           current_time_from_proper_timezone)
         end
       end
-    end
-  end
-
-  def copy_attributes_from_parent_repository
-    if parent_repository.present?
-      self.scm = parent_repository.scm
-      self.url = "file://#{parent_repository.full_path}"
     end
   end
 
@@ -237,9 +243,12 @@ class Repository < ActiveRecord::Base
     status = 'error'
 
     begin
-      status = 'success' if(self.send(operation, url))
+      status = 'success' if self.send(operation, url)
     ensure
-      self.async_op_status = Wide::Scm::AsyncOpStatus.new(:operation => operation, :status => status)
+      self.async_op_status = Wide::Scm::AsyncOpStatus.new(
+        :operation => operation,
+        :status => status)
+
       self.save!
     end
 
@@ -320,6 +329,13 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def copy_attributes_from_parent_repository
+    if parent_repository.present?
+      self.scm = parent_repository.scm
+      self.url = "file://#{parent_repository.full_path}"
+    end
+  end
+
   def queue_init_or_clone
     # Queue initialization/cloning
     queue_async_operation(:init_or_clone, self.url)
@@ -338,8 +354,11 @@ class Repository < ActiveRecord::Base
       project_type = project.project_type
 
       # Untar the repository layout into the repository.
-      if project_type && project_type.repository_template && !project_type.repository_template.path.blank?
-        shellout(Escape.shell_command(['tar', '-zxkpf', project_type.repository_template.path, '-C', full_path]))
+      if project_type && project_type.repository_template &&
+        project_type.repository_template.path.present?
+        shellout(Escape.shell_command(['tar', '-zxkpf',
+                                      project_type.repository_template.path,
+                                      '-C', full_path]))
 
         self.add
         self.commit(self.project.user, 'Project template')
@@ -348,7 +367,7 @@ class Repository < ActiveRecord::Base
       scm_engine.clone(url)
       add_new_revisions_to_db
 
-      if(scm_engine.class.valid_url?(url))
+      if scm_engine.class.valid_url?(url)
         # Add the url if the clone was successful and it wasn't a fork
         pull_urls.find_or_create_by_url(url)
       end
@@ -360,7 +379,7 @@ class Repository < ActiveRecord::Base
   end
 
   def perform_pull(url)
-    if(!scm_engine || url.blank? || !scm_engine.class.valid_url?(url))
+    if !scm_engine || url.blank? || !scm_engine.class.valid_url?(url)
       return false
     end
 
@@ -379,10 +398,11 @@ class Repository < ActiveRecord::Base
   def queue_async_operation(operation, url)
     # Run one async_operation at a time.
     if self.async_op_status && self.async_op_status[:status] == 'running'
-      return Wide::Scm::AsyncOpStatus.new(:operation => operation, :status => 'error')
+      return Wide::Scm::AsyncOpStatus.new(:operation => operation,
+                                          :status => 'error')
     end
 
-    self.async_op_status = Wide::Scm::AsyncOpStatus.new(:operation => operation)
+    self.async_op_status = Wide::Scm::AsyncOpStatus.new :operation => operation
     self.save!
 
     self.delay.async_operation(operation, url)

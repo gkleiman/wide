@@ -11,9 +11,9 @@ class EntriesController < ApplicationController
   helper_method :path
 
   def index
-    # Initial loading of the tree
     entries = @repository.directory_entries('/')
 
+    # Initial loading of the tree
     entries = wrap_in_fake_root(entries) if params[:initial_load]
 
     render :json => entries
