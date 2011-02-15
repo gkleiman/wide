@@ -34,7 +34,6 @@ var WIDE = (function () {
       path_array = path.split('/');
 
       if (path_array[0] == '/') {
-        alert(path);
         path_array.shift();
       }
 
