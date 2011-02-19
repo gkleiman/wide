@@ -20,7 +20,8 @@ WIDE.editor = (function () {
       doc.setMode(new Mode());
       doc.setUndoManager(new UndoManager());
       env.document = doc;
-      env.editor = new Editor(new Renderer($(node).siblings('.editor')[0], theme));
+      env.editor = new Editor(new Renderer($(node).siblings('.editor')[0],
+                                           theme));
       env.editor.setSession(doc);
 
       node.env = env;
@@ -80,7 +81,8 @@ WIDE.editor = (function () {
       return false;
     });
 
-    $('textarea', editor).bind('keydown', 'Ctrl+s', WIDE.editor.save_shortcut_handler)
+    $('textarea', editor).bind('keydown', 'Ctrl+s',
+                               WIDE.editor.save_shortcut_handler)
       .bind('keydown', 'Meta+s', WIDE.editor.save_shortcut_handler);
   };
 
@@ -146,7 +148,8 @@ WIDE.editor = (function () {
     var file = WIDE.file(path);
     var paths, editor_index, editor;
 
-    // If there's already an editor for the given filename, then select its tab.
+    // If there's already an editor for the given filename, then select its
+    // tab.
     paths = $.map(editors, function (value, index) {
       return value.path.value;
     });
@@ -172,7 +175,8 @@ WIDE.editor = (function () {
     var replacements = {
       csrf_token: WIDE.csrf_token(),
       csrf_param: WIDE.csrf_param(),
-      save_path: WIDE.repository_entries_path() + '/' + WIDE.encode_path(options.path)
+      save_path: WIDE.repository_entries_path() + '/' +
+        WIDE.encode_path(options.path)
     };
     var editor = $.tmpl(edit_form_tmpl, $.extend(options, replacements));
 
@@ -193,7 +197,8 @@ WIDE.editor = (function () {
 
     // Add some attributes to the editor
     editor.containing_tab = $(editor_tab_id);
-    editor.tab_title = $('#tabs > ul.ui-tabs-nav > li > a[href=' + editor_tab_id + ']');
+    editor.tab_title = $('#tabs > ul.ui-tabs-nav > li > a[href=' +
+                         editor_tab_id + ']');
     editor.throbber_icon = editor.tab_title.parent().find('.ui-icon-throbber');
     editor.close_icon = editor.tab_title.parent().find('.ui-icon-close');
     editor.path = options.path;
@@ -281,7 +286,8 @@ WIDE.editor = (function () {
         }
       };
 
-      $('textarea', editor).bind('keydown', 'Ctrl+s', WIDE.editor.save_shortcut_handler)
+      $('textarea', editor).bind('keydown', 'Ctrl+s',
+                                 WIDE.editor.save_shortcut_handler)
         .bind('keydown', 'Meta+s', WIDE.editor.save_shortcut_handler);
 
       env.editor.resize();
