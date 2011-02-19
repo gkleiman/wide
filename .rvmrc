@@ -1,7 +1,6 @@
-
 if [[ -d "${rvm_path:-$HOME/.rvm}/environments" \
-  && -s "${rvm_path:-$HOME/.rvm}/environments/ruby-1.8.7-p330@wide" ]] ; then
-  \. "${rvm_path:-$HOME/.rvm}/environments/ruby-1.8.7-p330@wide"
+  && -s "${rvm_path:-$HOME/.rvm}/environments/ruby-1.8.7-p334@wide" ]] ; then
+  \. "${rvm_path:-$HOME/.rvm}/environments/ruby-1.8.7-p334@wide"
 else
-  rvm --create use  "ruby-1.8.7-p330@wide"
+  rvm --create use  "ruby-1.8.7-p334@wide"
 fi
