@@ -102,6 +102,10 @@ class Project < ActiveRecord::Base
   class MakefileBinding
     def initialize(project)
       @project = project
+      @constants = project.constants.inject({}) do |hash, constant|
+        hash[constant.name] = constant.value
+        hash
+      end
     end
 
     def get_binding

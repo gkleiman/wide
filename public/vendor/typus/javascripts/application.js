@@ -8,6 +8,8 @@ $(function () {
     makefile_textarea.attr('rows', 24);
     $.getScript('/javascripts/ace_textarea.js', function () {
       var ace = window.__ace_shadowed__;
+      ace.options.useSoftTabs = false;
+
       ace.transformTextarea(makefile_textarea[0]);
     });
   }
