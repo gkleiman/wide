@@ -3,11 +3,6 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_project
 
-  def handle_unverified_request
-    super
-    cookies.delete 'remember_user_token'
-  end
-
   private
   def current_project
     @project
