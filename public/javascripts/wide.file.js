@@ -5,6 +5,11 @@ WIDE.file = function (path, is_directory, file_name) {
   // Convert whatever is passed to a boolean value
   is_directory = !!is_directory;
 
+  // Remove leading './' from the path
+  if(path.substr(0, 2) == "./") {
+    path = path.substr(2);
+  }
+
   if(file_name === undefined) {
     file_name = path.replace(/^.*\//, '');
   }
