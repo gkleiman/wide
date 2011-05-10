@@ -14,12 +14,19 @@ class User < ActiveRecord::Base
   end
 
   validates_presence_of :user_name
-  validates_format_of :user_name, :with => /\A[\w_-]+[\w._-]*\z/, :allow_blank => true, :message => "can only contain letters, numbers and the following characters: '.', '_' and '-'. And it can't start with a dot."
-  validates_uniqueness_of :user_name, :allow_blank => true, :case_sensitive => false
+  validates_format_of :user_name,
+    :with => /\A[\w_-]+[\w._-]*\z/,
+    :allow_blank => true,
+    :message => "can only contain letters, numbers and the following " +
+    "characters: '.', '_' and '-'. And it can't start with a dot."
+  validates_uniqueness_of :user_name,
+    :allow_blank => true,
+    :case_sensitive => false
 
   has_many :projects, :dependent => :destroy
   has_many :project_collaborators, :dependent => :destroy
-  has_many :third_party_projects, :through => :project_collaborators, :source => :project
+  has_many :third_party_projects, :through => :project_collaborators,
+    :source => :project
 
   attr_accessible_on_create :user_name
   attr_accessible :email, :password, :password_confirmation, :remember_me,
@@ -43,7 +50,8 @@ class User < ActiveRecord::Base
 
   # Make user name case insensitive for login
   def self.find_for_database_authentication(conditions = {})
-    self.where("LOWER(user_name) = LOWER(?)", conditions[:user_name]).first || super
+    self.where("LOWER(user_name) = LOWER(?)", conditions[:user_name]).first ||
+      super
   end
 
   private

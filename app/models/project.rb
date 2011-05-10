@@ -10,10 +10,20 @@ class Project < ActiveRecord::Base
   accepts_nested_attributes_for :repository, :update_only => true
   accepts_nested_attributes_for :constants, :allow_destroy => true
 
-  validates :name, :presence => true, :format => { :with => /\A[\w\- ]+\z/ }, :uniqueness => { :scope => :user_id, :case_sensitive => false }
+  validates_presence_of :name
+  validates_format_of :name,
+    :with => /\A[\w\-_ ]+\z/,
+    :allow_blank => true,
+    :message => "can only contain letters, numbers and the following " +
+    "characters: '_' and '-'."
+  validates_uniqueness_of :name,
+    :scope => :user_id,
+    :allow_blank => true,
+    :case_sensitive => false
 
   attr_accessible_on_create :name, :repository_attributes
-  attr_accessible :project_type_id, :constants_attributes, :public, :collaborator_ids
+  attr_accessible :project_type_id, :constants_attributes, :public,
+    :collaborator_ids
 
   serialize :compilation_status
 
@@ -29,10 +39,13 @@ class Project < ActiveRecord::Base
   def compile
     # Make sure that the project is not being compiled
     if(!compilation_status.blank? && compilation_status[:status] == 'running')
-      return Wide::Scm::AsyncOpStatus.new(:operation => 'compile', :status => 'error')
+      return Wide::Scm::AsyncOpStatus.new(:operation => 'compile',
+                                          :status => 'error')
     end
 
-    self.compilation_status = Wide::Scm::AsyncOpStatus.new(:operation => 'compile', :status => 'running')
+    self.compilation_status = Wide::Scm::AsyncOpStatus.new(
+      :operation => 'compile',
+      :status => 'running')
     self.save!
 
     Delayed::Job.enqueue(Wide::Jobs::CompileJob.new(id))
@@ -54,7 +67,8 @@ class Project < ActiveRecord::Base
 
   # Returns the path in which the compiled binaries should be stored
   def bin_path
-    @bin_path ||= Wide::PathUtils.secure_path_join(Settings.compilation_base, user.user_name, name)
+    @bin_path ||= Wide::PathUtils.secure_path_join(Settings.compilation_base,
+                                                   user.user_name, name)
   end
 
   def status
@@ -65,7 +79,8 @@ class Project < ActiveRecord::Base
     return 'error'
   end
 
-  # Process the project type's Makefile template and write it to the makefile path
+  # Process the project type's Makefile template and write it to the makefile
+  # path
   def makefile
     my_binding = MakefileBinding.new(self).get_binding
     ERB.new(project_type.makefile_template).result(my_binding)
@@ -79,7 +94,8 @@ class Project < ActiveRecord::Base
   def set_repository_path
     if repository && repository.path.blank?
       # Check for path traversals
-      Wide::PathUtils.secure_path_join(Settings.repositories_base, user.user_name, name)
+      Wide::PathUtils.secure_path_join(Settings.repositories_base,
+                                       user.user_name, name)
       repository.path = File.join(user.user_name, name)
     end
 

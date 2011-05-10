@@ -1,8 +1,10 @@
 - title "wIDE | #{current_user.user_name} | #{@project.name} | Project Settings"
-- breadcrumbs ['wIDE', link_to('My Projects', projects_path), link_to(h(@project.name), @project), 'Project Settings']
+- breadcrumbs ['wIDE', link_to('My Projects', projects_path),
+  link_to(h(@project.name), @project), 'Project Settings']
 
 - content_for :javascripts do
-  = javascript_include_tag 'page.project.js', 'page.project.edit.js', 'jquery.tokeninput.js'
+  = javascript_include_tag 'page.project.js', 'page.project.edit.js',
+    'jquery.tokeninput.js'
   %meta{:name => 'project_id', :content => @project.to_param}
 
 :javascript
@@ -13,7 +15,8 @@
   = simple_form_for @project do |f|
     = simple_fields_for @project.repository do |repo|
       = repo.input :repository_url, :input_html => { :readonly => 'readonly' }
-    = f.input :project_type_id, :collection => ProjectType.all, :include_blank => false
+    = f.input :project_type_id, :collection => ProjectType.all,
+      :include_blank => false
     = f.input :public
     %h1.ui-widget-header Constants
     .constants
@@ -23,7 +26,8 @@
         = link_to_add_fields('Add a new constant', f, :constants)
     %h1.ui-widget-header Collaborators
     .collaborators
-      = text_field_tag 'project[collaborator_ids]', '', :id => 'collaborator_ids'
+      = text_field_tag 'project[collaborator_ids]', '',
+        :id => 'collaborator_ids'
     = f.button :submit
     %h1.ui-widget-header Makefile
     .makefile
